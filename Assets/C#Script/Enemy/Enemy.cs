@@ -12,7 +12,7 @@ public abstract class Enemy : Character
     [SerializeField] protected float HP = 100;
     [SerializeField] protected float Defend;
     [SerializeField] protected float Pressure;
-    [SerializeField] protected float Distance;
+    [SerializeField] public float Distance;
     [SerializeField] protected float RayDistance;
     [SerializeField] protected GameObject Target;
      protected Main_Char Player;
@@ -23,9 +23,9 @@ public abstract class Enemy : Character
     public CapsuleCollider Hitted_Box;
     public bool Change_state_enable;
     public string Cur_state_string;
-    public string Cur_Attackstate_string;
-    public Enemy_Director Commander;
+    public string Cur_Attackstate_string;    
     public bool GetHitted_able;
+    [SerializeField] private Enemy_Director Director;
 
     public enum Direction
     {
@@ -69,6 +69,8 @@ public abstract class Enemy : Character
         Change_state_enable = true;
         Player = Target.GetComponent<Main_Char>();       
         Defend = 100;
+        Director.AddEnemy(gameObject);
+        Cur_Role = Role.AroundFight;
     }
     public virtual void Update()
     {
@@ -76,10 +78,11 @@ public abstract class Enemy : Character
     }
     public void FixedUpdate()
     {
-        StateManagement();
+        
         Distance = Math.Abs(base.transform.position.x - Player.transform.position.x);
+        StateManagement();
         //Role_Aroundfight
-        if(Cur_Role == Role.AroundFight)  
+        if (Cur_Role == Role.AroundFight)  
         {
             if (Cur_Direction == Direction.Left)
             {
@@ -87,9 +90,10 @@ public abstract class Enemy : Character
                 {
                     RayDistance = HitLeft.distance;
                     //Raycast Enemy
-                    if (HitLeft.distance < 0.1f && HitLeft.rigidbody.tag == "Enemy"&& Change_state_enable == true)
+                    if (HitLeft.distance < 1f && HitLeft.rigidbody.tag == "Enemy"&& Change_state_enable == true)
                     {
                         MoveBack();
+                        Debug.Log("HitEnemy");
                     }
                     else if(HitLeft.distance >= 4 && HitLeft.rigidbody.tag == "Enemy" && Change_state_enable == true) 
                     {
@@ -99,6 +103,7 @@ public abstract class Enemy : Character
                     else if(HitLeft.distance < 0.1f && HitLeft.rigidbody.tag == "Player" && Change_state_enable == true)
                     {
                         MoveBack();
+                        Debug.Log("HitPlayer");
                     }
                     else if (HitLeft.distance >= 4 && HitLeft.rigidbody.tag == "Player" && Change_state_enable == true)
                     {
@@ -123,9 +128,10 @@ public abstract class Enemy : Character
                 if (Physics.Raycast(new Vector3(transform.position.x + 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(1, 0, 0), out RaycastHit HitRight, 100, 3))
                 {
                     //Raycast Enemy
-                    if (HitRight.distance < 0.1f && HitRight.rigidbody.tag == "Enemy"&&Change_state_enable == true)
+                    if (HitRight.distance < 1f && HitRight.rigidbody.tag == "Enemy"&&Change_state_enable == true)
                     {
                         MoveBack();
+                        Debug.Log("HitEnemy");
                     }
                     else if (HitRight.distance >= 4 && HitRight.rigidbody.tag == "Enemy" && Change_state_enable == true)
                     {
@@ -135,6 +141,7 @@ public abstract class Enemy : Character
                     else if (HitRight.distance < 0.1f && HitRight.rigidbody.tag == "Player" && Change_state_enable == true)
                     {
                         MoveBack();
+                        Debug.Log("HitPlayer");
                     }
                     else if (HitRight.distance >= 4 && HitRight.rigidbody.tag == "Player" && Change_state_enable == true)
                     {
@@ -185,6 +192,10 @@ public abstract class Enemy : Character
         Animation_Update();
         Cur_state_string = Cur_state.ToString();
         Cur_Attackstate_string = Cur_Attack_State.ToString();
+        if(Cur_state == State.Dead) 
+        {
+            gameObject.SetActive(false);
+        }
     }
     protected float Under_Pressure_Approuching = 60;
     protected float Over_Pressure_Reteating = 65;

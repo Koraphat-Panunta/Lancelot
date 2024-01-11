@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour
 {
     public GameObject Player;
-    public List<GameObject> Enemy = new List<GameObject>();
+    public List<GameObject> Enemy;
+    [SerializeField] private Enemy_Director Director;
     public Camera Camera;
     private Vector3 StartPos;
     void Start()
     {
-        Setup_Camera();      
+        Setup_Camera();
+        Enemy = Director.Enemy;
         //EnemySpawner        
     }
 
