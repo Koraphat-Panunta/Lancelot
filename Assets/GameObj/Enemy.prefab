@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6816251657033088840}
   m_Layer: 0
   m_Name: Attack_Box
-  m_TagString: Hitted_Box
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 5630205986203177239}
   m_Layer: 3
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 3970229288171305513}
   m_Layer: 0
   m_Name: Hitted_Box
-  m_TagString: Hitted_Box
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -468,6 +468,7 @@ MonoBehaviour:
   Defend: 200
   Pressure: 0
   Distance: 0
+  RayDistance: 0
   Target: {fileID: 0}
   ATK_Range: 2
   Attack_CoolingDown: 0
@@ -477,7 +478,9 @@ MonoBehaviour:
   Change_state_enable: 0
   Cur_state_string: 
   Cur_Attackstate_string: 
-  Commander: {fileID: 0}
   GetHitted_able: 0
+  Director: {fileID: 0}
   Cur_Attack_State: 0
+  Cur_Role: 2
+  Cur_state: 0
   Hit_able: 1

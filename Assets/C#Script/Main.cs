@@ -21,7 +21,8 @@ public class Main : MonoBehaviour
     void Update()
     {
         CombatSystem();
-        CameraTransformation();       
+        CameraTransformation();
+        
     }
 
     /////BackEnd
