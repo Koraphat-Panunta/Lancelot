@@ -6,6 +6,7 @@ using UnityEngine;
 public class Enemy_Director : MonoBehaviour
 {
     public List<GameObject> Enemy = new List<GameObject>();
+    public Main Game_manager;
     public int OnFight_num = 0;
     public int AroundFight_num = 0;
     public int Enemy_ID_Onfight;
@@ -23,10 +24,10 @@ public class Enemy_Director : MonoBehaviour
         AroundFight_num = 0;
         Lowest_Distance_Enemy = 1000;
         foreach (GameObject Enemy in Enemy) 
-        {
+        {           
             if(Enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Dead) 
-            {
-                this.Enemy.Remove(Enemy);                
+            {                
+                this.Enemy.Remove(Enemy);                 
             }
             else 
             {
@@ -93,6 +94,12 @@ public class Enemy_Director : MonoBehaviour
         {
             Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.AroundFight;
         }
+    }
+    public void RemoveGameObg(GameObject Enemy) 
+    {
+        this.Enemy.Remove(Enemy);
+        Game_manager.RemoveEnemy(Enemy);
+        
     }
 
 

@@ -72,5 +72,9 @@ public class Main : MonoBehaviour
         }
        
     }
+    public void RemoveEnemy(GameObject Enemy) 
+    {
+        this.Enemy.Remove(Enemy);
+    }
     
 }

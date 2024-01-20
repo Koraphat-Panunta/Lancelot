@@ -10,7 +10,7 @@ public abstract class Enemy : Character
     [SerializeField] protected float Run_Speed = 1.7f;
     [SerializeField] protected float Dash_Speed = 7;
     [SerializeField] protected float Speed;
-    [SerializeField] protected float HP = 100;
+    [SerializeField] protected float HP = 40;
     [SerializeField] protected float Defend;
     [SerializeField] protected float Pressure;
     [SerializeField] public float Distance;
@@ -70,7 +70,7 @@ public abstract class Enemy : Character
         ATK_Range = 2.1f;
         Change_state_enable = true;
         Player = Target.GetComponent<Main_Char>();       
-        Defend = 100;
+        Defend = 40;
         Director.AddEnemy(gameObject);
         Cur_Role = Role.AroundFight;
         RandomDistance();
@@ -92,10 +92,8 @@ public abstract class Enemy : Character
         Animation_Update();
         Cur_state_string = Cur_state.ToString();
         Cur_Attackstate_string = Cur_Attack_State.ToString();
-        if(Cur_state == State.Dead) 
-        {
-            gameObject.SetActive(false);
-        }
+        
+       
     }
     protected float Under_Pressure_Approuching = 60;
     protected float Over_Pressure_Reteating = 65;
@@ -217,82 +215,91 @@ public abstract class Enemy : Character
     private float Dashing = 0;
     protected void StateManagement()
     {
-        LookatPlayer();
-        //Dashing_Duration&Moving
-        if (Cur_state == State.Dash)
+        if (HP <= 0||Cur_state == State.Dead)
         {
-            //Duration
-            float Dash_Duration = animator.GetCurrentAnimatorStateInfo(0).length;
-            Change_state_enable = false;
-            Dashing += Time.deltaTime;
-            if (Dashing >= Dash_Duration)
+            Cur_state = State.Dead;
+            Director.RemoveGameObg(gameObject);        
+            Destroy(gameObject);
+        }
+        else
+        {
+            LookatPlayer();
+            //Dashing_Duration&Moving
+            if (Cur_state == State.Dash)
             {
-                Change_state_enable = true;
-                Dashing = 0;
-                if (UnityEngine.Random.Range(1, 100)>50) 
+                //Duration
+                float Dash_Duration = animator.GetCurrentAnimatorStateInfo(0).length;
+                Change_state_enable = false;
+                Dashing += Time.deltaTime;
+                if (Dashing >= Dash_Duration)
                 {
-                    OnFightDismiss();
+                    Change_state_enable = true;
+                    Dashing = 0;
+                    if (UnityEngine.Random.Range(1, 100) > 50)
+                    {
+                        OnFightDismiss();
+                    }
+                }
+                //Moving
+                if (base.transform.position.x > Player.transform.position.x)
+                {
+                    base.transform.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
+                }
+                else if (base.transform.position.x < Player.transform.position.x)
+                {
+                    base.transform.transform.Translate(new Vector3(-Speed * Time.deltaTime, 0, 0));
                 }
             }
-            //Moving
-            if (base.transform.position.x > Player.transform.position.x)
+            //Attack_Duration
+            if (Cur_state == State.Attack_I)
             {
-                base.transform.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
+                Change_state_enable = false;
+                //PreAttack_I
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.20f * (float)(100f / 60f))
+                {
+                    Cur_Attack_State = Attack_State.Pre_Attack;
+                }
+                //Attack_I
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.20f * (float)(100f / 60f)
+                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.36f * (float)(100f / 60f))
+                {
+                    Cur_Attack_State = Attack_State.Attacking;
+                }
+                //PostAttack_I
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.36f * (float)(100f / 60f)
+                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.58f * (float)(100f / 60f))
+                {
+                    Cur_Attack_State = Attack_State.Post_Attack;
+                }
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+                {
+                    Change_state_enable = true;
+                }
             }
-            else if (base.transform.position.x < Player.transform.position.x)
+            if (Cur_state != State.Attack_I)
             {
-                base.transform.transform.Translate(new Vector3(-Speed * Time.deltaTime, 0, 0));
+                Cur_Attack_State = Attack_State.None;
             }
-        }        
-        //Attack_Duration
-        if (Cur_state == State.Attack_I)
-        {
-            Change_state_enable = false;
-            //PreAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.20f * (float)(100f / 60f))
+            //Block_Duration
+            if (Cur_state == State.Block)
             {
-                Cur_Attack_State = Attack_State.Pre_Attack;
+                Debug.Log("Block");
+                Change_state_enable = false;
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+                {
+                    Change_state_enable = true;
+                    Debug.Log("Return");
+                }
             }
-            //Attack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.20f * (float)(100f / 60f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.36f * (float)(100f / 60f))
+            if (Cur_state == State.Flinch)
             {
-                Cur_Attack_State = Attack_State.Attacking;
-            }
-            //PostAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.36f * (float)(100f / 60f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.58f * (float)(100f / 60f))
-            {
-                Cur_Attack_State = Attack_State.Post_Attack;
-            }
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
-            {
-                Change_state_enable = true;
-            }
-        }
-        if(Cur_state != State.Attack_I) 
-        {
-            Cur_Attack_State = Attack_State.None;
-        }
-        //Block_Duration
-        if(Cur_state == State.Block) 
-        {
-            Debug.Log("Block");
-            Change_state_enable = false;            
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
-            {
-                Change_state_enable = true;
-                Debug.Log("Return");
-            }
-        }
-        if(Cur_state == State.Flinch) 
-        {
-            Debug.Log("Flinch");
-            Change_state_enable = false;
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
-            {
-                Change_state_enable = true;
-                Debug.Log("Return");
+                Debug.Log("Flinch");
+                Change_state_enable = false;
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+                {
+                    Change_state_enable = true;
+                    Debug.Log("Return");
+                }
             }
         }
         Cooldown_Event();
@@ -352,8 +359,11 @@ public abstract class Enemy : Character
     private float[] DistanceMove = new float[3];
     private void RoleManagement() 
     {
-        RoleOnfight();
-        RoleAroundfight();
+        if (Cur_state != State.Dead)
+        {
+            RoleOnfight();
+            RoleAroundfight();
+        }
     }
     private void RoleOnfight() 
     {
@@ -479,7 +489,7 @@ public abstract class Enemy : Character
         //DistanceMoveBack CheckwithEnemy
         DistanceMove[0] = (float)(UnityEngine.Random.Range(100, 260)/100f);
         //DistanceMoveForward CheckwithEnemy
-        DistanceMove[1] = (float)(UnityEngine.Random.Range(300, 440)/100f);
+        DistanceMove[1] = DistanceMove[0] + 40;
         //DistanceMoveForward ChecwithPlayer
         DistanceMove[2] = (float)(UnityEngine.Random.Range(170, 450)/100f);
         }
