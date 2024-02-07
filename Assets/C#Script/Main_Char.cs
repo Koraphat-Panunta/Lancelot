@@ -26,7 +26,8 @@ public class Main_Char : Character
         Attack_II,
         Parry,
         Block,
-        Flinch
+        Flinch,
+        BlockReact,
     }
     public enum Char_Direction 
     {
@@ -45,7 +46,7 @@ public class Main_Char : Character
         Cur_state = Char_state.Idle;
         Cur_Direction = Char_Direction.Right;               
         Attack_Box = gameObject.GetComponentInChildren<BoxCollider>();   
-        Hitted_Box.transform.localPosition = new Vector3(-0.25f,-1,0);        
+        Hitted_Box.transform.localPosition = new Vector3(-0.25f,0,0);        
     }
 
     public void Update()
@@ -55,7 +56,7 @@ public class Main_Char : Character
         Animation_TimeLine = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         InputManager();
         Block_Cooldown();       
-        Update_animation();
+        Update_animation();        
     }
     public void FixedUpdate()
     {
@@ -63,8 +64,7 @@ public class Main_Char : Character
         Update_Pos();
     }
     private void Update_animation()
-    {
-        
+    {        
         animator.Play(Cur_state.ToString());
     }
     
@@ -75,6 +75,15 @@ public class Main_Char : Character
         Attacking,
         Post_Attack,        
     }
+    public enum Defend_state 
+    {
+        None,
+        Pre_Defend,
+        Guard,
+        Blocking,
+        Parry,
+    }
+    public Defend_state Cur_Defend_State = Defend_state.None;
     public Attack_state Cur_Attack_State = Attack_state.None;
    
     private void Block_Cooldown() 
@@ -97,6 +106,7 @@ public class Main_Char : Character
             gameObject.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));                     
         }                       
     }
+    public float Block_timimg = 0f;
     private void Update_State_and_Dicrection()
     {
             
@@ -128,6 +138,10 @@ public class Main_Char : Character
                 Change_Behavior_enable = true;
             }
         }
+        else 
+        {
+            Cur_Attack_State = Attack_state.None;
+        }
         //Flinch
         if (Cur_state == Char_state.Flinch)
         {            
@@ -136,6 +150,46 @@ public class Main_Char : Character
             {
                 Change_Behavior_enable = true;
             }
+        }
+        //Defend_state
+        if(Cur_state == Char_state.Block) 
+        {
+            Block_timimg += Time.deltaTime;
+            if(Block_timimg < 0.5f) 
+            {
+                Cur_Defend_State = Defend_state.Pre_Defend;
+            }
+            else if(Block_timimg >= 0.5f ) 
+            {
+                Cur_Defend_State = Defend_state.Guard;
+            }
+        }
+        else if(Cur_state == Char_state.BlockReact) 
+        {
+            Block_timimg += Time.deltaTime;
+            Change_Behavior_enable = false;
+            Cur_Defend_State = Defend_state.Blocking;
+            if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length) 
+            {
+                Cur_state = Char_state.Block;
+                Change_Behavior_enable = true;
+            }
+        }
+        else if(Cur_state == Char_state.Parry) 
+        {
+            Block_timimg += Time.deltaTime;
+            Change_Behavior_enable = false;
+            Cur_Defend_State = Defend_state.Parry;
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+            {
+                Cur_state = Char_state.Block;
+                Change_Behavior_enable = true;
+            }
+        }
+        else 
+        {
+            Block_timimg = 0;
+            Cur_Defend_State = Defend_state.None;
         }
                    
         //Direction_Change
@@ -239,7 +293,21 @@ public class Main_Char : Character
         {
             if(Cur_Direction == Char_Direction.Right && Cur_state == Char_state.Block) 
             {
-                Push(200,enemy);
+                if(Cur_Defend_State == Defend_state.Pre_Defend) 
+                {
+                    Cur_state = Char_state.Parry;
+                    Change_Behavior_enable = false;
+                    Update_animation();
+                    Push(60, enemy);
+                }
+                if(Cur_Defend_State == Defend_state.Guard) 
+                {
+                    Cur_state = Char_state.BlockReact;
+                    Change_Behavior_enable = false;
+                    Update_animation();
+                    Push(150, enemy);
+                }
+                
             }
             else 
             {
@@ -253,7 +321,20 @@ public class Main_Char : Character
         {
             if (Cur_Direction == Char_Direction.Left && Cur_state == Char_state.Block)
             {
-                Push(200, enemy);
+                if (Cur_Defend_State == Defend_state.Pre_Defend)
+                {
+                    Cur_state = Char_state.Parry;
+                    Change_Behavior_enable = false;
+                    Update_animation();
+                    Push(60, enemy);
+                }
+                if (Cur_Defend_State == Defend_state.Guard)
+                {
+                    Cur_state = Char_state.BlockReact;
+                    Change_Behavior_enable = false;
+                    Update_animation();
+                    Push(150, enemy);
+                }
             }
             else
             {
