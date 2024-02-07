@@ -18,7 +18,11 @@ public class Main : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
+    {
+        
+    }
+    private void Update()
     {
         CombatSystem();
         CameraTransformation();

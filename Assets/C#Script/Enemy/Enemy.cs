@@ -97,7 +97,7 @@ public abstract class Enemy : Character
     }
     protected float Under_Pressure_Approuching = 60;
     protected float Over_Pressure_Reteating = 65;
-    protected float Under_ATK_Range_Reteating = 5.1f;
+    protected float Under_ATK_Range_Reteating = 12f;
     protected float Under_Pressure_ATK;
     
     protected void LookatPlayer()
@@ -137,7 +137,8 @@ public abstract class Enemy : Character
     }
     protected void Reteat()
     {
-        if (Dash_CoolingDown <= 0 && Cur_Role == Role.OnFight)
+        
+        if (Dash_CoolingDown <= 0 )
         {           
             Dash();
         }
@@ -154,6 +155,7 @@ public abstract class Enemy : Character
         {
             base.transform.transform.Translate(new Vector3(-Speed * Time.deltaTime, 0, 0));
         }
+        
     }
     protected void MoveBack() 
     {
@@ -178,6 +180,7 @@ public abstract class Enemy : Character
     protected void Attack()
     {
         Cur_state = State.Attack_I;
+        Animation_Update();
         float Attack_Cooldown_Duration = 1.8f;
         Attack_CoolingDown = Attack_Cooldown_Duration;
         float AttackPressure = 50;
@@ -373,20 +376,21 @@ public abstract class Enemy : Character
             if (Pressure < Under_Pressure_Approuching && Distance > ATK_Range && Change_state_enable == true)
             {
                 Move_to_player();
+            }           
+            //Reteat_Condition       
+            else if (Pressure > Over_Pressure_Reteating && Distance < Under_ATK_Range_Reteating && Change_state_enable == true)
+            {
+                Reteat();                
+            }            
+            //Attack_Condition
+            else if (Distance <= ATK_Range && Attack_CoolingDown <= 0 && Pressure < Under_Pressure_ATK && Change_state_enable == true)
+            {
+                Attack();
             }
             else if (Change_state_enable == true)
             {
                 Cur_state = State.Idle;
-            }
-            //Reteat_Condition       
-            if (Pressure > Over_Pressure_Reteating && Distance < Under_ATK_Range_Reteating && Change_state_enable == true)
-            {
-                Reteat();
-            }
-            //Attack_Condition
-            if (Distance <= ATK_Range && Attack_CoolingDown <= 0 && Pressure < Under_Pressure_ATK && Change_state_enable == true)
-            {
-                Attack();
+                Animation_Update();
             }
         }
     }
@@ -497,6 +501,12 @@ public abstract class Enemy : Character
     private void OnFightDismiss() 
     {
         Cur_Role = Role.AroundFight;
+    }
+
+    public void UpdateState(State state) 
+    {
+        Cur_state = state;
+        Animation_Update();
     }
 
 

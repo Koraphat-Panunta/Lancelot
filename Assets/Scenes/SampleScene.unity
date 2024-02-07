@@ -2964,11 +2964,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5630205986203177239, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}
       propertyPath: HP
-      value: 40
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5630205986203177239, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}
       propertyPath: Defend
-      value: 40
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5630205986203177239, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}
       propertyPath: Target
