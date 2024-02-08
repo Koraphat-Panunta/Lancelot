@@ -67,6 +67,11 @@ public class Main : MonoBehaviour
                 if (enemy.GetComponent<Enemy_Common>().Attack_Box.bounds.Intersects(Player.GetComponent<Main_Char>().Hitted_Box.bounds))
                 {
                     Player.GetComponent<Main_Char>().GotAttack(enemy);
+                    if(Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.Parry) 
+                    {
+                        enemy.GetComponent<Enemy_Common>().Cur_state = global::Enemy.State.Parried;                       
+                        enemy.GetComponent<Enemy_Common>().Animation_Update();
+                    }
                 }
             }
             if (enemy.GetComponent<Enemy_Common>().Cur_Attack_State != Enemy_Common.Attack_State.Attacking)

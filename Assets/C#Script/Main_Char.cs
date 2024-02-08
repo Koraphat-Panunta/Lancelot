@@ -155,11 +155,11 @@ public class Main_Char : Character
         if(Cur_state == Char_state.Block) 
         {
             Block_timimg += Time.deltaTime;
-            if(Block_timimg < 0.5f) 
+            if(Block_timimg < 0.25f) 
             {
                 Cur_Defend_State = Defend_state.Pre_Defend;
             }
-            else if(Block_timimg >= 0.5f ) 
+            else if(Block_timimg >= 0.25f ) 
             {
                 Cur_Defend_State = Defend_state.Guard;
             }
@@ -234,7 +234,7 @@ public class Main_Char : Character
         }
         //Input
         ////Bypass_State
-        if (Cur_Attack_State == Attack_state.Pre_Attack && Block_Enable == true)
+        if ((Cur_Attack_State == Attack_state.Pre_Attack|| Cur_Attack_State == Attack_state.Post_Attack) && Block_Enable == true)
         {
             if (Input.GetKey(KeyCode.Space))
             {

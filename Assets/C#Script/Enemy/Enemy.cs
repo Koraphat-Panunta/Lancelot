@@ -41,7 +41,8 @@ public abstract class Enemy : Character
         Idle,
         Block,
         Flinch,
-        Dead
+        Dead,
+        Parried
     }
     public enum Attack_State 
     {
@@ -189,7 +190,7 @@ public abstract class Enemy : Character
     protected void Cooldown_Event()
     {
         //Pressure_Cooldown
-        float Pressure_Regen_Speed = 19;
+        float Pressure_Regen_Speed = 25;
         if (Pressure > 0)
         {
             Pressure -= Pressure_Regen_Speed * Time.deltaTime;
@@ -285,23 +286,29 @@ public abstract class Enemy : Character
             }
             //Block_Duration
             if (Cur_state == State.Block)
-            {
-                Debug.Log("Block");
+            {              
                 Change_state_enable = false;
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {
-                    Change_state_enable = true;
-                    Debug.Log("Return");
+                    Change_state_enable = true;                   
                 }
             }
+            //Flinch
             if (Cur_state == State.Flinch)
             {
-                Debug.Log("Flinch");
+                
                 Change_state_enable = false;
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {
-                    Change_state_enable = true;
-                    Debug.Log("Return");
+                    Change_state_enable = true;                    
+                }
+            }
+            if(Cur_state == State.Parried) 
+            {
+                Change_state_enable = false;
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+                {
+                    Change_state_enable = true;                   
                 }
             }
         }
@@ -318,7 +325,7 @@ public abstract class Enemy : Character
             Speed = Run_Speed;
         }
     }
-    protected void Animation_Update()
+    public void Animation_Update()
     {
         animator.Play(Cur_state.ToString());
     }
@@ -326,7 +333,7 @@ public abstract class Enemy : Character
     
     public void Got_Attacked() 
     {
-        if (Defend > 0 && Cur_state != State.Attack_I) 
+        if (Defend > 0 && Cur_state != State.Attack_I && Cur_state != State.Parried) 
         {
             Cur_state = State.Block;            
             Debug.Log("EnemyBlock");
@@ -340,6 +347,10 @@ public abstract class Enemy : Character
         }
         else 
         {
+            if(Cur_state == State.Parried) 
+            {
+                Pressure += 50;
+            }
             Cur_state = State.Flinch;
             Animation_Update();
             HP -= Player.DMG;
@@ -502,7 +513,6 @@ public abstract class Enemy : Character
     {
         Cur_Role = Role.AroundFight;
     }
-
     public void UpdateState(State state) 
     {
         Cur_state = state;
