@@ -160,11 +160,11 @@ public class Main_Char : Character
         if(Cur_state == Char_state.Block) 
         {
             Block_timimg += Time.deltaTime;
-            if(Block_timimg < 0.25f) 
+            if(Block_timimg < 0.12f) 
             {
                 Cur_Defend_State = Defend_state.Pre_Defend;
             }
-            else if(Block_timimg >= 0.25f ) 
+            else if(Block_timimg >= 0.12f ) 
             {
                 Cur_Defend_State = Defend_state.Guard;
             }
@@ -242,19 +242,19 @@ public class Main_Char : Character
         }
         //Input
               
-        else if ((Input.GetKey(KeyCode.Space)||( virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)) && Change_Behavior_enable == true && Block_Enable == true)
+        if ((Input.GetKey(KeyCode.Space)||( virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)) && Change_Behavior_enable == true && Block_Enable == true)
         {
             Cur_state = Char_state.Block;
             Update_animation();
             Change_Behavior_enable = false;
         }
-        else if((Input.GetKey(KeyCode.D)||virsual_Input.button_Right_State == Virsual_input.Button_Right_State.Down) && Change_Behavior_enable == true )
+         if((Input.GetKey(KeyCode.D)||virsual_Input.button_Right_State == Virsual_input.Button_Right_State.Down) && Change_Behavior_enable == true )
         {
             Cur_state = Char_state.Run;
             Cur_Direction = Char_Direction.Right;
             Update_animation();
         }
-        else if ((Input.GetKey(KeyCode.A)||(virsual_Input.button_Left_State == Virsual_input.Button_Left_State.Down)) && Change_Behavior_enable == true )
+         if ((Input.GetKey(KeyCode.A)||(virsual_Input.button_Left_State == Virsual_input.Button_Left_State.Down)) && Change_Behavior_enable == true )
         {
             Cur_state = Char_state.Run;
             Cur_Direction = Char_Direction.Left;
@@ -262,7 +262,7 @@ public class Main_Char : Character
         }
            
         //Idle(NoInput)
-        else if (Change_Behavior_enable == true && Input.anyKey == false)
+         if (Change_Behavior_enable == true && Input.anyKey == false)
         {
             Cur_state = Char_state.Idle;
             Update_animation();

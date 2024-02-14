@@ -98,7 +98,7 @@ public abstract class Enemy : Character
     }
     protected float Under_Pressure_Approuching = 60;
     protected float Over_Pressure_Reteating = 65;
-    protected float Under_ATK_Range_Reteating = 12f;
+    protected float Under_ATK_Range_Reteating = 2f;
     protected float Under_Pressure_ATK;
     
     protected void LookatPlayer()
@@ -182,7 +182,7 @@ public abstract class Enemy : Character
     {
         Cur_state = State.Attack_I;
         Animation_Update();
-        float Attack_Cooldown_Duration = 1.8f;
+        float Attack_Cooldown_Duration = 1.3f;
         Attack_CoolingDown = Attack_Cooldown_Duration;
         float AttackPressure = 50;
         Pressure += AttackPressure;
@@ -231,6 +231,7 @@ public abstract class Enemy : Character
             //Dashing_Duration&Moving
             if (Cur_state == State.Dash)
             {
+                Animation_Update();
                 //Duration
                 float Dash_Duration = animator.GetCurrentAnimatorStateInfo(0).length;
                 Change_state_enable = false;
@@ -305,6 +306,7 @@ public abstract class Enemy : Character
             }
             if(Cur_state == State.Parried) 
             {
+                OnFightDismiss();
                 Change_state_enable = false;
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {
@@ -335,8 +337,7 @@ public abstract class Enemy : Character
     {
         if (Defend > 0 && Cur_state != State.Attack_I && Cur_state != State.Parried) 
         {
-            Cur_state = State.Block;            
-            Debug.Log("EnemyBlock");
+            Cur_state = State.Block;                        
             Animation_Update();
         }
         if(Cur_state == State.Block) 
@@ -350,6 +351,7 @@ public abstract class Enemy : Character
             if(Cur_state == State.Parried) 
             {
                 Pressure += 50;
+                OnFightDismiss();
             }
             Cur_state = State.Flinch;
             Animation_Update();
@@ -405,6 +407,8 @@ public abstract class Enemy : Character
             }
         }
     }
+    public enum front_of_enemy {Enemy,Player,None };
+    public front_of_enemy front_Of_Enemy;
     private void RoleAroundfight() 
     {
         //Role_Aroundfight //****
@@ -414,6 +418,18 @@ public abstract class Enemy : Character
             {
                 if (Physics.Raycast(new Vector3(transform.position.x - 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(-1, 0, 0), out RaycastHit HitLeft, 100, 3))
                 {
+                    if(HitLeft.rigidbody.tag == "Enemy") 
+                    {
+                        front_Of_Enemy = front_of_enemy.Enemy;
+                    }
+                    else if(HitLeft.rigidbody.tag == "Player") 
+                    {
+                        front_Of_Enemy = front_of_enemy.Player;
+                    }
+                    else 
+                    {
+                        front_Of_Enemy = front_of_enemy.None;
+                    }
                     RayDistance = HitLeft.distance;
                     //Raycast Enemy
                     if (HitLeft.distance < DistanceMove[0] && HitLeft.rigidbody.tag == "Enemy" && Change_state_enable == true)
@@ -455,6 +471,18 @@ public abstract class Enemy : Character
             {
                 if (Physics.Raycast(new Vector3(transform.position.x + 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(1, 0, 0), out RaycastHit HitRight, 100, 3))
                 {
+                    if (HitRight.rigidbody.tag == "Enemy")
+                    {
+                        front_Of_Enemy = front_of_enemy.Enemy;
+                    }
+                    else if (HitRight.rigidbody.tag == "Player")
+                    {
+                        front_Of_Enemy = front_of_enemy.Player;
+                    }
+                    else
+                    {
+                        front_Of_Enemy = front_of_enemy.None;
+                    }
                     //Raycast Enemy
                     if (HitRight.distance < DistanceMove[0] && HitRight.rigidbody.tag == "Enemy" && Change_state_enable == true)
                     {
@@ -499,11 +527,11 @@ public abstract class Enemy : Character
     {
         if(RandomCooldown <=0)
         {
-        RandomCooldown = 1.8f;       
+        RandomCooldown = 4f;       
         //DistanceMoveBack CheckwithEnemy
-        DistanceMove[0] = (float)(UnityEngine.Random.Range(100, 260)/100f);
+        DistanceMove[0] = (float)(UnityEngine.Random.Range(100, 460)/100f);
         //DistanceMoveForward CheckwithEnemy
-        DistanceMove[1] = DistanceMove[0] + 40;
+        DistanceMove[1] = DistanceMove[0] + 0.4f;
         //DistanceMoveForward ChecwithPlayer
         DistanceMove[2] = (float)(UnityEngine.Random.Range(170, 450)/100f);
         }
@@ -511,6 +539,7 @@ public abstract class Enemy : Character
     private void OnFightDismiss() 
     {
         Cur_Role = Role.AroundFight;
+        Debug.Log("Dismiss");
     }
     public void UpdateState(State state) 
     {

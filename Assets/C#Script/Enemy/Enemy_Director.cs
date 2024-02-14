@@ -18,6 +18,7 @@ public class Enemy_Director : MonoBehaviour
     }
     bool israndom = false;
     float randomCooldown  =0;
+    float Onfight_Count = 0;
     public void Update()
     {
         OnFight_num = 0;
@@ -60,15 +61,21 @@ public class Enemy_Director : MonoBehaviour
                 }
             }                        
         }
+       
         if(OnFight_num == 0) 
         {
-            foreach(GameObject Enemy in Enemy) 
+            Onfight_Count += Time.deltaTime;
+            if (Onfight_Count >= 1f)
             {
-                if(Enemy.GetComponent<Enemy_Common>().Distance <= Lowest_Distance_Enemy) 
+                Onfight_Count = 0;
+                foreach (GameObject Enemy in Enemy)
                 {
-                    Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.OnFight;
-                    OnFight_num += 1;
-                    break;
+                    if (Enemy.GetComponent<Enemy_Common>().front_Of_Enemy == global::Enemy.front_of_enemy.Player && Random.Range(1, 10) > 5)
+                    {
+                        Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.OnFight;
+                        OnFight_num += 1;
+                        break;
+                    }
                 }
             }
         }
@@ -101,6 +108,7 @@ public class Enemy_Director : MonoBehaviour
         Game_manager.RemoveEnemy(Enemy);
         
     }
+
 
 
 }
