@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -18,6 +19,7 @@ public class Main_Char : Character
     public float Animation_TimeLine;
     public float Animation_Length;
     public float DMG = 15;
+    [SerializeField] Virsual_input virsual_Input;
     public enum Char_state
     {
         Idle,        
@@ -46,7 +48,8 @@ public class Main_Char : Character
         Cur_state = Char_state.Idle;
         Cur_Direction = Char_Direction.Right;               
         Attack_Box = gameObject.GetComponentInChildren<BoxCollider>();   
-        Hitted_Box.transform.localPosition = new Vector3(-0.25f,0,0);        
+        Hitted_Box.transform.localPosition = new Vector3(0,0,0);        
+        Virsual_input virsual_Input = GetComponent<Virsual_input>();
     }
 
     public void Update()
@@ -149,6 +152,8 @@ public class Main_Char : Character
             if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > animator.GetCurrentAnimatorStateInfo(0).length)
             {
                 Change_Behavior_enable = true;
+                Cur_state = Char_state.Idle;
+                Update_animation();
             }
         }
         //Defend_state
@@ -229,66 +234,75 @@ public class Main_Char : Character
     private void InputManager() 
     {
         
-        if (Input.GetKeyDown(KeyCode.J) && Change_Behavior_enable == true)
+        if ((Input.GetKeyDown(KeyCode.J)||(virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down)) && Change_Behavior_enable == true)
         {
             Cur_state = Char_state.Attack_I;
+            Update_animation();
             Change_Behavior_enable = false;
         }
         //Input
-        ////Bypass_State
-        if ((Cur_Attack_State == Attack_state.Pre_Attack|| Cur_Attack_State == Attack_state.Post_Attack) && Block_Enable == true)
+              
+        else if ((Input.GetKey(KeyCode.Space)||( virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)) && Change_Behavior_enable == true && Block_Enable == true)
         {
-            if (Input.GetKey(KeyCode.Space))
+            Cur_state = Char_state.Block;
+            Update_animation();
+            Change_Behavior_enable = false;
+        }
+        else if((Input.GetKey(KeyCode.D)||virsual_Input.button_Right_State == Virsual_input.Button_Right_State.Down) && Change_Behavior_enable == true )
+        {
+            Cur_state = Char_state.Run;
+            Cur_Direction = Char_Direction.Right;
+            Update_animation();
+        }
+        else if ((Input.GetKey(KeyCode.A)||(virsual_Input.button_Left_State == Virsual_input.Button_Left_State.Down)) && Change_Behavior_enable == true )
+        {
+            Cur_state = Char_state.Run;
+            Cur_Direction = Char_Direction.Left;
+            Update_animation();
+        }
+           
+        //Idle(NoInput)
+        else if (Change_Behavior_enable == true && Input.anyKey == false)
+        {
+            Cur_state = Char_state.Idle;
+            Update_animation();
+        }
+        ////Bypass_State
+        if ((Cur_Attack_State == Attack_state.Pre_Attack || Cur_Attack_State == Attack_state.Post_Attack) && Block_Enable == true)
+        {
+            if (Input.GetKey(KeyCode.Space) || virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)
             {
                 Cur_Attack_State = Attack_state.None;
                 Cur_state = Char_state.Block;
+                Update_animation();
                 Change_Behavior_enable = true;
             }
         }
-        
-        if((Cur_Attack_State == Attack_state.Post_Attack|| Cur_Attack_State == Attack_state.Attacking)&&(Cur_state == Char_state.Attack_I)) 
+
+        if ((Cur_Attack_State == Attack_state.Post_Attack || Cur_Attack_State == Attack_state.Attacking) && (Cur_state == Char_state.Attack_I))
         {
-            if (Input.GetKeyDown(KeyCode.J)) 
+            if (Input.GetKeyDown(KeyCode.J) || virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down)
             {
                 Combo_Continue = true;
             }
         }
         if (Cur_Attack_State == Attack_state.Post_Attack && Cur_state == Char_state.Attack_I)
-        {            
+        {
             if (Combo_Continue == true)
             {
                 Cur_state = Char_state.Attack_II;
+                Update_animation();
                 Combo_Continue = false;
             }
         }
-        /////
-        if (Input.GetKey(KeyCode.Space) && Change_Behavior_enable == true && Block_Enable == true)
-        {
-            Cur_state = Char_state.Block;
-            Change_Behavior_enable = false;
-        }
-        if (Input.GetKey(KeyCode.D) && Change_Behavior_enable == true )
-        {
-            Cur_state = Char_state.Run;
-            Cur_Direction = Char_Direction.Right;
-        }
-        if (Input.GetKey(KeyCode.A) && Change_Behavior_enable == true )
-        {
-            Cur_state = Char_state.Run;
-            Cur_Direction = Char_Direction.Left;
-        }
-        if (Input.GetKey(KeyCode.Space)==false && Cur_state == Char_state.Block)
+        ////
+        if (Input.GetKey(KeyCode.Space) == false && Cur_state == Char_state.Block)
         {
             Change_Behavior_enable = true;
             Block_Enable = false;
-        }      
-        //Idle(NoInput)
-        if (Change_Behavior_enable == true && Input.anyKey == false)
-        {
-            Cur_state = Char_state.Idle;
         }
     }
-
+   
     public void GotAttack(GameObject enemy) 
     {
         if(enemy.transform.position.x > gameObject.transform.position.x) 

@@ -604,12 +604,20 @@ PrefabInstance:
     - {fileID: 6512510688612296998, guid: 0f9108bd9c1412744b6842e104135c9a, type: 3}
     - {fileID: -6577237425059042219, guid: 0f9108bd9c1412744b6842e104135c9a, type: 3}
     - {fileID: -5546747315237514756, guid: 0f9108bd9c1412744b6842e104135c9a, type: 3}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0f9108bd9c1412744b6842e104135c9a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1661847378}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: 0f9108bd9c1412744b6842e104135c9a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1230241113}
   m_SourcePrefab: {fileID: 100100000, guid: 0f9108bd9c1412744b6842e104135c9a, type: 3}
+--- !u!4 &108156887 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0f9108bd9c1412744b6842e104135c9a, type: 3}
+  m_PrefabInstance: {fileID: 108156886}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &115224294
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,7 +819,6 @@ GameObject:
   - component: {fileID: 207527027}
   - component: {fileID: 207527026}
   - component: {fileID: 207527029}
-  - component: {fileID: 207527030}
   m_Layer: 5
   m_Name: Button_Left
   m_TagString: Untagged
@@ -933,20 +940,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates: []
---- !u!114 &207527030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 207527024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 301326317f8f98e449d95aacc98921b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Cur_Button_state: 1
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1121886795}
+          m_TargetAssemblyTypeName: Virsual_input, Assembly-CSharp
+          m_MethodName: Set_Button_Left_Down
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1121886795}
+          m_TargetAssemblyTypeName: Virsual_input, Assembly-CSharp
+          m_MethodName: Set_Button_Left_Up
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &212327016
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,7 +986,6 @@ GameObject:
   - component: {fileID: 212327019}
   - component: {fileID: 212327018}
   - component: {fileID: 212327021}
-  - component: {fileID: 212327022}
   m_Layer: 5
   m_Name: Button_Right
   m_TagString: Untagged
@@ -1082,20 +1107,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates: []
---- !u!114 &212327022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 212327016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 301326317f8f98e449d95aacc98921b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Cur_Button_state: 1
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1121886795}
+          m_TargetAssemblyTypeName: Virsual_input, Assembly-CSharp
+          m_MethodName: Set_Button_Right_Down
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1121886795}
+          m_TargetAssemblyTypeName: Virsual_input, Assembly-CSharp
+          m_MethodName: Set_Button_Right_Up
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &303904944
 GameObject:
   m_ObjectHideFlags: 0
@@ -3065,7 +3109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5004446711892719187, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5064599262994633193, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
       propertyPath: m_Enabled
@@ -3091,6 +3135,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6847579572748821057, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
+      propertyPath: virsual_Input
+      value: 
+      objectReference: {fileID: 1121886795}
+    - target: {fileID: 7367296624029570654, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.54067
+      objectReference: {fileID: 0}
     - target: {fileID: 7367296624029570654, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3110,7 +3162,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 512690125368294036, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1121886795}
   m_SourcePrefab: {fileID: 100100000, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
 --- !u!1001 &1034142990
 PrefabInstance:
@@ -3525,6 +3580,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 512690125368294036, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
   m_PrefabInstance: {fileID: 1029145807}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1121886795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121886791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb13ab778cbca14981f88252f0fbb05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button_Left_State: 0
+  button_Right_State: 1
+  Cur_Button_Attack: 0
+  Cur_Button_Defend: 0
 --- !u!1001 &1121905977
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3609,6 +3680,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2065344683469992252, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856723347553403210, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5630205986203177239, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}
@@ -4142,8 +4217,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661847377}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.979053, y: 1.7909195, z: 44.957237}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 21.888927, y: 1.7909195, z: -4.261095}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4156,7 +4231,7 @@ Transform:
   - {fileID: 1647686466}
   - {fileID: 2070427714}
   - {fileID: 2044860267}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 108156887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1664083307
 PrefabInstance:
@@ -5961,7 +6036,6 @@ SceneRoots:
   - {fileID: 1892435976}
   - {fileID: 1786954112}
   - {fileID: 677074298}
-  - {fileID: 1661847378}
   - {fileID: 1329229625}
   - {fileID: 2128126255}
   - {fileID: 2732494732993530220}

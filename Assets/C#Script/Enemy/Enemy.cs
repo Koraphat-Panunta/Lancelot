@@ -356,7 +356,7 @@ public abstract class Enemy : Character
             HP -= Player.DMG;
             Pressure += 10;
             Push(100);
-            Debug.Log("EnemyHited");
+            
         }
     }
     public void Push(float force) 
@@ -499,8 +499,7 @@ public abstract class Enemy : Character
     {
         if(RandomCooldown <=0)
         {
-        RandomCooldown = 1.8f;
-        Debug.Log("DistanceRandom");
+        RandomCooldown = 1.8f;       
         //DistanceMoveBack CheckwithEnemy
         DistanceMove[0] = (float)(UnityEngine.Random.Range(100, 260)/100f);
         //DistanceMoveForward CheckwithEnemy
