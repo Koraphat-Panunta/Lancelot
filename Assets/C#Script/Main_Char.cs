@@ -224,6 +224,8 @@ public class Main_Char : Character
         }               
     }
     private bool Combo_Continue = false;
+
+    
     private void InputManager() 
     {
         
@@ -265,12 +267,12 @@ public class Main_Char : Character
             Cur_state = Char_state.Block;
             Change_Behavior_enable = false;
         }
-        if (Input.GetKey(KeyCode.D) && Change_Behavior_enable == true)
+        if (Input.GetKey(KeyCode.D) && Change_Behavior_enable == true )
         {
             Cur_state = Char_state.Run;
             Cur_Direction = Char_Direction.Right;
         }
-        if (Input.GetKey(KeyCode.A) && Change_Behavior_enable == true)
+        if (Input.GetKey(KeyCode.A) && Change_Behavior_enable == true )
         {
             Cur_state = Char_state.Run;
             Cur_Direction = Char_Direction.Left;
@@ -279,14 +281,14 @@ public class Main_Char : Character
         {
             Change_Behavior_enable = true;
             Block_Enable = false;
-        }
-       
+        }      
         //Idle(NoInput)
         if (Change_Behavior_enable == true && Input.anyKey == false)
         {
             Cur_state = Char_state.Idle;
         }
     }
+
     public void GotAttack(GameObject enemy) 
     {
         if(enemy.transform.position.x > gameObject.transform.position.x) 
@@ -358,6 +360,7 @@ public class Main_Char : Character
             gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-force, 0, 0));
         }
     }
+    
     
    
     
