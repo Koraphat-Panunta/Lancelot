@@ -65,7 +65,7 @@ public class Enemy_Director : MonoBehaviour
         if(OnFight_num == 0) 
         {
             Onfight_Count += Time.deltaTime;
-            if (Onfight_Count >= 1f)
+            if (Onfight_Count >= 0.25f)
             {
                 Onfight_Count = 0;
                 foreach (GameObject Enemy in Enemy)

@@ -12,7 +12,7 @@ public class Enemy_Common : Enemy
         Over_Pressure_Reteating = 70;
         Under_Pressure_ATK = 70f;
     }
-    public override void Update()
+    protected override void Update()
     {
         base.Update();
     }

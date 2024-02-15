@@ -13,7 +13,7 @@ public class Main_Char : Character
     private float Block_CoolDown = 0.45f;
     bool Block_Enable = true; 
     public string Char_CurState;
-    [SerializeField] private float Speed = 2f;
+    [SerializeField] private float Speed = 2;
     [SerializeField] public BoxCollider Attack_Box;
     [SerializeField] public CapsuleCollider Hitted_Box;
     public float Animation_TimeLine;
@@ -43,6 +43,7 @@ public class Main_Char : Character
     
     public void Start()
     {
+        rb = gameObject.GetComponent<Rigidbody>();
         base.animator = gameObject.GetComponent<Animator>();
         base.CharRenderer = gameObject.GetComponent<SpriteRenderer>();
         Cur_state = Char_state.Idle;
@@ -52,19 +53,21 @@ public class Main_Char : Character
         Virsual_input virsual_Input = GetComponent<Virsual_input>();
     }
 
-    public void Update()
+    protected override void Update()
     {                       
         Char_CurState = Cur_state.ToString();
         Animation_Length = animator.GetCurrentAnimatorStateInfo(0).length;
         Animation_TimeLine = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         InputManager();
         Block_Cooldown();       
-        Update_animation();        
+        Update_animation();       
+        
     }
-    public void FixedUpdate()
+    protected override void FixedUpdate()
     {
         Update_State_and_Dicrection();
-        Update_Pos();
+        Update_Pos();        
+        base.FixedUpdate();
     }
     private void Update_animation()
     {        
@@ -106,14 +109,17 @@ public class Main_Char : Character
     {
         if (Cur_state == Char_state.Run)
         {
-            gameObject.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));                     
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Speed, 0, 0);
+            //gameObject.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
         }                       
     }
     public float Block_timimg = 0f;
+    bool Attack_step_Enable = true; 
     private void Update_State_and_Dicrection()
     {
             
         //Attack_state
+        
         if (Cur_state == Char_state.Attack_I || Cur_state == Char_state.Attack_II)
         {
             //PreAttack_I
@@ -126,7 +132,11 @@ public class Main_Char : Character
                 && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.36f * (float)(100f / 60f))
             {
                 Cur_Attack_State = Attack_state.Attacking;
-
+                if (Attack_step_Enable == true)
+                {
+                    Attack_step_Enable = false;
+                    Push(2.5f);
+                }
             }
             //PostAttack_I
             if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.36f * (float)(100f / 60f)
@@ -139,11 +149,16 @@ public class Main_Char : Character
             {
                 Cur_Attack_State = Attack_state.None;
                 Change_Behavior_enable = true;
+                
             }
         }
         else 
         {
             Cur_Attack_State = Attack_state.None;
+        }
+        if(Cur_Attack_State != Attack_state.Attacking) 
+        {
+            Attack_step_Enable = true;
         }
         //Flinch
         if (Cur_state == Char_state.Flinch)
@@ -374,9 +389,20 @@ public class Main_Char : Character
             gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-force, 0, 0));
         }
     }
-    
-    
-   
-    
+    private void Push(float force)
+    {
+        if (Cur_Direction == Char_Direction.Left)
+        {
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-force, 0, 0);
+        }
+        if (Cur_Direction == Char_Direction.Right)
+        {
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(force, 0, 0);
+        }
+    }
+
+
+
+
 
 }

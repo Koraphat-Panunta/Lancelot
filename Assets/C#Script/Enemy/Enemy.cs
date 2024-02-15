@@ -78,11 +78,11 @@ public abstract class Enemy : Character
 
     }
     //Update
-    public virtual void Update()
+    protected override void Update()
     {
-        
-    }  
-    public void FixedUpdate()
+        base.Update();
+    }
+    protected override void FixedUpdate()
     {
         
         Distance = Math.Abs(base.transform.position.x - Player.transform.position.x);
@@ -355,7 +355,17 @@ public abstract class Enemy : Character
             }
             Cur_state = State.Flinch;
             Animation_Update();
-            HP -= Player.DMG;
+            if (UnityEngine.Random.Range(1, 10) <= 2) 
+            {
+                //Critical
+                HP -= Player.DMG*1.5f;
+                Debug.Log("Critical_Hit:" + Player.DMG * 1.5f);
+            }
+            else 
+            {
+                HP -= Player.DMG;
+                Debug.Log("Hit:" + Player.DMG );
+            }            
             Pressure += 10;
             Push(100);
             
@@ -416,7 +426,7 @@ public abstract class Enemy : Character
         {
             if (Cur_Direction == Direction.Left)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x - 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(-1, 0, 0), out RaycastHit HitLeft, 100, 3))
+                if (Physics.Raycast(new Vector3(transform.position.x - 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(-20, 0, 0), out RaycastHit HitLeft, 100, 3))
                 {
                     if(HitLeft.rigidbody.tag == "Enemy") 
                     {
@@ -469,7 +479,7 @@ public abstract class Enemy : Character
             }
             if (Cur_Direction == Direction.Right)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x + 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(1, 0, 0), out RaycastHit HitRight, 100, 3))
+                if (Physics.Raycast(new Vector3(transform.position.x + 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(20, 0, 0), out RaycastHit HitRight, 100, 3))
                 {
                     if (HitRight.rigidbody.tag == "Enemy")
                     {
