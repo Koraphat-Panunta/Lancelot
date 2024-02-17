@@ -27,6 +27,7 @@ public abstract class Enemy : Character
     public string Cur_Attackstate_string;    
     public bool GetHitted_able;
     [SerializeField] private Enemy_Director Director;
+    public float DMG = 8;
 
     public enum Direction
     {
@@ -221,6 +222,11 @@ public abstract class Enemy : Character
     {
         if (HP <= 0||Cur_state == State.Dead)
         {
+            Player.HP += 15;
+            if (Player.HP > 100) 
+            {
+                Player.HP = 100;
+            }
             Cur_state = State.Dead;
             Director.RemoveGameObg(gameObject);        
             Destroy(gameObject);
@@ -240,10 +246,7 @@ public abstract class Enemy : Character
                 {
                     Change_state_enable = true;
                     Dashing = 0;
-                    if (UnityEngine.Random.Range(1, 100) > 50)
-                    {
-                        OnFightDismiss();
-                    }
+                    OnFightDismiss();
                 }
                 //Moving
                 if (base.transform.position.x > Player.transform.position.x)
@@ -305,8 +308,7 @@ public abstract class Enemy : Character
                 }
             }
             if(Cur_state == State.Parried) 
-            {
-                OnFightDismiss();
+            {               
                 Change_state_enable = false;
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {

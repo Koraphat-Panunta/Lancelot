@@ -8,7 +8,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class Main_Char : Character
 {
-           
+    public float HP = 100f;      
     [SerializeField] private bool Change_Behavior_enable = true;    
     private float Block_CoolDown = 0.45f;
     bool Block_Enable = true; 
@@ -117,9 +117,11 @@ public class Main_Char : Character
     bool Attack_step_Enable = true; 
     private void Update_State_and_Dicrection()
     {
-            
-        //Attack_state
-        
+        if (HP <= 0) 
+        {
+            //Death 
+        }
+        //Attack_state       
         if (Cur_state == Char_state.Attack_I || Cur_state == Char_state.Attack_II)
         {
             //PreAttack_I
@@ -342,6 +344,7 @@ public class Main_Char : Character
             }
             else 
             {
+                this.HP -= enemy.GetComponent<Enemy_Common>().DMG;
                 Cur_state = Char_state.Flinch;  
                 Change_Behavior_enable = false;
                 Push(150, enemy);
@@ -369,6 +372,7 @@ public class Main_Char : Character
             }
             else
             {
+                this.HP -= enemy.GetComponent<Enemy_Common>().DMG;
                 Cur_state = Char_state.Flinch;
                 Change_Behavior_enable = false;
                 Push(150, enemy);

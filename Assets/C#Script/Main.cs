@@ -1,22 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
+
 using UnityEngine.SceneManagement;
+using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.Rendering.Universal;
 
 public class Main : MonoBehaviour
 {
+    
     public GameObject Player;
     public List<GameObject> Enemy;
     [SerializeField] private Enemy_Director Director;
     public Camera Camera;
     private Vector3 StartPos;
+    public GameObject Volume;
+    public VolumeProfile VolumeProfile;
+    public Vignette vignette;
+
     void Start()
     {
+        Vignette Vg;
         Setup_Camera();
-        Enemy = Director.Enemy;       
+        Enemy = Director.Enemy;
         //EnemySpawner        
+        if(Volume.GetComponent<Volume>().profile.TryGet<Vignette>(out Vg)) 
+        {
+            vignette = Vg;
+        }
+        
 
+        
     }
 
     // Update is called once per frame
@@ -34,7 +49,7 @@ public class Main : MonoBehaviour
             if (Slow_Duration <= 0) 
             {
                 Time.timeScale = 1f;
-                
+                vignette.intensity.value = 0;
                 Time.fixedDeltaTime = (float)(1f / 60f)*Time.timeScale;
                 //Camera.GetComponent<DepthOfField>().focusDistance.Override(Orginal_FocusDistance);
                 //Camera.GetComponent<DepthOfField>().aperture.Override(Orginal_aperture);
@@ -117,9 +132,11 @@ public class Main : MonoBehaviour
         this.Camera.focalLength = 182f;
         this.Camera.aperture = 15f;
 
-        Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().focusDistance.value = 10f;
-        Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().aperture.value = 15f;
-        Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().focalLength.value = 182f;
+        vignette.intensity.value = 0.4f;
+
+        //Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().focusDistance.value = 10f;
+        //Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().aperture.value = 15f;
+        //Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().focalLength.value = 182f;
     }
     
 }
