@@ -9,8 +9,8 @@ public class Enemy_Director : MonoBehaviour
     public Main Game_manager;
     public int OnFight_num = 0;
     public int AroundFight_num = 0;
-    public int Enemy_ID_Onfight;
     public float Lowest_Distance_Enemy = 1000;
+    public int Enemy_front;
     
     public void AddEnemy(GameObject gameObject) 
     {
@@ -19,10 +19,12 @@ public class Enemy_Director : MonoBehaviour
     bool israndom = false;
     float randomCooldown  =0;
     float Onfight_Count = 0;
+    [SerializeField] int GameOBG_ID_Last_Onfight = 0;
     public void Update()
     {
         OnFight_num = 0;
         AroundFight_num = 0;
+        Enemy_front = 0;
         Lowest_Distance_Enemy = 1000;
         foreach (GameObject Enemy in Enemy) 
         {           
@@ -43,6 +45,10 @@ public class Enemy_Director : MonoBehaviour
                 if (Enemy.GetComponent<Enemy_Common>().Cur_Role == global::Enemy.Role.AroundFight)
                 {
                     AroundFight_num += 1;
+                }
+                if(Enemy.GetComponent<Enemy_Common>().front_Of_Enemy == global::Enemy.front_of_enemy.Player) 
+                {
+                    Enemy_front += 1;
                 }
                 if((Enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Flinch
                     || Enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Block)
@@ -70,12 +76,15 @@ public class Enemy_Director : MonoBehaviour
                 Onfight_Count = 0;
                 foreach (GameObject Enemy in Enemy)
                 {
-                    if (Enemy.GetComponent<Enemy_Common>().front_Of_Enemy == global::Enemy.front_of_enemy.Player && Random.Range(1, 10) > 5)
-                    {
-                        Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.OnFight;
-                        OnFight_num += 1;
-                        break;
-                    }
+                   
+                        if (Enemy.GetComponent<Enemy_Common>().front_Of_Enemy == global::Enemy.front_of_enemy.Player && UnityEngine.Random.Range(1,10)>5)
+                        {
+                            Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.OnFight;
+                            OnFight_num += 1;                           
+                            GameOBG_ID_Last_Onfight = Enemy.GetInstanceID();
+                            break;
+                        }
+                 
                 }
             }
         }

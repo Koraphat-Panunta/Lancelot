@@ -24,7 +24,7 @@ MonoBehaviour:
     m_Value: 0
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.373
+    m_Value: 0.687
   rounded:
     m_OverrideState: 1
     m_Value: 0
@@ -46,19 +46,19 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 0.9
+    m_Value: 0.82
   intensity:
     m_OverrideState: 1
-    m_Value: 1.65
+    m_Value: 0.58
   scatter:
     m_OverrideState: 1
-    m_Value: 0.52
+    m_Value: 0.628
   clamp:
     m_OverrideState: 0
     m_Value: 65472
   tint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 1, g: 0.83285236, b: 0.6396227, a: 1}
   highQualityFiltering:
     m_OverrideState: 0
     m_Value: 0
@@ -75,34 +75,6 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &-1018767297223826003
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5e1dc532bcb41949b58bc4f2abfbb7e, type: 3}
-  m_Name: LensDistortion
-  m_EditorClassIdentifier: 
-  active: 0
-  intensity:
-    m_OverrideState: 0
-    m_Value: 0
-  xMultiplier:
-    m_OverrideState: 0
-    m_Value: 1
-  yMultiplier:
-    m_OverrideState: 0
-    m_Value: 1
-  center:
-    m_OverrideState: 0
-    m_Value: {x: 0.5, y: 0.5}
-  scale:
-    m_OverrideState: 0
-    m_Value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +91,6 @@ MonoBehaviour:
   - {fileID: -4885494151574435641}
   - {fileID: -4047696165083212505}
   - {fileID: 5287672274856878158}
-  - {fileID: -1018767297223826003}
   - {fileID: 4023010631862142790}
 --- !u!114 &4023010631862142790
 MonoBehaviour:
@@ -138,14 +109,14 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   gaussianStart:
-    m_OverrideState: 0
-    m_Value: 10
+    m_OverrideState: 1
+    m_Value: 22.5
   gaussianEnd:
-    m_OverrideState: 0
-    m_Value: 30
+    m_OverrideState: 1
+    m_Value: 42.7
   gaussianMaxRadius:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0.5
   highQualitySampling:
     m_OverrideState: 0
     m_Value: 0

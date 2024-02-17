@@ -13,7 +13,7 @@ public class Main_Char : Character
     private float Block_CoolDown = 0.45f;
     bool Block_Enable = true; 
     public string Char_CurState;
-    [SerializeField] private float Speed = 2;
+    [SerializeField] private float Speed = 120;
     [SerializeField] public BoxCollider Attack_Box;
     [SerializeField] public CapsuleCollider Hitted_Box;
     public float Animation_TimeLine;
@@ -60,7 +60,8 @@ public class Main_Char : Character
         Animation_TimeLine = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         InputManager();
         Block_Cooldown();       
-        Update_animation();       
+        Update_animation();     
+        
         
     }
     protected override void FixedUpdate()
@@ -68,6 +69,7 @@ public class Main_Char : Character
         Update_State_and_Dicrection();
         Update_Pos();        
         base.FixedUpdate();
+        
     }
     private void Update_animation()
     {        
@@ -109,9 +111,10 @@ public class Main_Char : Character
     {
         if (Cur_state == Char_state.Run)
         {
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Speed, 0, 0);
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Speed*Time.deltaTime, 0, 0);
             //gameObject.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
-        }                       
+        }   
+        
     }
     public float Block_timimg = 0f;
     bool Attack_step_Enable = true; 
@@ -131,7 +134,7 @@ public class Main_Char : Character
             }
             //Attack_I
             if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.20f * (float)(100f / 60f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.36f * (float)(100f / 60f))
+                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.30f * (float)(100f / 60f))
             {
                 Cur_Attack_State = Attack_state.Attacking;
                 if (Attack_step_Enable == true)
@@ -141,7 +144,7 @@ public class Main_Char : Character
                 }
             }
             //PostAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.36f * (float)(100f / 60f)
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.30f * (float)(100f / 60f)
                 && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.58f * (float)(100f / 60f))
             {
                 Cur_Attack_State = Attack_state.Post_Attack;
@@ -173,15 +176,16 @@ public class Main_Char : Character
                 Update_animation();
             }
         }
+        int parry_frame = 8;
         //Defend_state
         if(Cur_state == Char_state.Block) 
         {
             Block_timimg += Time.deltaTime;
-            if(Block_timimg < 0.12f) 
+            if(Block_timimg < parry_frame*Time.deltaTime) 
             {
                 Cur_Defend_State = Defend_state.Pre_Defend;
             }
-            else if(Block_timimg >= 0.12f ) 
+            else if(Block_timimg >= parry_frame * Time.deltaTime) 
             {
                 Cur_Defend_State = Defend_state.Guard;
             }
@@ -331,14 +335,14 @@ public class Main_Char : Character
                     Cur_state = Char_state.Parry;
                     Change_Behavior_enable = false;
                     Update_animation();
-                    Push(60, enemy);
+                    Push(0.2f, enemy);
                 }
                 if(Cur_Defend_State == Defend_state.Guard) 
                 {
                     Cur_state = Char_state.BlockReact;
                     Change_Behavior_enable = false;
                     Update_animation();
-                    Push(150, enemy);
+                    Push(2.5f, enemy);
                 }
                 
             }
@@ -347,7 +351,7 @@ public class Main_Char : Character
                 this.HP -= enemy.GetComponent<Enemy_Common>().DMG;
                 Cur_state = Char_state.Flinch;  
                 Change_Behavior_enable = false;
-                Push(150, enemy);
+                Push(2.5f, enemy);
                 Update_animation();
             }
         }
@@ -360,14 +364,14 @@ public class Main_Char : Character
                     Cur_state = Char_state.Parry;
                     Change_Behavior_enable = false;
                     Update_animation();
-                    Push(60, enemy);
+                    Push(0.2f, enemy);
                 }
                 if (Cur_Defend_State == Defend_state.Guard)
                 {
                     Cur_state = Char_state.BlockReact;
                     Change_Behavior_enable = false;
                     Update_animation();
-                    Push(150, enemy);
+                    Push(2.5f, enemy);
                 }
             }
             else
@@ -375,7 +379,7 @@ public class Main_Char : Character
                 this.HP -= enemy.GetComponent<Enemy_Common>().DMG;
                 Cur_state = Char_state.Flinch;
                 Change_Behavior_enable = false;
-                Push(150, enemy);
+                Push(2.5f, enemy);
                 Update_animation();
                 
             }
@@ -386,11 +390,11 @@ public class Main_Char : Character
     {
         if (enemy.transform.position.x < gameObject.transform.position.x)
         {
-            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(force, 0, 0));
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(force, 0, 0);
         }
         if (enemy.transform.position.x > gameObject.transform.position.x)
         {
-            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-force, 0, 0));
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-force, 0, 0);
         }
     }
     private void Push(float force)

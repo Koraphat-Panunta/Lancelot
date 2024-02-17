@@ -8,8 +8,8 @@ using UnityEngine.UIElements;
 public abstract class Enemy : Character
 {
     [SerializeField] protected float Run_Speed = 1.7f;
-    [SerializeField] protected float Dash_Speed = 7;
-    [SerializeField] protected float Speed;
+    protected float Run_Speed_Onfight;
+    protected float Run_Speed_Offfight;
     [SerializeField] protected float HP = 40;
     [SerializeField] protected float Defend;
     [SerializeField] protected float Pressure;
@@ -68,7 +68,7 @@ public abstract class Enemy : Character
         Cur_state = State.Idle;
         Time.fixedDeltaTime = 1 / 60f;
         base.LoadComponent();
-        Speed = Run_Speed;
+        
         ATK_Range = 2.1f;
         Change_state_enable = true;
         Player = Target.GetComponent<Main_Char>();       
@@ -76,6 +76,8 @@ public abstract class Enemy : Character
         Director.AddEnemy(gameObject);
         Cur_Role = Role.AroundFight;
         RandomDistance();
+        Run_Speed_Onfight = UnityEngine.Random.Range(99, 117);
+        Run_Speed_Offfight = UnityEngine.Random.Range(69, 96);
 
     }
     //Update
@@ -90,7 +92,7 @@ public abstract class Enemy : Character
         StateManagement();
         RoleManagement();      
         //Calculate_Distance                
-        MovementSpeedUpdate();
+        
         Animation_Update();
         Cur_state_string = Cur_state.ToString();
         Cur_Attackstate_string = Cur_Attack_State.ToString();
@@ -126,15 +128,15 @@ public abstract class Enemy : Character
     }
     protected void Move_to_player()
     {
-        Cur_state = State.Run;
-        Animation_Update();
+        Cur_state = State.Run;        
+        Animation_Update();        
         if (Cur_Direction == Direction.Left)
-        {
-            base.transform.Translate(new Vector3(-Speed * Time.deltaTime, 0, 0));
+        {           
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed*Time.deltaTime, 0, 0);
         }
         if (Cur_Direction == Direction.Right)
         {
-            base.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
         }
     }
     protected void Reteat()
@@ -151,11 +153,11 @@ public abstract class Enemy : Character
         }
         if (base.transform.position.x > Player.transform.position.x)
         {
-            base.transform.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
         }
         else if (base.transform.position.x < Player.transform.position.x)
         {
-            base.transform.transform.Translate(new Vector3(-Speed * Time.deltaTime, 0, 0));
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * Time.deltaTime, 0 , 0);
         }
         
     }
@@ -165,11 +167,11 @@ public abstract class Enemy : Character
         Animation_Update();
         if (base.transform.position.x > Player.transform.position.x)
         {
-            base.transform.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
         }
         else if (base.transform.position.x < Player.transform.position.x)
         {
-            base.transform.transform.Translate(new Vector3(-Speed * Time.deltaTime, 0, 0));
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * Time.deltaTime , 0, 0);
         }
     }
     protected void Dash()
@@ -194,7 +196,18 @@ public abstract class Enemy : Character
         float Pressure_Regen_Speed = 25;
         if (Pressure > 0)
         {
-            Pressure -= Pressure_Regen_Speed * Time.deltaTime;
+            if (Pressure < Under_Pressure_Approuching)
+            {
+                Pressure -= Pressure_Regen_Speed*1.5f * Time.deltaTime * Time.timeScale;
+            }
+            else if(Pressure >= Under_Pressure_Approuching && Pressure< Over_Pressure_Reteating)
+            {
+                Pressure -= Pressure_Regen_Speed*0.7f * Time.deltaTime * Time.timeScale;
+            }
+            else 
+            {
+                Pressure -= Pressure_Regen_Speed * Time.deltaTime * Time.timeScale;
+            }
             if (Pressure > 100)
             {
                 Pressure = 100;
@@ -244,6 +257,7 @@ public abstract class Enemy : Character
                 Dashing += Time.deltaTime;
                 if (Dashing >= Dash_Duration)
                 {
+                    Cur_state = State.Idle;
                     Change_state_enable = true;
                     Dashing = 0;
                     OnFightDismiss();
@@ -251,11 +265,11 @@ public abstract class Enemy : Character
                 //Moving
                 if (base.transform.position.x > Player.transform.position.x)
                 {
-                    base.transform.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed*3 * Time.deltaTime, 0, 0);
                 }
                 else if (base.transform.position.x < Player.transform.position.x)
                 {
-                    base.transform.transform.Translate(new Vector3(-Speed * Time.deltaTime, 0, 0));
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed*3 * Time.deltaTime, 0, 0);
                 }
             }
             //Attack_Duration
@@ -299,8 +313,7 @@ public abstract class Enemy : Character
             }
             //Flinch
             if (Cur_state == State.Flinch)
-            {
-                
+            {                
                 Change_state_enable = false;
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {
@@ -310,25 +323,17 @@ public abstract class Enemy : Character
             if(Cur_state == State.Parried) 
             {               
                 Change_state_enable = false;
+                OnFightDismiss_TriggerCall();
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {
-                    Change_state_enable = true;                   
+                    Change_state_enable = true;      
+                    Onfight_Dismiss_Enable_Call = true;
                 }
             }
         }
         Cooldown_Event();
     }
-    protected void MovementSpeedUpdate()
-    {
-        if (Cur_state == State.Dash)
-        {
-            Speed = Dash_Speed;
-        }
-        else
-        {
-            Speed = Run_Speed;
-        }
-    }
+   
     public void Animation_Update()
     {
         animator.Play(Cur_state.ToString());
@@ -345,18 +350,25 @@ public abstract class Enemy : Character
         if(Cur_state == State.Block) 
         {
             Defend -= Player.DMG * 0.7f;
-            Pressure += 5;           
-            Push(200);
+            Pressure += 15;           
+            Push(2.5f);
+            if (UnityEngine.Random.Range(1, 10) > 9) 
+            {
+                OnFightDismiss();
+            }
         }
         else 
         {
             if(Cur_state == State.Parried) 
             {
-                Pressure += 50;
-                OnFightDismiss();
+                Pressure += 50;                
             }
             Cur_state = State.Flinch;
             Animation_Update();
+            if (UnityEngine.Random.Range(1, 10) > 9)
+            {
+                OnFightDismiss();
+            }
             if (UnityEngine.Random.Range(1, 10) <= 2) 
             {
                 //Critical
@@ -369,7 +381,7 @@ public abstract class Enemy : Character
                 Debug.Log("Hit:" + Player.DMG );
             }            
             Pressure += 10;
-            Push(100);
+            Push(2.5f);
             
         }
     }
@@ -377,13 +389,14 @@ public abstract class Enemy : Character
     {
         if (Cur_Direction == Direction.Left)
         {
-            rb.GetComponent<Rigidbody>().AddForce(new Vector3(force, 0, 0));
+            rb.GetComponent<Rigidbody>().velocity = new Vector3(force, 0, 0);
         }
         if (Cur_Direction == Direction.Right)
         {
-            rb.GetComponent<Rigidbody>().AddForce(new Vector3(-force, 0, 0));
+            rb.GetComponent<Rigidbody>().velocity = new Vector3(-force, 0, 0);
         }
     }
+    
     private float[] DistanceMove = new float[3];
     private void RoleManagement() 
     {
@@ -398,6 +411,7 @@ public abstract class Enemy : Character
         //Role_Onfight //****
         if (Cur_Role == Role.OnFight)
         {
+            Run_Speed = Run_Speed_Onfight;
             if (Pressure < Under_Pressure_Approuching && Distance > ATK_Range && Change_state_enable == true)
             {
                 Move_to_player();
@@ -422,10 +436,11 @@ public abstract class Enemy : Character
     public enum front_of_enemy {Enemy,Player,None };
     public front_of_enemy front_Of_Enemy;
     private void RoleAroundfight() 
-    {
+    {      
         //Role_Aroundfight //****
         if (Cur_Role == Role.AroundFight)
         {
+            Run_Speed = Run_Speed_Offfight;
             if (Cur_Direction == Direction.Left)
             {
                 if (Physics.Raycast(new Vector3(transform.position.x - 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(-20, 0, 0), out RaycastHit HitLeft, 100, 3))
@@ -442,20 +457,21 @@ public abstract class Enemy : Character
                     {
                         front_Of_Enemy = front_of_enemy.None;
                     }
+                    
                     RayDistance = HitLeft.distance;
                     //Raycast Enemy
-                    if (HitLeft.distance < DistanceMove[0] && HitLeft.rigidbody.tag == "Enemy" && Change_state_enable == true)
-                    {
+                    if (RayDistance < DistanceMove[0] && HitLeft.rigidbody.tag == "Enemy" && Change_state_enable == true)
+                    {                       
                         RandomDistance();
                         MoveBack();                       
                     }
-                    else if (HitLeft.distance >= DistanceMove[1] && HitLeft.rigidbody.tag == "Enemy" && Change_state_enable == true)
+                    else if (RayDistance >= DistanceMove[1] && HitLeft.rigidbody.tag == "Enemy" && Change_state_enable == true)
                     {
                         RandomDistance();
                         Move_to_player();
                     }
                     //Raycast Player                    
-                    else if (HitLeft.distance >= DistanceMove[2] && HitLeft.rigidbody.tag == "Player" && Change_state_enable == true)
+                    else if (RayDistance >= DistanceMove[2] && HitLeft.rigidbody.tag == "Player" && Change_state_enable == true)
                     {
                         RandomDistance();
                         Move_to_player();
@@ -495,13 +511,16 @@ public abstract class Enemy : Character
                     {
                         front_Of_Enemy = front_of_enemy.None;
                     }
+                    //Get RayDistance
+                    
+                    RayDistance = HitRight.distance;
                     //Raycast Enemy
-                    if (HitRight.distance < DistanceMove[0] && HitRight.rigidbody.tag == "Enemy" && Change_state_enable == true)
+                    if (RayDistance < DistanceMove[0] && HitRight.rigidbody.tag == "Enemy" && Change_state_enable == true)
                     {
                         RandomDistance();
                         MoveBack();                        
                     }
-                    else if (HitRight.distance >= DistanceMove[1] && HitRight.rigidbody.tag == "Enemy" && Change_state_enable == true)
+                    else if (RayDistance >= DistanceMove[1] && HitRight.rigidbody.tag == "Enemy" && Change_state_enable == true)
                     {
                         RandomDistance();
                         Move_to_player();
@@ -513,7 +532,7 @@ public abstract class Enemy : Character
                     {
                         RandomDistance();
                     }
-                    else if (HitRight.distance >= DistanceMove[2] && HitRight.rigidbody.tag == "Player" && Change_state_enable == true)
+                    else if (RayDistance >= DistanceMove[2] && HitRight.rigidbody.tag == "Player" && Change_state_enable == true)
                     {
                         RandomDistance();
                         Move_to_player();
@@ -552,6 +571,19 @@ public abstract class Enemy : Character
     {
         Cur_Role = Role.AroundFight;
         Debug.Log("Dismiss");
+    }
+    bool Onfight_Dismiss_Enable_Call = true;
+    private void OnFightDismiss_TriggerCall() 
+    {
+        if(Onfight_Dismiss_Enable_Call == true) 
+        {
+            if (UnityEngine.Random.Range(1, 10) > 2)
+            {
+                Cur_Role = Role.AroundFight;
+                Debug.Log("Dismiss");
+                Onfight_Dismiss_Enable_Call = false;
+            }
+        }
     }
     public void UpdateState(State state) 
     {

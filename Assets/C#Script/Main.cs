@@ -18,6 +18,7 @@ public class Main : MonoBehaviour
     public GameObject Volume;
     public VolumeProfile VolumeProfile;
     public Vignette vignette;
+    private bool Effect_is_On = false;
 
     void Start()
     {
@@ -29,9 +30,8 @@ public class Main : MonoBehaviour
         {
             vignette = Vg;
         }
-        
+        Time.fixedDeltaTime = (float)(1f / 60f) * Time.timeScale;
 
-        
     }
 
     // Update is called once per frame
@@ -49,12 +49,23 @@ public class Main : MonoBehaviour
             if (Slow_Duration <= 0) 
             {
                 Time.timeScale = 1f;
-                vignette.intensity.value = 0;
-                Time.fixedDeltaTime = (float)(1f / 60f)*Time.timeScale;
-                //Camera.GetComponent<DepthOfField>().focusDistance.Override(Orginal_FocusDistance);
-                //Camera.GetComponent<DepthOfField>().aperture.Override(Orginal_aperture);
-                //Camera.GetComponent<DepthOfField>().focalLength.Override(Orginal_focalLength);
+                Effect_is_On = false;
+                Time.fixedDeltaTime = (float)(1f / 60f)*Time.timeScale;               
             }            
+        }
+        if(Effect_is_On == true) 
+        {
+            if (vignette.intensity.value < 0.5f) 
+            {
+                vignette.intensity.value += 5*Time.deltaTime;
+            }
+        }
+        else 
+        { 
+            if(vignette.intensity.value > 0) 
+            {
+                vignette.intensity.value -=  5*Time.deltaTime;
+            }
         }
     }
 
@@ -102,6 +113,7 @@ public class Main : MonoBehaviour
                     if(Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.Parry) 
                     {
                         enemy.GetComponent<Enemy_Common>().Cur_state = global::Enemy.State.Parried;
+                        
                         Parry_Effect(1);
                         enemy.GetComponent<Enemy_Common>().Animation_Update();
                     }
@@ -119,24 +131,17 @@ public class Main : MonoBehaviour
         this.Enemy.Remove(Enemy);
     }
     public float Slow_Duration = 0;
-    private float Orginal_FocusDistance;
-    private float Orginal_aperture;
-    private float Orginal_focalLength;
+   
     
     public void Parry_Effect(float Duration) 
     {
         Time.timeScale = 0.35f;
         Time.fixedDeltaTime = Time.timeScale*(float)(1f/60f);
         Slow_Duration = Duration;
-        this.Camera.focusDistance = 10f;
-        this.Camera.focalLength = 182f;
-        this.Camera.aperture = 15f;
-
-        vignette.intensity.value = 0.4f;
-
-        //Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().focusDistance.value = 10f;
-        //Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().aperture.value = 15f;
-        //Camera.GetComponent<PostProcessVolume>().GetComponent<DepthOfField>().focalLength.value = 182f;
+        
+        Effect_is_On = true;
+        
+       
     }
     
 }
