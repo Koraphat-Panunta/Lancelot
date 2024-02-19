@@ -193,16 +193,16 @@ public abstract class Enemy : Character
     protected void Cooldown_Event()
     {
         //Pressure_Cooldown
-        float Pressure_Regen_Speed = 25;
+        float Pressure_Regen_Speed = 32;
         if (Pressure > 0)
         {
             if (Pressure < Under_Pressure_Approuching)
             {
-                Pressure -= Pressure_Regen_Speed*1.5f * Time.deltaTime * Time.timeScale;
+                Pressure -= Pressure_Regen_Speed*1f * Time.deltaTime * Time.timeScale;
             }
             else if(Pressure >= Under_Pressure_Approuching && Pressure< Over_Pressure_Reteating)
             {
-                Pressure -= Pressure_Regen_Speed*0.7f * Time.deltaTime * Time.timeScale;
+                Pressure -= Pressure_Regen_Speed*1f * Time.deltaTime * Time.timeScale;
             }
             else 
             {
@@ -241,8 +241,8 @@ public abstract class Enemy : Character
                 Player.HP = 100;
             }
             Cur_state = State.Dead;
-            Director.RemoveGameObg(gameObject);        
-            Destroy(gameObject);
+            Animation_Update();                                   
+            //Destroy(gameObject);
         }
         else
         {
@@ -322,12 +322,10 @@ public abstract class Enemy : Character
             }
             if(Cur_state == State.Parried) 
             {               
-                Change_state_enable = false;
-                OnFightDismiss_TriggerCall();
+                Change_state_enable = false;                                
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {
-                    Change_state_enable = true;      
-                    Onfight_Dismiss_Enable_Call = true;
+                    Change_state_enable = true;                          
                 }
             }
         }
@@ -351,24 +349,19 @@ public abstract class Enemy : Character
         {
             Defend -= Player.DMG * 0.7f;
             Pressure += 15;           
-            Push(2.5f);
-            if (UnityEngine.Random.Range(1, 10) > 9) 
-            {
-                OnFightDismiss();
-            }
+            Push(2.5f);           
+                      
         }
         else 
         {
             if(Cur_state == State.Parried) 
             {
-                Pressure += 50;                
+                Pressure += 40;               
+                Debug.Log(" Parried");
             }
             Cur_state = State.Flinch;
-            Animation_Update();
-            if (UnityEngine.Random.Range(1, 10) > 9)
-            {
-                OnFightDismiss();
-            }
+            Animation_Update();           
+                            
             if (UnityEngine.Random.Range(1, 10) <= 2) 
             {
                 //Critical
@@ -385,6 +378,12 @@ public abstract class Enemy : Character
             
         }
     }
+    public void Got_Parried() 
+    {
+        Cur_state = State.Parried;
+        Animation_Update();
+        OnFightDismiss();
+    }
     public void Push(float force) 
     {
         if (Cur_Direction == Direction.Left)
@@ -398,12 +397,26 @@ public abstract class Enemy : Character
     }
     
     private float[] DistanceMove = new float[3];
+    private float Timing_Set_Active = 2;
     private void RoleManagement() 
     {
         if (Cur_state != State.Dead)
         {
             RoleOnfight();
             RoleAroundfight();
+        }
+        else //Mean Cur_state == Dead
+        {
+            Cur_Role = Role.OffFight;            
+            gameObject.GetComponent<CapsuleCollider>().enabled = false;
+            Hitted_Box.gameObject.SetActive(false);
+            gameObject.GetComponent<Rigidbody>().detectCollisions = false;
+            Timing_Set_Active -= Time.deltaTime;
+            if(Timing_Set_Active <= 0) 
+            {
+                gameObject.SetActive(false);
+                
+            }
         }
     }
     private void RoleOnfight() 
@@ -443,21 +456,24 @@ public abstract class Enemy : Character
             Run_Speed = Run_Speed_Offfight;
             if (Cur_Direction == Direction.Left)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x - 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(-20, 0, 0), out RaycastHit HitLeft, 100, 3))
+                if (Physics.Raycast(new Vector3(transform.position.x - (gameObject.GetComponent<CapsuleCollider>().radius/2f), transform.position.y - 0.5f, transform.position.z), new Vector3(-1,0, 0), out RaycastHit HitLeft, 600, 3))
                 {
                     if(HitLeft.rigidbody.tag == "Enemy") 
                     {
                         front_Of_Enemy = front_of_enemy.Enemy;
                     }
-                    else if(HitLeft.rigidbody.tag == "Player") 
+                    if(HitLeft.rigidbody.tag == "Player") 
                     {
                         front_Of_Enemy = front_of_enemy.Player;
                     }
-                    else 
+                    if (math.abs(HitLeft.rigidbody.velocity.x) > 1.5f)
                     {
-                        front_Of_Enemy = front_of_enemy.None;
+                        RayDistance = HitLeft.distance;
                     }
-                    
+                    else if (HitLeft.distance > 3)
+                    {
+                        RayDistance = HitLeft.distance;
+                    }
                     RayDistance = HitLeft.distance;
                     //Raycast Enemy
                     if (RayDistance < DistanceMove[0] && HitLeft.rigidbody.tag == "Enemy" && Change_state_enable == true)
@@ -497,22 +513,27 @@ public abstract class Enemy : Character
             }
             if (Cur_Direction == Direction.Right)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x + 0.25f, transform.position.y - 0.5f, transform.position.z), new Vector3(20, 0, 0), out RaycastHit HitRight, 100, 3))
+                if (Physics.Raycast(new Vector3(transform.position.x + (gameObject.GetComponent<CapsuleCollider>().radius / 2f), transform.position.y - 0.5f, transform.position.z), new Vector3(1, 0, 0), out RaycastHit HitRight, 600, 3))
                 {
                     if (HitRight.rigidbody.tag == "Enemy")
                     {
                         front_Of_Enemy = front_of_enemy.Enemy;
                     }
-                    else if (HitRight.rigidbody.tag == "Player")
+                    if (HitRight.rigidbody.tag == "Player")
                     {
                         front_Of_Enemy = front_of_enemy.Player;
                     }
-                    else
-                    {
-                        front_Of_Enemy = front_of_enemy.None;
-                    }
+
+                  
                     //Get RayDistance
-                    
+                    if (math.abs(HitRight.rigidbody.velocity.x) > 1.5f) 
+                    {
+                        RayDistance = HitRight.distance;
+                    }
+                    else if(HitRight.distance > 3) 
+                    {
+                        RayDistance = HitRight.distance;
+                    }
                     RayDistance = HitRight.distance;
                     //Raycast Enemy
                     if (RayDistance < DistanceMove[0] && HitRight.rigidbody.tag == "Enemy" && Change_state_enable == true)
@@ -560,31 +581,20 @@ public abstract class Enemy : Character
         {
         RandomCooldown = 4f;       
         //DistanceMoveBack CheckwithEnemy
-        DistanceMove[0] = (float)(UnityEngine.Random.Range(100, 460)/100f);
+        DistanceMove[0] = (float)(UnityEngine.Random.Range(100, 300)/100f);
         //DistanceMoveForward CheckwithEnemy
-        DistanceMove[1] = DistanceMove[0] + 0.4f;
+        DistanceMove[1] = DistanceMove[0] + 0.5f;
         //DistanceMoveForward ChecwithPlayer
-        DistanceMove[2] = (float)(UnityEngine.Random.Range(170, 450)/100f);
+        DistanceMove[2] = (float)(UnityEngine.Random.Range(170, 290)/100f);
         }
     }
     private void OnFightDismiss() 
     {
         Cur_Role = Role.AroundFight;
-        Debug.Log("Dismiss");
+        
     }
-    bool Onfight_Dismiss_Enable_Call = true;
-    private void OnFightDismiss_TriggerCall() 
-    {
-        if(Onfight_Dismiss_Enable_Call == true) 
-        {
-            if (UnityEngine.Random.Range(1, 10) > 2)
-            {
-                Cur_Role = Role.AroundFight;
-                Debug.Log("Dismiss");
-                Onfight_Dismiss_Enable_Call = false;
-            }
-        }
-    }
+   
+   
     public void UpdateState(State state) 
     {
         Cur_state = state;

@@ -17,7 +17,7 @@ public class Enemy_Director : MonoBehaviour
         Enemy.Add(gameObject);
     }
     bool israndom = false;
-    float randomCooldown  =0;
+    
     float Onfight_Count = 0;
     [SerializeField] int GameOBG_ID_Last_Onfight = 0;
     public void Update()
@@ -50,14 +50,14 @@ public class Enemy_Director : MonoBehaviour
                 {
                     Enemy_front += 1;
                 }
-                if((Enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Flinch
+                if ((Enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Flinch
                     || Enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Block)
-                    &&(Enemy.GetComponent<Enemy_Common>().Cur_Role == global::Enemy.Role.AroundFight)) 
+                    && (Enemy.GetComponent<Enemy_Common>().Cur_Role == global::Enemy.Role.AroundFight))
                 {
                     if (israndom == false)
                     {
                         israndom = true;
-                        int num = UnityEngine.Random.Range(1, 100);
+                        int num = Random.Range(1, 100);
                         if (num > 50)
                         {
                             Reset_To_AroundFight();
@@ -71,37 +71,28 @@ public class Enemy_Director : MonoBehaviour
         if(OnFight_num == 0) 
         {
             Onfight_Count += Time.deltaTime;
-            if (Onfight_Count >= 0.25f)
+            if (Onfight_Count >= 0.2f)
             {
                 Onfight_Count = 0;
                 foreach (GameObject Enemy in Enemy)
                 {
-                   
-                        if (Enemy.GetComponent<Enemy_Common>().front_Of_Enemy == global::Enemy.front_of_enemy.Player && UnityEngine.Random.Range(1,10)>5)
-                        {
-                            Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.OnFight;
-                            OnFight_num += 1;                           
-                            GameOBG_ID_Last_Onfight = Enemy.GetInstanceID();
-                            break;
-                        }
-                 
+                    GameOBG_ID_Last_Onfight = Enemy.GetInstanceID();
+                    if (Enemy.GetComponent<Enemy_Common>().front_Of_Enemy == global::Enemy.front_of_enemy.Player && Random.Range(1, 10) > 5)
+                    {
+                        Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.OnFight;
+                        OnFight_num += 1;
+                        break;
+                    }
                 }
             }
+            
         }
         if(OnFight_num > 1) 
         {
             OnFight_num = 0;
             Reset_To_AroundFight();
         }
-        if(israndom == true) 
-        {
-            randomCooldown += Time.deltaTime;
-            if(randomCooldown >= 1) 
-            {
-                israndom = false;
-                randomCooldown = 0;
-            }
-        }
+        
     }
     
     private void Reset_To_AroundFight()
@@ -114,7 +105,7 @@ public class Enemy_Director : MonoBehaviour
     public void RemoveGameObg(GameObject Enemy) 
     {
         this.Enemy.Remove(Enemy);
-        Game_manager.RemoveEnemy(Enemy);
+        Game_manager.RemoveEnemy(Enemy);        
         
     }
 

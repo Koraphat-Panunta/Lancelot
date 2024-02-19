@@ -140,7 +140,7 @@ public class Main_Char : Character
                 if (Attack_step_Enable == true)
                 {
                     Attack_step_Enable = false;
-                    Push(2.5f);
+                    Push(4.5f);
                 }
             }
             //PostAttack_I

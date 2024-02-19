@@ -112,10 +112,9 @@ public class Main : MonoBehaviour
                     Player.GetComponent<Main_Char>().GotAttack(enemy);
                     if(Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.Parry) 
                     {
-                        enemy.GetComponent<Enemy_Common>().Cur_state = global::Enemy.State.Parried;
-                        
+                        enemy.GetComponent<Enemy_Common>().Got_Parried();                       
                         Parry_Effect(1);
-                        enemy.GetComponent<Enemy_Common>().Animation_Update();
+                        
                     }
                 }
             }
