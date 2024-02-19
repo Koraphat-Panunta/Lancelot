@@ -231,14 +231,19 @@ public abstract class Enemy : Character
 
     }
     private float Dashing = 0;
+    private bool Regen_HP_for_Player = true;
     protected void StateManagement()
     {
         if (HP <= 0||Cur_state == State.Dead)
         {
-            Player.HP += 15;
-            if (Player.HP > 100) 
+            if (Regen_HP_for_Player == true)
             {
-                Player.HP = 100;
+                Regen_HP_for_Player = false;
+                Player.HP += 15;
+                if (Player.HP > 100)
+                {
+                    Player.HP = 100;
+                }
             }
             Cur_state = State.Dead;
             Animation_Update();                                   
@@ -275,26 +280,30 @@ public abstract class Enemy : Character
             //Attack_Duration
             if (Cur_state == State.Attack_I)
             {
+                float Time_preATK = 0.16f;
+                float Time_ATKing = 0.33f;
+                float Time_PostATK = 0.59f;
                 Change_state_enable = false;
                 //PreAttack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.20f * (float)(100f / 60f))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < Time_preATK * (float)(100f / 60f))
                 {
                     Cur_Attack_State = Attack_State.Pre_Attack;
                 }
                 //Attack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.20f * (float)(100f / 60f)
-                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.36f * (float)(100f / 60f))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= Time_preATK * (float)(100f / 60f)
+                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < Time_ATKing * (float)(100f / 60f))
                 {
                     Cur_Attack_State = Attack_State.Attacking;
                 }
                 //PostAttack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.36f * (float)(100f / 60f)
-                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.58f * (float)(100f / 60f))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= Time_ATKing * (float)(100f / 60f)
+                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < Time_PostATK * (float)(100f / 60f))
                 {
                     Cur_Attack_State = Attack_State.Post_Attack;
                 }
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {
+                    OnFightDismiss(0.15f);
                     Change_state_enable = true;
                 }
             }
@@ -330,8 +339,7 @@ public abstract class Enemy : Character
             }
         }
         Cooldown_Event();
-    }
-   
+    }  
     public void Animation_Update()
     {
         animator.Play(Cur_state.ToString());
@@ -340,6 +348,8 @@ public abstract class Enemy : Character
     
     public void Got_Attacked() 
     {
+        OnFightDismiss(0.2f);
+        Debug.Log("GotATK");
         if (Defend > 0 && Cur_state != State.Attack_I && Cur_state != State.Parried) 
         {
             Cur_state = State.Block;                        
@@ -349,32 +359,33 @@ public abstract class Enemy : Character
         {
             Defend -= Player.DMG * 0.7f;
             Pressure += 15;           
-            Push(2.5f);           
-                      
+            Push(3.0f);                
         }
         else 
         {
-            if(Cur_state == State.Parried) 
+            if (Cur_state == State.Parried)
             {
-                Pressure += 40;               
-                Debug.Log(" Parried");
+                Pressure += 40;
+                HP -= Player.DMG * 1.5f;
+            }
+            else
+            {
+                if (UnityEngine.Random.Range(1, 10) <= 2)
+                {
+                    //Critical
+                    HP -= Player.DMG * 1.5f;
+                    Debug.Log("Critical_Hit:" + Player.DMG * 1.5f);
+                }
+                else
+                {
+                    HP -= Player.DMG;
+                    Debug.Log("Hit:" + Player.DMG);
+                }
             }
             Cur_state = State.Flinch;
-            Animation_Update();           
-                            
-            if (UnityEngine.Random.Range(1, 10) <= 2) 
-            {
-                //Critical
-                HP -= Player.DMG*1.5f;
-                Debug.Log("Critical_Hit:" + Player.DMG * 1.5f);
-            }
-            else 
-            {
-                HP -= Player.DMG;
-                Debug.Log("Hit:" + Player.DMG );
-            }            
+            Animation_Update();                                                              
             Pressure += 10;
-            Push(2.5f);
+            Push(3.0f);
             
         }
     }
@@ -585,7 +596,7 @@ public abstract class Enemy : Character
         //DistanceMoveForward CheckwithEnemy
         DistanceMove[1] = DistanceMove[0] + 0.5f;
         //DistanceMoveForward ChecwithPlayer
-        DistanceMove[2] = (float)(UnityEngine.Random.Range(170, 290)/100f);
+        DistanceMove[2] = (float)(UnityEngine.Random.Range(200, 310)/100f);
         }
     }
     private void OnFightDismiss() 
@@ -593,8 +604,16 @@ public abstract class Enemy : Character
         Cur_Role = Role.AroundFight;
         
     }
-   
-   
+    private void OnFightDismiss(float RandomChance)
+    {
+        if (UnityEngine.Random.Range(0.0f, 1.0f) >= RandomChance)
+        {
+            Cur_Role = Role.AroundFight;
+        }
+
+    }
+
+
     public void UpdateState(State state) 
     {
         Cur_state = state;

@@ -10,10 +10,10 @@ public class Main_Char : Character
 {
     public float HP = 100f;      
     [SerializeField] private bool Change_Behavior_enable = true;    
-    private float Block_CoolDown = 0.45f;
+    private float Block_CoolDown = 0.20f;
     bool Block_Enable = true; 
     public string Char_CurState;
-    [SerializeField] private float Speed = 120;
+    [SerializeField] private float Speed;
     [SerializeField] public BoxCollider Attack_Box;
     [SerializeField] public CapsuleCollider Hitted_Box;
     public float Animation_TimeLine;
@@ -125,16 +125,19 @@ public class Main_Char : Character
             //Death 
         }
         //Attack_state       
+        float Pre_ATK = 0.12f;
+        float ATKing = 0.28f;
+        float Post_ATK = 0.45f;
         if (Cur_state == Char_state.Attack_I || Cur_state == Char_state.Attack_II)
         {
             //PreAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.20f * (float)(100f / 60f))
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime <Pre_ATK * (float)(100f / 60f))
             {
                 Cur_Attack_State = Attack_state.Pre_Attack;
             }
             //Attack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.20f * (float)(100f / 60f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.30f * (float)(100f / 60f))
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= Pre_ATK * (float)(100f / 60f)
+                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime <ATKing * (float)(100f / 60f))
             {
                 Cur_Attack_State = Attack_state.Attacking;
                 if (Attack_step_Enable == true)
@@ -144,8 +147,8 @@ public class Main_Char : Character
                 }
             }
             //PostAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.30f * (float)(100f / 60f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.58f * (float)(100f / 60f))
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= ATKing * (float)(100f / 60f)
+                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < Post_ATK * (float)(100f / 60f))
             {
                 Cur_Attack_State = Attack_state.Post_Attack;
             }

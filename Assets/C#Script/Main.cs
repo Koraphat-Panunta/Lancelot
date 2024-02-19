@@ -55,7 +55,7 @@ public class Main : MonoBehaviour
         }
         if(Effect_is_On == true) 
         {
-            if (vignette.intensity.value < 0.5f) 
+            if (vignette.intensity.value < 0.35f) 
             {
                 vignette.intensity.value += 5*Time.deltaTime;
             }
@@ -113,8 +113,7 @@ public class Main : MonoBehaviour
                     if(Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.Parry) 
                     {
                         enemy.GetComponent<Enemy_Common>().Got_Parried();                       
-                        Parry_Effect(1);
-                        
+                        Parry_Effect(1);                       
                     }
                 }
             }
