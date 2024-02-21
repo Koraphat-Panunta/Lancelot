@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using UnityEngine.XR;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class Main_Char : Character
@@ -270,6 +271,14 @@ public class Main_Char : Character
         {
             Cur_state = Char_state.Block;
             Update_animation();
+            if ((Input.GetKey(KeyCode.D) || virsual_Input.button_Right_State == Virsual_input.Button_Right_State.Down) && Change_Behavior_enable == true)
+            {                
+                Cur_Direction = Char_Direction.Right;                
+            }
+            if ((Input.GetKey(KeyCode.A) || (virsual_Input.button_Left_State == Virsual_input.Button_Left_State.Down)) && Change_Behavior_enable == true)
+            {                
+                Cur_Direction = Char_Direction.Left;               
+            }
             Change_Behavior_enable = false;
         }
          if((Input.GetKey(KeyCode.D)||virsual_Input.button_Right_State == Virsual_input.Button_Right_State.Down) && Change_Behavior_enable == true )

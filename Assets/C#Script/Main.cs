@@ -19,6 +19,12 @@ public class Main : MonoBehaviour
     public VolumeProfile VolumeProfile;
     public Vignette vignette;
     private bool Effect_is_On = false;
+    public enum Dificulty 
+    {
+        Normal,
+        Hard,
+    }
+    static public Dificulty dificulty;
 
     void Start()
     {

@@ -8016,7 +8016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6847579572748821057, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
       propertyPath: Speed
-      value: 160
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 6847579572748821057, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
       propertyPath: virsual_Input
@@ -8896,6 +8896,10 @@ PrefabInstance:
       objectReference: {fileID: 1243418145}
     - target: {fileID: 6816251657033088840, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6816251657033088840, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7676544319962130630, guid: 1836f6e9fc2e7ca428cd9c6701cad014, type: 3}

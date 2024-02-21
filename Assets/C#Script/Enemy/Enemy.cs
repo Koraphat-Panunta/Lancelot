@@ -163,15 +163,22 @@ public abstract class Enemy : Character
     }
     protected void MoveBack() 
     {
-        Cur_state = State.Run;
-        Animation_Update();
-        if (base.transform.position.x > Player.transform.position.x)
+        if (front_Of_Enemy == front_of_enemy.Player)
         {
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
+            Reteat();
         }
-        else if (base.transform.position.x < Player.transform.position.x)
+        else
         {
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * Time.deltaTime , 0, 0);
+            Cur_state = State.Run;
+            Animation_Update();
+            if (base.transform.position.x > Player.transform.position.x)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
+            }
+            else if (base.transform.position.x < Player.transform.position.x)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * Time.deltaTime, 0, 0);
+            }
         }
     }
     protected void Dash()
@@ -350,10 +357,18 @@ public abstract class Enemy : Character
     {
         OnFightDismiss(0.2f);
         Debug.Log("GotATK");
-        if (Defend > 0 && Cur_state != State.Attack_I && Cur_state != State.Parried) 
-        {
+        if (Defend > 0 && Cur_state != State.Parried) 
+        {            
             Cur_state = State.Block;                        
             Animation_Update();
+        }
+        else if(Cur_state == State.Attack_I) 
+        {
+            if(UnityEngine.Random.Range(0.0f,1.0f)>=1.5f&&Cur_Attack_State == Attack_State.Post_Attack) 
+            {
+                Cur_state = State.Block;
+                Animation_Update();
+            }
         }
         if(Cur_state == State.Block) 
         {
@@ -407,7 +422,7 @@ public abstract class Enemy : Character
         }
     }
     
-    private float[] DistanceMove = new float[3];
+    private float[] DistanceMove = new float[4];
     private float Timing_Set_Active = 2;
     private void RoleManagement() 
     {
@@ -503,6 +518,11 @@ public abstract class Enemy : Character
                         RandomDistance();
                         Move_to_player();
                     }
+                    else if(RayDistance <= DistanceMove[3] && HitLeft.rigidbody.tag == "Player" && Change_state_enable == true&& Pressure > 0) 
+                    {
+                        RandomDistance();
+                        MoveBack();
+                    }
                     else if (HitLeft.rigidbody.tag == "Player" && Change_state_enable == true
                         && (HitLeft.rigidbody.GetComponent<Main_Char>().Cur_Attack_State == Main_Char.Attack_state.Attacking
                         || HitLeft.rigidbody.GetComponent<Main_Char>().Cur_Attack_State == Main_Char.Attack_state.Post_Attack)&&(Cur_state != State.Run))
@@ -569,6 +589,11 @@ public abstract class Enemy : Character
                         RandomDistance();
                         Move_to_player();
                     }
+                    else if (RayDistance <= DistanceMove[3] && HitRight.rigidbody.tag == "Player" && Change_state_enable == true && Pressure > 0)
+                    {
+                        RandomDistance();
+                        MoveBack();
+                    }
                     else if (Change_state_enable == true)
                     {
                         Cur_state = State.Idle;
@@ -589,14 +614,16 @@ public abstract class Enemy : Character
     private void RandomDistance() 
     {
         if(RandomCooldown <=0)
-        {
-        RandomCooldown = 4f;       
-        //DistanceMoveBack CheckwithEnemy
-        DistanceMove[0] = (float)(UnityEngine.Random.Range(100, 300)/100f);
-        //DistanceMoveForward CheckwithEnemy
-        DistanceMove[1] = DistanceMove[0] + 0.5f;
-        //DistanceMoveForward ChecwithPlayer
-        DistanceMove[2] = (float)(UnityEngine.Random.Range(200, 310)/100f);
+        {        
+            RandomCooldown = 4f;              
+            //DistanceMoveBack CheckwithEnemy       
+            DistanceMove[0] = (float)(UnityEngine.Random.Range(100, 300)/100f);      
+            //DistanceMoveForward CheckwithEnemy       
+            DistanceMove[1] = DistanceMove[0] + 0.5f;      
+            //DistanceMoveForward ChecwithPlayer       
+            DistanceMove[2] = (float)(UnityEngine.Random.Range(200, 310)/100f);
+            //DistanceMoveBack CheckwithPlayer
+            DistanceMove[3] = DistanceMove[2] - 0.5f;
         }
     }
     private void OnFightDismiss() 
