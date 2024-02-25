@@ -11,7 +11,7 @@ public class Main_Char : Character
 {
     public float HP = 100f;      
     [SerializeField] private bool Change_Behavior_enable = true;    
-    private float Block_CoolDown = 0.20f;
+    private float Block_CoolDown = 0.15f;
     bool Block_Enable = true; 
     public string Char_CurState;
     [SerializeField] private float Speed;
@@ -99,10 +99,10 @@ public class Main_Char : Character
     {        
         if (Block_Enable == false)
         {
-            Block_CoolDown -= Time.deltaTime;
+            Block_CoolDown -= Time.deltaTime*(1f/Time.timeScale);
             if (Block_CoolDown <= 0)
             {
-                Block_CoolDown = 0.45f;
+                Block_CoolDown = 0.15f;
                 Block_Enable = true;
             }
         }
@@ -209,7 +209,7 @@ public class Main_Char : Character
         {
             Block_timimg += Time.deltaTime;
             Change_Behavior_enable = false;
-            Cur_Defend_State = Defend_state.Parry;
+            Cur_Defend_State = Defend_state.Parry;            
             if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
             {
                 Cur_state = Char_state.Block;
@@ -326,6 +326,14 @@ public class Main_Char : Character
                 Cur_state = Char_state.Attack_II;
                 Update_animation();
                 Combo_Continue = false;
+            }
+        }
+        if(Cur_state == Char_state.Parry) 
+        {
+            if (Input.GetKey(KeyCode.J)) 
+            {
+                Cur_state = Char_state.Attack_I;
+                Update_animation() ;
             }
         }
         ////

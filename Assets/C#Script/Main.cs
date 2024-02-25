@@ -52,6 +52,10 @@ public class Main : MonoBehaviour
         if (Slow_Duration > 0) 
         {
             Slow_Duration -= Time.deltaTime*(1f/Time.timeScale);
+            if(Player.GetComponent<Main_Char>().Cur_state != Main_Char.Char_state.Parry) 
+            {
+                Slow_Duration = 0;
+            }
             if (Slow_Duration <= 0) 
             {
                 Time.timeScale = 1f;
@@ -65,6 +69,14 @@ public class Main : MonoBehaviour
             {
                 vignette.intensity.value += 5*Time.deltaTime;
             }
+            if (Camera.transform.position.z < 14.2f) 
+            {
+                Camera.transform.position += new Vector3(0, 0, 0.6f * Time.deltaTime*((float)(1f/Time.timeScale)));
+                if (Camera.transform.position.z > 14.2f)
+                {
+                    Camera.transform.position = new Vector3(Camera.transform.position.x, Camera.transform.position.y, 14.2f);
+                }
+            }
         }
         else 
         { 
@@ -72,6 +84,15 @@ public class Main : MonoBehaviour
             {
                 vignette.intensity.value -=  5*Time.deltaTime;
             }
+            if (Camera.transform.position.z > 13.7f)
+            {
+                Camera.transform.position -= new Vector3(0, 0, 1.5f * Time.deltaTime);
+                if(Camera.transform.position.z < 13.7f) 
+                {
+                    Camera.transform.position = new Vector3(Camera.transform.position.x, Camera.transform.position.y, 13.7f);
+                }
+            }
+
         }
     }
 

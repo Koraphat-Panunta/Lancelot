@@ -23,6 +23,7 @@ public abstract class Enemy : Character
     public BoxCollider Attack_Box;
     public CapsuleCollider Hitted_Box;
     public bool Change_state_enable;
+    [SerializeField] private bool Counter_Enable;
     public string Cur_state_string;
     public string Cur_Attackstate_string;    
     public bool GetHitted_able;
@@ -68,7 +69,7 @@ public abstract class Enemy : Character
         Cur_state = State.Idle;
         Time.fixedDeltaTime = 1 / 60f;
         base.LoadComponent();
-        
+        Counter_Enable = true;
         ATK_Range = 2.1f;
         Change_state_enable = true;
         Player = Target.GetComponent<Main_Char>();       
@@ -322,8 +323,17 @@ public abstract class Enemy : Character
             if (Cur_state == State.Block)
             {              
                 Change_state_enable = false;
+                if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= (float)animator.GetCurrentAnimatorStateInfo(0).length / 2&&Counter_Enable == true) 
+                {
+                    Counter_Enable = false;
+                    if (UnityEngine.Random.value <= 0.4f) 
+                    {
+                        Attack();
+                    }
+                }
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
                 {
+                    Counter_Enable = true;
                     Change_state_enable = true;                   
                 }
             }
@@ -364,7 +374,7 @@ public abstract class Enemy : Character
         }
         else if(Cur_state == State.Attack_I) 
         {
-            if(UnityEngine.Random.Range(0.0f,1.0f)>=1.5f&&Cur_Attack_State == Attack_State.Post_Attack) 
+            if(UnityEngine.Random.Range(0.0f,1.0f)>=0.5f&&Cur_Attack_State == Attack_State.Post_Attack) 
             {
                 Cur_state = State.Block;
                 Animation_Update();
@@ -374,7 +384,8 @@ public abstract class Enemy : Character
         {
             Defend -= Player.DMG * 0.7f;
             Pressure += 15;           
-            Push(3.0f);                
+            Push(3.0f);    
+           
         }
         else 
         {
