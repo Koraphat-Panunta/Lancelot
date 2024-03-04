@@ -132,13 +132,13 @@ public class Main_Char : Character
         if (Cur_state == Char_state.Attack_I || Cur_state == Char_state.Attack_II)
         {
             //PreAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime <Pre_ATK * (float)(100f / 60f))
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Pre_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
             {
                 Cur_Attack_State = Attack_state.Pre_Attack;
             }
             //Attack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= Pre_ATK * (float)(100f / 60f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime <ATKing * (float)(100f / 60f))
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Pre_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)
+                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(ATKing / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
             {
                 Cur_Attack_State = Attack_state.Attacking;
                 if (Attack_step_Enable == true)
@@ -148,13 +148,13 @@ public class Main_Char : Character
                 }
             }
             //PostAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= ATKing * (float)(100f / 60f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < Post_ATK * (float)(100f / 60f))
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(ATKing / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)
+                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Post_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
             {
                 Cur_Attack_State = Attack_state.Post_Attack;
             }
             //Finish
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >=1)
             {
                 Cur_Attack_State = Attack_state.None;
                 Change_Behavior_enable = true;
@@ -173,7 +173,7 @@ public class Main_Char : Character
         if (Cur_state == Char_state.Flinch)
         {            
             Change_Behavior_enable = false;
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > animator.GetCurrentAnimatorStateInfo(0).length)
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
             {
                 Change_Behavior_enable = true;
                 Cur_state = Char_state.Idle;
@@ -199,7 +199,7 @@ public class Main_Char : Character
             Block_timimg += Time.deltaTime;
             Change_Behavior_enable = false;
             Cur_Defend_State = Defend_state.Blocking;
-            if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length) 
+            if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) 
             {
                 Cur_state = Char_state.Block;
                 Change_Behavior_enable = true;
@@ -210,7 +210,7 @@ public class Main_Char : Character
             Block_timimg += Time.deltaTime;
             Change_Behavior_enable = false;
             Cur_Defend_State = Defend_state.Parry;            
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
             {
                 Cur_state = Char_state.Block;
                 Change_Behavior_enable = true;

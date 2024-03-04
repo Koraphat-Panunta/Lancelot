@@ -16,7 +16,7 @@ public abstract class Enemy : Character
     [SerializeField] public float Distance;
     [SerializeField] protected float RayDistance;
     [SerializeField] protected GameObject Target;
-     protected Main_Char Player;
+    protected Main_Char Player;
     [SerializeField] protected float ATK_Range;
     [SerializeField] protected float Attack_CoolingDown;
     [SerializeField] protected float Dash_CoolingDown;
@@ -25,10 +25,12 @@ public abstract class Enemy : Character
     public bool Change_state_enable;
     [SerializeField] private bool Counter_Enable;
     public string Cur_state_string;
-    public string Cur_Attackstate_string;    
+    public string Cur_Attackstate_string;
     public bool GetHitted_able;
     [SerializeField] private Enemy_Director Director;
     public float DMG = 8;
+    [SerializeField] float animation_leght;
+    [SerializeField] float animation_curtime;
 
     public enum Direction
     {
@@ -85,6 +87,8 @@ public abstract class Enemy : Character
     protected override void Update()
     {
         base.Update();
+        animation_leght = animator.GetCurrentAnimatorStateInfo(0).length*(float)(60f/100f);
+        animation_curtime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f));
     }
     protected override void FixedUpdate()
     {
@@ -265,7 +269,7 @@ public abstract class Enemy : Character
             {
                 Animation_Update();
                 //Duration
-                float Dash_Duration = animator.GetCurrentAnimatorStateInfo(0).length;
+                float Dash_Duration = animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f);
                 Change_state_enable = false;
                 Dashing += Time.deltaTime;
                 if (Dashing >= Dash_Duration)
@@ -288,28 +292,28 @@ public abstract class Enemy : Character
             //Attack_Duration
             if (Cur_state == State.Attack_I)
             {
-                float Time_preATK = 0.16f;
+                float Time_preATK = 0.22f;
                 float Time_ATKing = 0.33f;
                 float Time_PostATK = 0.59f;
                 Change_state_enable = false;
                 //PreAttack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < Time_preATK * (float)(100f / 60f))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_preATK/animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
                 {
                     Cur_Attack_State = Attack_State.Pre_Attack;
                 }
                 //Attack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= Time_preATK * (float)(100f / 60f)
-                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < Time_ATKing * (float)(100f / 60f))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Time_preATK / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f))
+                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_ATKing / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)))
                 {
                     Cur_Attack_State = Attack_State.Attacking;
                 }
                 //PostAttack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= Time_ATKing * (float)(100f / 60f)
-                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < Time_PostATK * (float)(100f / 60f))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Time_ATKing / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f))
+                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_PostATK / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)))
                 {
                     Cur_Attack_State = Attack_State.Post_Attack;
                 }
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >=1)
                 {
                     OnFightDismiss(0.15f);
                     Change_state_enable = true;
@@ -323,7 +327,7 @@ public abstract class Enemy : Character
             if (Cur_state == State.Block)
             {              
                 Change_state_enable = false;
-                if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= (float)animator.GetCurrentAnimatorStateInfo(0).length / 2&&Counter_Enable == true) 
+                if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f&&Counter_Enable == true) 
                 {
                     Counter_Enable = false;
                     if (UnityEngine.Random.value <= 0.4f) 
@@ -331,7 +335,7 @@ public abstract class Enemy : Character
                         Attack();
                     }
                 }
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
                 {
                     Counter_Enable = true;
                     Change_state_enable = true;                   
@@ -341,7 +345,7 @@ public abstract class Enemy : Character
             if (Cur_state == State.Flinch)
             {                
                 Change_state_enable = false;
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
                 {
                     Change_state_enable = true;                    
                 }
@@ -349,7 +353,7 @@ public abstract class Enemy : Character
             if(Cur_state == State.Parried) 
             {               
                 Change_state_enable = false;                                
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= animator.GetCurrentAnimatorStateInfo(0).length)
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
                 {
                     Change_state_enable = true;                          
                 }
