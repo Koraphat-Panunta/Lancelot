@@ -35,9 +35,7 @@ public class Main : MonoBehaviour
         if(Volume.GetComponent<Volume>().profile.TryGet<Vignette>(out Vg)) 
         {
             vignette = Vg;
-        }
-        
-
+        }       
         Application.targetFrameRate = 60;
 
     }
@@ -133,7 +131,8 @@ public class Main : MonoBehaviour
             if (enemy.GetComponent<Enemy_Common>().Cur_Attack_State == Enemy_Common.Attack_State.Attacking && enemy.GetComponent<Enemy_Common>().Hit_able == true)
             {
                 enemy.GetComponent<Enemy_Common>().Hit_able = false;
-                if (enemy.GetComponent<Enemy_Common>().Attack_Box.bounds.Intersects(Player.GetComponent<Main_Char>().Hitted_Box.bounds))
+                if (enemy.GetComponent<Enemy_Common>().Attack_Box.bounds.Intersects(Player.GetComponent<Main_Char>().Hitted_Box.bounds)&& 
+                    Player.GetComponent<Main_Char>().Cur_state != Main_Char.Char_state.Dash&& Player.GetComponent<Main_Char>().Cur_state != Main_Char.Char_state.Dodge)
                 {
                     Player.GetComponent<Main_Char>().GotAttack(enemy);
                     if(Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.Parry) 

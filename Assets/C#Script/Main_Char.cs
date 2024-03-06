@@ -15,8 +15,10 @@ public class Main_Char : Character
     bool Block_Enable = true; 
     public string Char_CurState;
     [SerializeField] private float Speed;
+    private float Original_Speed;
     [SerializeField] public BoxCollider Attack_Box;
     [SerializeField] public CapsuleCollider Hitted_Box;
+    public CapsuleCollider CharacterCollider;
     public float Animation_TimeLine;
     public float Animation_Length;
     public float DMG = 15;
@@ -31,6 +33,8 @@ public class Main_Char : Character
         Block,
         Flinch,
         BlockReact,
+        Dash,
+        Dodge
     }
     public enum Char_Direction 
     {
@@ -39,7 +43,7 @@ public class Main_Char : Character
     }
     public Char_state Cur_state;
     public Char_Direction Cur_Direction;
-    
+    private bool Dash_able = true;
 
     
     public void Start()
@@ -52,6 +56,7 @@ public class Main_Char : Character
         Attack_Box = gameObject.GetComponentInChildren<BoxCollider>();   
         Hitted_Box.transform.localPosition = new Vector3(0,0,0);        
         Virsual_input virsual_Input = GetComponent<Virsual_input>();
+        Original_Speed = Speed;
     }
 
     protected override void Update()
@@ -60,14 +65,12 @@ public class Main_Char : Character
         Animation_Length = animator.GetCurrentAnimatorStateInfo(0).length;
         Animation_TimeLine = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         InputManager();
-        Block_Cooldown();       
-        Update_animation();
-        Update_State_and_Dicrection();
-        
-
+        Cooldown();       
+        Update_animation();               
     }
     protected override void FixedUpdate()
     {
+        Update_State_and_Dicrection();
         int parry_frame = 8;
         //Defend_state
         if (Cur_state == Char_state.Block)
@@ -135,8 +138,8 @@ public class Main_Char : Character
     }
     public Defend_state Cur_Defend_State = Defend_state.None;
     public Attack_state Cur_Attack_State = Attack_state.None;
-   
-    private void Block_Cooldown() 
+    [SerializeField] private float Dash_CoolDown = 2f;
+    private void Cooldown() 
     {        
         if (Block_Enable == false)
         {
@@ -145,6 +148,15 @@ public class Main_Char : Character
             {
                 Block_CoolDown = 0.15f;
                 Block_Enable = true;
+            }
+        }
+        if(Dash_able == false) 
+        {
+            Dash_CoolDown -= Time.deltaTime * (1f / Time.timeScale);
+            if(Dash_CoolDown <= 0) 
+            {
+                Dash_able = true;
+                Dash_CoolDown = 1f;
             }
         }
     }
@@ -177,18 +189,18 @@ public class Main_Char : Character
                 Cur_Attack_State = Attack_state.Pre_Attack;
             }
             //Attack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Pre_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)
+            else if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Pre_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)
                 && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(ATKing / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
             {
                 Cur_Attack_State = Attack_state.Attacking;
-                if (Attack_step_Enable == true)
+                if (Attack_step_Enable == true && Cur_Attack_State == Attack_state.Attacking)
                 {
-                    Attack_step_Enable = false;
+                    Attack_step_Enable = false;                   
                     Push(4.5f);
                 }
             }
             //PostAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(ATKing / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)
+            else if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(ATKing / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)
                 && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Post_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
             {
                 Cur_Attack_State = Attack_state.Post_Attack;
@@ -207,7 +219,7 @@ public class Main_Char : Character
         }
         if(Cur_Attack_State != Attack_state.Attacking) 
         {
-            Attack_step_Enable = true;
+            Attack_step_Enable = true;         
         }
         //Flinch
         if (Cur_state == Char_state.Flinch)
@@ -219,9 +231,7 @@ public class Main_Char : Character
                 Cur_state = Char_state.Idle;
                 Update_animation();
             }
-        }
-        
-                   
+        }                           
         //Direction_Change
         if (Cur_Direction == Char_Direction.Right) 
         {
@@ -251,14 +261,82 @@ public class Main_Char : Character
             {
                 Speed = -Speed;
             }
-        }               
+        }
+        //Dodge&&Dash        
+        int Dash_and_Dodge = 12;
+        if(Cur_state == Char_state.Dash) 
+        {
+            Change_Behavior_enable = false;
+            Speed = Original_Speed ;
+            CharacterCollider.isTrigger = true;
+            if (Dash_able == true)
+            {
+                Dash_able = false;
+                if (Cur_Direction == Char_Direction.Left)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Dash_and_Dodge , 0, 0);
+                }
+                if (Cur_Direction == Char_Direction.Right)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Dash_and_Dodge , 0, 0);
+                }
+            }
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) 
+            {
+                Speed = Original_Speed;
+                Change_Behavior_enable = true;
+                
+            }
+        }
+        else if(Cur_state == Char_state.Dodge) 
+        {
+            Change_Behavior_enable = false;
+            Speed = Original_Speed ;
+            CharacterCollider.isTrigger = true;
+            if (Dash_able == true)
+            {
+                Dash_able = false;
+                if (Cur_Direction == Char_Direction.Left)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3((Dash_and_Dodge*0.7f), 0, 0);
+                }
+                if (Cur_Direction == Char_Direction.Right)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-(Dash_and_Dodge * 0.7f), 0, 0);
+                }
+            }
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            {
+                Speed = Original_Speed;
+                Change_Behavior_enable = true;
+                              
+            }
+        }
+        if (CharacterCollider.isTrigger  == true&&Cur_state != Char_state.Dash&& Cur_state != Char_state.Dodge) 
+        {
+            
+                CharacterCollider.isTrigger = false;
+            
+        }
+        
     }
     private bool Combo_Continue = false;
 
     
     private void InputManager() 
     {
-        
+        if ((Input.GetKey(KeyCode.D) || virsual_Input.button_Right_State == Virsual_input.Button_Right_State.Down) && Change_Behavior_enable == true)
+        {
+            Cur_state = Char_state.Run;
+            Cur_Direction = Char_Direction.Right;
+            Update_animation();
+        }
+        if ((Input.GetKey(KeyCode.A) || (virsual_Input.button_Left_State == Virsual_input.Button_Left_State.Down)) && Change_Behavior_enable == true)
+        {
+            Cur_state = Char_state.Run;
+            Cur_Direction = Char_Direction.Left;
+            Update_animation();
+        }
         if ((Input.GetKeyDown(KeyCode.J)||(virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down)) && Change_Behavior_enable == true)
         {
             Cur_state = Char_state.Attack_I;
@@ -281,18 +359,30 @@ public class Main_Char : Character
             }
             Change_Behavior_enable = false;
         }
-         if((Input.GetKey(KeyCode.D)||virsual_Input.button_Right_State == Virsual_input.Button_Right_State.Down) && Change_Behavior_enable == true )
+        if(Input.GetKey(KeyCode.K) && Change_Behavior_enable == true && Dash_able == true) 
         {
-            Cur_state = Char_state.Run;
-            Cur_Direction = Char_Direction.Right;
-            Update_animation();
+            if(Input.GetKey(KeyCode.A)) 
+            {
+                Cur_Direction = Char_Direction.Left;
+                Cur_state = Char_state.Dash;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
+            else if(Input.GetKey(KeyCode.D))
+            {
+                Cur_Direction=Char_Direction.Right;
+                Cur_state = Char_state.Dash;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
+            else 
+            {
+                Cur_state=Char_state.Dodge;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
         }
-         if ((Input.GetKey(KeyCode.A)||(virsual_Input.button_Left_State == Virsual_input.Button_Left_State.Down)) && Change_Behavior_enable == true )
-        {
-            Cur_state = Char_state.Run;
-            Cur_Direction = Char_Direction.Left;
-            Update_animation();
-        }
+        
            
         //Idle(NoInput)
          if (Change_Behavior_enable == true && Input.anyKey == false)
@@ -366,10 +456,14 @@ public class Main_Char : Character
                 }
                 
             }
+            else if(Cur_state == Char_state.Dash|| Cur_state == Char_state.Dodge) 
+            {
+                //Break
+            }
             else 
             {
                 this.HP -= enemy.GetComponent<Enemy_Common>().DMG;
-                Cur_state = Char_state.Flinch;  
+                Cur_state = Char_state.Flinch;
                 Change_Behavior_enable = false;
                 Push(2.5f, enemy);
                 Update_animation();

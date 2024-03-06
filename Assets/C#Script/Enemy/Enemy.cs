@@ -147,7 +147,10 @@ public abstract class Enemy : Character
     }
     private void This_Uptate()
     {
-        Distance = Math.Abs(base.transform.position.x - Player.transform.position.x);
+        if (Target.GetComponent<Main_Char>().Cur_state != Main_Char.Char_state.Dash && Target.GetComponent<Main_Char>().Cur_state != Main_Char.Char_state.Dodge)
+        {
+            Distance = Math.Abs(base.transform.position.x - Player.transform.position.x);
+        }
         StateManagement();
         RoleManagement();
         //Calculate_Distance                
@@ -163,7 +166,7 @@ public abstract class Enemy : Character
     
     protected void LookatPlayer()
     {
-        if (base.transform.position.x > Player.transform.position.x)
+        if (base.transform.position.x > Player.transform.position.x && Change_state_enable == true)
         {
             Cur_Direction = Direction.Left;
             animator.GetComponent<SpriteRenderer>().flipX = true;
@@ -176,11 +179,18 @@ public abstract class Enemy : Character
                 Hitted_Box.transform.localPosition.y,
                 Hitted_Box.transform.localPosition.z);
         }
-        if (base.transform.position.x < Player.transform.position.x)
+        if (base.transform.position.x < Player.transform.position.x && Change_state_enable == true)
         {
             Cur_Direction = Direction.Right;
             animator.GetComponent<SpriteRenderer>().flipX = false;
-
+            //Set_AttackBox
+            Attack_Box.transform.localPosition = new Vector3(Math.Abs(Attack_Box.transform.localPosition.x),
+                Attack_Box.transform.localPosition.y,
+                Attack_Box.transform.localPosition.z);
+            //Set_HittedBox
+            Hitted_Box.transform.localPosition = new Vector3(Math.Abs(Hitted_Box.transform.localPosition.x),
+                Hitted_Box.transform.localPosition.y,
+                Hitted_Box.transform.localPosition.z);
         }
     }
     enum Move_behavior 
@@ -312,22 +322,22 @@ public abstract class Enemy : Character
             {
                 float Time_preATK = 0.22f;
                 float Time_ATKing = 0.33f;
-                float Time_PostATK = 0.59f;
+                float Time_PostATK = 0.67f;
                 Change_state_enable = false;
                 //PreAttack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_preATK/animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_preATK/*/animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)*/))
                 {
                     Cur_Attack_State = Attack_State.Pre_Attack;
                 }
                 //Attack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Time_preATK / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f))
-                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_ATKing / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Time_preATK /*/ animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)*/)
+                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_ATKing /*/ animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)*/))
                 {                   
                     Cur_Attack_State = Attack_State.Attacking;
                 }
                 //PostAttack_I
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Time_ATKing / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f))
-                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_PostATK / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)))
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Time_ATKing /*/ animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)*/)
+                    && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_PostATK /*/ animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)*/))
                 {
                     Cur_Attack_State = Attack_State.Post_Attack;
                 }
@@ -388,26 +398,28 @@ public abstract class Enemy : Character
     public void Got_Attacked() 
     {
         OnFightDismiss(0.2f);
-        Debug.Log("GotATK");
-        if (Defend > 0 && Cur_state != State.Parried) 
-        {            
-            Cur_state = State.Block;                        
-            Animation_Update();
-        }
-        else if(Cur_state == State.Attack_I) 
+        if ((Cur_Direction == Direction.Left && (base.transform.position.x > Player.transform.position.x))
+            || (Cur_Direction == Direction.Right && (base.transform.position.x < Player.transform.position.x)))
         {
-            if(UnityEngine.Random.Range(0.0f,1.0f)>=0.5f&&Cur_Attack_State == Attack_State.Post_Attack) 
+            if (Defend > 0 && Cur_state != State.Parried)
             {
                 Cur_state = State.Block;
                 Animation_Update();
+            }
+            else if (Cur_state == State.Attack_I)
+            {
+                if (UnityEngine.Random.Range(0.0f, 1.0f) >= 0.5f && Cur_Attack_State == Attack_State.Post_Attack)
+                {
+                    Cur_state = State.Block;
+                    Animation_Update();
+                }
             }
         }
         if(Cur_state == State.Block) 
         {
             Defend -= Player.DMG * 0.7f;
             Pressure += 15;           
-            Push(3.0f);    
-           
+            Push(3.0f);               
         }
         else 
         {
@@ -445,11 +457,11 @@ public abstract class Enemy : Character
     }
     public void Push(float force) 
     {
-        if (Cur_Direction == Direction.Left)
+        if (base.transform.position.x > Player.transform.position.x)
         {
             rb.GetComponent<Rigidbody>().velocity = new Vector3(force, 0, 0);
         }
-        if (Cur_Direction == Direction.Right)
+        if (base.transform.position.x < Player.transform.position.x)
         {
             rb.GetComponent<Rigidbody>().velocity = new Vector3(-force, 0, 0);
         }
@@ -478,31 +490,64 @@ public abstract class Enemy : Character
             }
         }
     }
-    private void RoleOnfight() 
+    private void RoleOnfight()
     {
         //Role_Onfight //****
         if (Cur_Role == Role.OnFight)
         {
             Run_Speed = Run_Speed_Onfight;
-            if (Pressure < Under_Pressure_Approuching && Distance > ATK_Range && Change_state_enable == true)
+            if (Cur_Direction == Direction.Left)
             {
-                Move_to_player();
-            }           
-            //Reteat_Condition       
-            else if (Pressure > Over_Pressure_Reteating && Distance < Under_ATK_Range_Reteating && Change_state_enable == true)
-            {
-                Reteat();                
-            }            
-            //Attack_Condition
-            else if (Distance <= ATK_Range && Attack_CoolingDown <= 0 && Pressure < Under_Pressure_ATK && Change_state_enable == true)
-            {
-                Attack();
+                if (Physics.Raycast(new Vector3(transform.position.x - (gameObject.GetComponent<CapsuleCollider>().radius / 2f), transform.position.y - 0.5f, transform.position.z), new Vector3(-1, 0, 0), out RaycastHit HitLeft, 600, 3))
+                {
+                    if (HitLeft.rigidbody.tag == "Enemy")
+                    {
+                        front_Of_Enemy = front_of_enemy.Enemy;
+                    }
+                    if (HitLeft.rigidbody.tag == "Player")
+                    {
+                        front_Of_Enemy = front_of_enemy.Player;
+                    }
+                }
             }
-            else if (Change_state_enable == true)
+            if (Cur_Direction == Direction.Right)
             {
-                Cur_state = State.Idle;
-                Animation_Update();
+                if (Physics.Raycast(new Vector3(transform.position.x + (gameObject.GetComponent<CapsuleCollider>().radius / 2f), transform.position.y - 0.5f, transform.position.z), new Vector3(1, 0, 0), out RaycastHit HitRight, 600, 3))
+                {
+                    if (HitRight.rigidbody.tag == "Enemy")
+                    {
+                            front_Of_Enemy = front_of_enemy.Enemy;
+                    }
+                    if (HitRight.rigidbody.tag == "Player")
+                    {
+                            front_Of_Enemy = front_of_enemy.Player;
+                    }    
+                }                
             }
+                if (front_Of_Enemy != front_of_enemy.Player)
+                {
+                    OnFightDismiss();
+                }
+                if (Pressure < Under_Pressure_Approuching && Distance > ATK_Range && Change_state_enable == true)
+                {
+                    Move_to_player();
+                }
+                //Reteat_Condition       
+                else if (Pressure > Over_Pressure_Reteating && Distance < Under_ATK_Range_Reteating && Change_state_enable == true)
+                {
+                    Reteat();
+                }
+                //Attack_Condition
+                else if (Distance <= ATK_Range && Attack_CoolingDown <= 0 && Pressure < Under_Pressure_ATK && Change_state_enable == true)
+                {
+                    Attack();
+                }
+                else if (Change_state_enable == true)
+                {
+                    Cur_state = State.Idle;
+                    Animation_Update();
+                }
+            
         }
     }
     public enum front_of_enemy {Enemy,Player,None };
