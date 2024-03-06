@@ -36,15 +36,14 @@ public class Main : MonoBehaviour
         {
             vignette = Vg;
         }
-        Time.fixedDeltaTime = (float)(1f / 60f) * Time.timeScale;
+        
+
+        Application.targetFrameRate = 60;
 
     }
 
     // Update is called once per frame
-    private void FixedUpdate()
-    {
-       
-    }
+   
     private void Update()
     {
         CombatSystem();

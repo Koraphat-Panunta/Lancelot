@@ -69,7 +69,7 @@ public abstract class Enemy : Character
     public virtual void Start()
     {
         Cur_state = State.Idle;
-        Time.fixedDeltaTime = 1 / 60f;
+        
         base.LoadComponent();
         Counter_Enable = true;
         ATK_Range = 2.1f;
@@ -84,25 +84,77 @@ public abstract class Enemy : Character
 
     }
     //Update
+    public double Deltatime;
     protected override void Update()
     {
         base.Update();
         animation_leght = animator.GetCurrentAnimatorStateInfo(0).length*(float)(60f/100f);
         animation_curtime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f));
+        This_Uptate();
+        
     }
     protected override void FixedUpdate()
     {
-        
+        if (Cur_state == State.Dash)
+        {
+            Animation_Update();
+            //Duration
+            float Dash_Duration = animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f);
+            Change_state_enable = false;
+            Dashing += Time.deltaTime;
+            if (Dashing >= Dash_Duration)
+            {
+                Cur_state = State.Idle;
+                Change_state_enable = true;
+                Dashing = 0;
+                OnFightDismiss();
+            }
+            //Moving
+            if (base.transform.position.x > Player.transform.position.x)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * 3 * Time.deltaTime, 0, 0);
+            }
+            else if (base.transform.position.x < Player.transform.position.x)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * 3 * Time.deltaTime, 0, 0);
+            }
+        }
+        if(Cur_behavior == Move_behavior.Move_to_player) 
+        {
+            if (Cur_Direction == Direction.Left)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * Time.deltaTime, 0, 0);
+            }
+            if (Cur_Direction == Direction.Right)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
+            }
+        }
+        if(Cur_behavior == Move_behavior.Moveback) 
+        {
+            if (base.transform.position.x > Player.transform.position.x)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
+            }
+            else if (base.transform.position.x < Player.transform.position.x)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * Time.deltaTime, 0, 0);
+            }
+        }
+        Cur_behavior = Move_behavior.none;
+        Cooldown_Event();
+        Deltatime = Time.deltaTime;
+    }
+    private void This_Uptate()
+    {
         Distance = Math.Abs(base.transform.position.x - Player.transform.position.x);
         StateManagement();
-        RoleManagement();      
+        RoleManagement();
         //Calculate_Distance                
-        
+
         Animation_Update();
         Cur_state_string = Cur_state.ToString();
         Cur_Attackstate_string = Cur_Attack_State.ToString();
-        
-       
     }
     protected float Under_Pressure_Approuching = 60;
     protected float Over_Pressure_Reteating = 65;
@@ -131,18 +183,20 @@ public abstract class Enemy : Character
 
         }
     }
+    enum Move_behavior 
+    {
+        Move_to_player,
+        Dash,
+        Moveback,
+        none
+    }
+    Move_behavior Cur_behavior = Move_behavior.none;
     protected void Move_to_player()
     {
         Cur_state = State.Run;        
-        Animation_Update();        
-        if (Cur_Direction == Direction.Left)
-        {           
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed*Time.deltaTime, 0, 0);
-        }
-        if (Cur_Direction == Direction.Right)
-        {
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
-        }
+        Animation_Update();
+        Cur_behavior = Move_behavior.Move_to_player;
+        
     }
     protected void Reteat()
     {
@@ -155,15 +209,9 @@ public abstract class Enemy : Character
         {
             Cur_state = State.Run;
             Animation_Update();
+            Cur_behavior = Move_behavior.Moveback;
         }
-        if (base.transform.position.x > Player.transform.position.x)
-        {
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
-        }
-        else if (base.transform.position.x < Player.transform.position.x)
-        {
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * Time.deltaTime, 0 , 0);
-        }
+       
         
     }
     protected void MoveBack() 
@@ -176,14 +224,8 @@ public abstract class Enemy : Character
         {
             Cur_state = State.Run;
             Animation_Update();
-            if (base.transform.position.x > Player.transform.position.x)
-            {
-                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
-            }
-            else if (base.transform.position.x < Player.transform.position.x)
-            {
-                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * Time.deltaTime, 0, 0);
-            }
+            Cur_behavior= Move_behavior.Moveback;
+            
         }
     }
     protected void Dash()
@@ -259,36 +301,12 @@ public abstract class Enemy : Character
             }
             Cur_state = State.Dead;
             Animation_Update();                                   
-            //Destroy(gameObject);
         }
         else
         {
             LookatPlayer();
             //Dashing_Duration&Moving
-            if (Cur_state == State.Dash)
-            {
-                Animation_Update();
-                //Duration
-                float Dash_Duration = animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f);
-                Change_state_enable = false;
-                Dashing += Time.deltaTime;
-                if (Dashing >= Dash_Duration)
-                {
-                    Cur_state = State.Idle;
-                    Change_state_enable = true;
-                    Dashing = 0;
-                    OnFightDismiss();
-                }
-                //Moving
-                if (base.transform.position.x > Player.transform.position.x)
-                {
-                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed*3 * Time.deltaTime, 0, 0);
-                }
-                else if (base.transform.position.x < Player.transform.position.x)
-                {
-                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed*3 * Time.deltaTime, 0, 0);
-                }
-            }
+           
             //Attack_Duration
             if (Cur_state == State.Attack_I)
             {
@@ -304,7 +322,7 @@ public abstract class Enemy : Character
                 //Attack_I
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Time_preATK / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f))
                     && animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_ATKing / animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)))
-                {
+                {                   
                     Cur_Attack_State = Attack_State.Attacking;
                 }
                 //PostAttack_I
@@ -359,7 +377,7 @@ public abstract class Enemy : Character
                 }
             }
         }
-        Cooldown_Event();
+       
     }  
     public void Animation_Update()
     {

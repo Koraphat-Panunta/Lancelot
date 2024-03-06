@@ -61,14 +61,55 @@ public class Main_Char : Character
         Animation_TimeLine = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         InputManager();
         Block_Cooldown();       
-        Update_animation();     
+        Update_animation();
+        Update_State_and_Dicrection();
         
-        
+
     }
     protected override void FixedUpdate()
     {
-        Update_State_and_Dicrection();
-        Update_Pos();        
+        int parry_frame = 8;
+        //Defend_state
+        if (Cur_state == Char_state.Block)
+        {
+            Block_timimg += Time.deltaTime;
+            if (Block_timimg < parry_frame * Time.deltaTime)
+            {
+                Cur_Defend_State = Defend_state.Pre_Defend;
+            }
+            else if (Block_timimg >= parry_frame * Time.deltaTime)
+            {
+                Cur_Defend_State = Defend_state.Guard;
+            }
+        }
+        else if (Cur_state == Char_state.BlockReact)
+        {
+            Block_timimg += Time.deltaTime;
+            Change_Behavior_enable = false;
+            Cur_Defend_State = Defend_state.Blocking;
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            {
+                Cur_state = Char_state.Block;
+                Change_Behavior_enable = true;
+            }
+        }
+        else if (Cur_state == Char_state.Parry)
+        {
+            Block_timimg += Time.deltaTime;
+            Change_Behavior_enable = false;
+            Cur_Defend_State = Defend_state.Parry;
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            {
+                Cur_state = Char_state.Block;
+                Change_Behavior_enable = true;
+            }
+        }
+        else
+        {
+            Block_timimg = 0;
+            Cur_Defend_State = Defend_state.None;
+        }
+        Update_Pos();
         base.FixedUpdate();
         
     }
@@ -112,8 +153,7 @@ public class Main_Char : Character
     {
         if (Cur_state == Char_state.Run)
         {
-            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Speed*Time.deltaTime, 0, 0);
-            //gameObject.transform.Translate(new Vector3(Speed * Time.deltaTime, 0, 0));
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Speed*Time.deltaTime, 0, 0);           
         }   
         
     }
@@ -180,47 +220,7 @@ public class Main_Char : Character
                 Update_animation();
             }
         }
-        int parry_frame = 8;
-        //Defend_state
-        if(Cur_state == Char_state.Block) 
-        {
-            Block_timimg += Time.deltaTime;
-            if(Block_timimg < parry_frame*Time.deltaTime) 
-            {
-                Cur_Defend_State = Defend_state.Pre_Defend;
-            }
-            else if(Block_timimg >= parry_frame * Time.deltaTime) 
-            {
-                Cur_Defend_State = Defend_state.Guard;
-            }
-        }
-        else if(Cur_state == Char_state.BlockReact) 
-        {
-            Block_timimg += Time.deltaTime;
-            Change_Behavior_enable = false;
-            Cur_Defend_State = Defend_state.Blocking;
-            if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) 
-            {
-                Cur_state = Char_state.Block;
-                Change_Behavior_enable = true;
-            }
-        }
-        else if(Cur_state == Char_state.Parry) 
-        {
-            Block_timimg += Time.deltaTime;
-            Change_Behavior_enable = false;
-            Cur_Defend_State = Defend_state.Parry;            
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
-            {
-                Cur_state = Char_state.Block;
-                Change_Behavior_enable = true;
-            }
-        }
-        else 
-        {
-            Block_timimg = 0;
-            Cur_Defend_State = Defend_state.None;
-        }
+        
                    
         //Direction_Change
         if (Cur_Direction == Char_Direction.Right) 
