@@ -79,15 +79,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1221624150182605686, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.0179
       objectReference: {fileID: 0}
     - target: {fileID: 1221624150182605686, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1221624150182605686, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.00282
       objectReference: {fileID: 0}
     - target: {fileID: 1221624150182605686, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -120,6 +120,42 @@ PrefabInstance:
     - target: {fileID: 2939711314807975902, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
       propertyPath: m_Name
       value: Point Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Range
+      value: 5.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Color.b
+      value: 0.96463245
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Color.g
+      value: 0.96981126
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Color.r
+      value: 0.83257383
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Intensity
+      value: 1.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Shadows.m_Strength
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_UseColorTemperature
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
