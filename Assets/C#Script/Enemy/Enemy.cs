@@ -88,7 +88,7 @@ public abstract class Enemy : Character
     protected override void Update()
     {
         base.Update();
-        animation_leght = animator.GetCurrentAnimatorStateInfo(0).length*(float)(60f/100f);
+        animation_leght = animator.GetCurrentAnimatorStateInfo(0).length /** (float)(60f / 100f)*/;
         animation_curtime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f));
         This_Uptate();
         

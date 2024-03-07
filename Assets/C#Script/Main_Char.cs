@@ -400,6 +400,29 @@ public class Main_Char : Character
                 Update_animation();
                 Change_Behavior_enable = true;
             }
+            if (Input.GetKey(KeyCode.K) && Dash_able == true)
+            {
+                if (Input.GetKey(KeyCode.A))
+                {
+                    Cur_Direction = Char_Direction.Left;
+                    Cur_state = Char_state.Dash;
+                    Update_animation();
+                    Change_Behavior_enable = false;
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    Cur_Direction = Char_Direction.Right;
+                    Cur_state = Char_state.Dash;
+                    Update_animation();
+                    Change_Behavior_enable = false;
+                }
+                else
+                {
+                    Cur_state = Char_state.Dodge;
+                    Update_animation();
+                    Change_Behavior_enable = false;
+                }
+            }
         }
 
         if ((Cur_Attack_State == Attack_state.Post_Attack || Cur_Attack_State == Attack_state.Attacking) && (Cur_state == Char_state.Attack_I))
