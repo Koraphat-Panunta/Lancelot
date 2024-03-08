@@ -22,6 +22,7 @@ public abstract class Enemy : Character
     [SerializeField] protected float Dash_CoolingDown;
     public BoxCollider Attack_Box;
     public CapsuleCollider Hitted_Box;
+    [SerializeField] protected CapsuleCollider Character_Collider;
     public bool Change_state_enable;
     [SerializeField] private bool Counter_Enable;
     public string Cur_state_string;
@@ -40,7 +41,8 @@ public abstract class Enemy : Character
     public enum State
     {
         Run,
-        Dash,
+        Dash_Back,
+        Dash_Forward,
         Attack_I,
         Idle,
         Block,
@@ -95,31 +97,78 @@ public abstract class Enemy : Character
     }
     protected override void FixedUpdate()
     {
-        if (Cur_state == State.Dash)
+        MovingUpdate();
+        Cooldown_Event();
+        Deltatime = Time.deltaTime;
+    }
+    bool Dash_able = true;
+    private void MovingUpdate() 
+    {
+        if (Cur_state == State.Dash_Back)
         {
+            float Dash_n_Dodge = 12;
             Animation_Update();
-            //Duration
-            float Dash_Duration = animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f);
+            rb.drag = 3.7f;
+            //Duration            
             Change_state_enable = false;
             Dashing += Time.deltaTime;
-            if (Dashing >= Dash_Duration)
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
             {
                 Cur_state = State.Idle;
                 Change_state_enable = true;
                 Dashing = 0;
                 OnFightDismiss();
             }
-            //Moving
-            if (base.transform.position.x > Player.transform.position.x)
+            if (Dash_able == true)
             {
-                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * 3 * Time.deltaTime, 0, 0);
-            }
-            else if (base.transform.position.x < Player.transform.position.x)
-            {
-                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Run_Speed * 3 * Time.deltaTime, 0, 0);
+                Dash_able = false;
+                //Moving
+                if (base.transform.position.x > Player.transform.position.x)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Dash_n_Dodge, 0, 0);
+                }
+                else if (base.transform.position.x < Player.transform.position.x)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Dash_n_Dodge, 0, 0);
+                }
             }
         }
-        if(Cur_behavior == Move_behavior.Move_to_player) 
+        else if (Cur_state == State.Dash_Forward)
+        {
+            float Dash_n_Dodge = 10;
+            Animation_Update();
+            rb.drag = 3.7f;
+            Character_Collider.isTrigger = true;
+            //Duration
+            Change_state_enable = false;
+            Dashing += Time.deltaTime;
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            {
+                Cur_state = State.Idle;
+                Change_state_enable = true;
+                Dashing = 0;
+                OnFightDismiss();
+            }
+            if (Dash_able == true)
+            {
+                Dash_able = false;
+                //Moving
+                if (base.transform.position.x > Player.transform.position.x)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-Dash_n_Dodge, 0, 0);
+                }
+                else if (base.transform.position.x < Player.transform.position.x)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Dash_n_Dodge, 0, 0);
+                }
+            }
+        }
+        else 
+        {
+            Character_Collider.isTrigger = false;
+            rb.drag = 6f;
+        }
+        if (Cur_behavior == Move_behavior.Move_to_player)
         {
             if (Cur_Direction == Direction.Left)
             {
@@ -130,7 +179,7 @@ public abstract class Enemy : Character
                 gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Run_Speed * Time.deltaTime, 0, 0);
             }
         }
-        if(Cur_behavior == Move_behavior.Moveback) 
+        if (Cur_behavior == Move_behavior.Moveback)
         {
             if (base.transform.position.x > Player.transform.position.x)
             {
@@ -142,8 +191,6 @@ public abstract class Enemy : Character
             }
         }
         Cur_behavior = Move_behavior.none;
-        Cooldown_Event();
-        Deltatime = Time.deltaTime;
     }
     private void This_Uptate()
     {
@@ -212,8 +259,15 @@ public abstract class Enemy : Character
     {
         
         if (Dash_CoolingDown <= 0 )
-        {           
-            Dash();
+        {
+            if (UnityEngine.Random.value > 0.5f)
+            {
+                Dash(false);
+            }
+            else 
+            {
+                Dash(true);
+            }
         }
         else
         {
@@ -238,12 +292,24 @@ public abstract class Enemy : Character
             
         }
     }
-    protected void Dash()
+    protected void Dash(bool Dash_is_Forward)
     {
-        float Dash_Cooldown_Duration = 4;        
-        Cur_state = State.Dash;
-        Animation_Update();
-        Dash_CoolingDown = Dash_Cooldown_Duration;        
+        if (Dash_is_Forward == false && Dash_able == true)
+        {
+            float Dash_Cooldown_Duration = 4;
+            Cur_state = State.Dash_Back;
+            Animation_Update();
+            Dash_CoolingDown = Dash_Cooldown_Duration;
+            Change_state_enable = false;
+        }
+        else if(Dash_is_Forward == true && Dash_able == true)
+        {
+            float Dash_Cooldown_Duration = 4;
+            Cur_state = State.Dash_Forward;
+            Animation_Update();
+            Dash_CoolingDown = Dash_Cooldown_Duration;
+            Change_state_enable = false;
+        }
     }
     protected void Attack()
     {
@@ -286,6 +352,10 @@ public abstract class Enemy : Character
         if (Dash_CoolingDown > 0)
         {
             Dash_CoolingDown -= Time.deltaTime;
+        }
+        else 
+        {
+            Dash_able = true;
         }
         //RandomDistanceCoolDown
         if (RandomCooldown > 0) 
@@ -345,6 +415,14 @@ public abstract class Enemy : Character
                 {
                     OnFightDismiss(0.15f);
                     Change_state_enable = true;
+                    if (UnityEngine.Random.value > 0.6f) 
+                    {
+                        Dash(true);
+                    }
+                    else if(UnityEngine.Random.value > 0.6f) 
+                    {
+                        Dash(false);
+                    }
                 }
             }
             if (Cur_state != State.Attack_I)
@@ -523,33 +601,44 @@ public abstract class Enemy : Character
                             front_Of_Enemy = front_of_enemy.Player;
                     }    
                 }                
-            }
-                if (front_Of_Enemy != front_of_enemy.Player)
+            }               
+            if (front_Of_Enemy != front_of_enemy.Player)                
+            {                   
+                OnFightDismiss();               
+            }                
+            if (Pressure < Under_Pressure_Approuching && Distance > ATK_Range && Change_state_enable == true)                
+            {                 
+                Move_to_player();              
+            }                
+            //Reteat_Condition                       
+            else if (Pressure > Over_Pressure_Reteating && Distance < Under_ATK_Range_Reteating && Change_state_enable == true)               
+            {                 
+                Reteat();               
+            }                
+            //Dash_Forward               
+            else if(Convert.ToInt32(Distance)==Convert.ToInt32(ATK_Range)&& Pressure < Under_Pressure_Approuching && Change_state_enable == true
+                && Dash_Check_able == true)            
+            {
+                Dash_Check_able = false;
+                if (UnityEngine.Random.value > 0.7)
                 {
-                    OnFightDismiss();
+                    Dash(true);
                 }
-                if (Pressure < Under_Pressure_Approuching && Distance > ATK_Range && Change_state_enable == true)
-                {
-                    Move_to_player();
-                }
-                //Reteat_Condition       
-                else if (Pressure > Over_Pressure_Reteating && Distance < Under_ATK_Range_Reteating && Change_state_enable == true)
-                {
-                    Reteat();
-                }
-                //Attack_Condition
-                else if (Distance <= ATK_Range && Attack_CoolingDown <= 0 && Pressure < Under_Pressure_ATK && Change_state_enable == true)
-                {
-                    Attack();
-                }
-                else if (Change_state_enable == true)
-                {
-                    Cur_state = State.Idle;
-                    Animation_Update();
-                }
-            
+            }                
+            //Attack_Condition                
+            else if (Distance <= ATK_Range && Attack_CoolingDown <= 0 && Pressure < Under_Pressure_ATK && Change_state_enable == true)               
+            {                    
+                Attack();              
+            }              
+            else if (Change_state_enable == true)               
+            {                  
+                Cur_state = State.Idle;                    
+                Animation_Update();             
+                Dash_Check_able = true;
+            }           
         }
     }
+    bool Dash_Check_able = true;
     public enum front_of_enemy {Enemy,Player,None };
     public front_of_enemy front_Of_Enemy;
     private void RoleAroundfight() 

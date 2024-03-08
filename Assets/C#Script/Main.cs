@@ -116,7 +116,8 @@ public class Main : MonoBehaviour
             //Player_Attack_Enemy
             if (Player.GetComponent<Main_Char>().Cur_Attack_State == Main_Char.Attack_state.Attacking && enemy.GetComponent<Enemy_Common>().GetHitted_able == true)
             {
-                if (Player.GetComponent<Main_Char>().Attack_Box.bounds.Intersects(enemy.GetComponent<Enemy_Common>().Hitted_Box.bounds))
+                if (Player.GetComponent<Main_Char>().Attack_Box.bounds.Intersects(enemy.GetComponent<Enemy_Common>().Hitted_Box.bounds)
+                    &&enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dash_Forward&& enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dash_Back)
                 {
                     enemy.GetComponent<Enemy_Common>().Got_Attacked();
                     enemy.GetComponent<Enemy_Common>().GetHitted_able = false;

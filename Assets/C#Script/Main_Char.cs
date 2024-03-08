@@ -184,13 +184,13 @@ public class Main_Char : Character
         if (Cur_state == Char_state.Attack_I || Cur_state == Char_state.Attack_II)
         {
             //PreAttack_I
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Pre_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Pre_ATK ))
             {
                 Cur_Attack_State = Attack_state.Pre_Attack;
             }
             //Attack_I
-            else if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Pre_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(ATKing / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
+            else if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Pre_ATK )
+                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(ATKing ))
             {
                 Cur_Attack_State = Attack_state.Attacking;
                 if (Attack_step_Enable == true && Cur_Attack_State == Attack_state.Attacking)
@@ -200,8 +200,8 @@ public class Main_Char : Character
                 }
             }
             //PostAttack_I
-            else if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(ATKing / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f)
-                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Post_ATK / animator.GetCurrentAnimatorStateInfo(0).length) * (float)(60f / 100f))
+            else if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(ATKing )
+                && animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Post_ATK ))
             {
                 Cur_Attack_State = Attack_state.Post_Attack;
             }
