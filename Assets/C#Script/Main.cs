@@ -19,7 +19,7 @@ public class Main : MonoBehaviour
     public VolumeProfile VolumeProfile;
     public Vignette vignette;
     private bool Effect_is_On = false;
-    public Sequence Sequence;
+    
     public enum Dificulty 
     {
         Normal,
@@ -32,15 +32,13 @@ public class Main : MonoBehaviour
         Vignette Vg;
         Setup_Camera();
         Enemy = Director.Enemy;
-        Sequence.Enemys = Director.Enemy;
-        Sequence.MainCharacter = Player;
-        //EnemySpawner        
+        GetComponent<Sequence>().Set_List_Enemy(Enemy);
         if(Volume.GetComponent<Volume>().profile.TryGet<Vignette>(out Vg)) 
         {
             vignette = Vg;
         }       
         Application.targetFrameRate = 60;
-
+        
     }
 
     // Update is called once per frame

@@ -37,6 +37,8 @@ Transform:
   m_Children:
   - {fileID: 6387744074243863766}
   - {fileID: 7367296624029570654}
+  - {fileID: 1239814153104925411}
+  - {fileID: 7951079115573201479}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4319328989157077732
@@ -126,11 +128,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   rb: {fileID: 0}
+  HP: 100
   Change_Behavior_enable: 1
   Char_CurState: 
-  Speed: 2
+  Speed: 110
   Attack_Box: {fileID: 3009193098878186818}
   Hitted_Box: {fileID: 9009307185019906600}
+  CharacterCollider: {fileID: 3411196518808082088}
   Animation_TimeLine: 0
   Animation_Length: 0
   DMG: 15
@@ -139,6 +143,7 @@ MonoBehaviour:
   Cur_Direction: 0
   Cur_Defend_State: 0
   Cur_Attack_State: 0
+  Dash_CoolDown: 2
   Block_timimg: 0
 --- !u!54 &3117142449141461200
 Rigidbody:
@@ -149,7 +154,7 @@ Rigidbody:
   m_GameObject: {fileID: 512690125368294036}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 3.7
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -162,10 +167,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 124
   m_CollisionDetection: 0
 --- !u!136 &3411196518808082088
 CapsuleCollider:
@@ -182,14 +187,14 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25451994
-  m_Height: 1.8455198
+  m_Radius: 0.20837978
+  m_Height: 2.1018748
   m_Direction: 1
-  m_Center: {x: 0.010714849, y: -0.035301685, z: 0}
+  m_Center: {x: 0, y: -0.01744636, z: 0}
 --- !u!114 &7937342313012574498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +211,37 @@ MonoBehaviour:
   button_Right_State: 1
   Cur_Button_Attack: 0
   Cur_Button_Defend: 0
+--- !u!1 &1139771608028717436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1239814153104925411}
+  m_Layer: 0
+  m_Name: EnemySpawner_L
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1239814153104925411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139771608028717436}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -10, y: 1, z: 0}
+  m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3126412025996455471}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1866369398506911896
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +271,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.54067, y: 1, z: 1}
+  m_LocalScale: {x: 0.26375505, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3126412025996455471}
@@ -305,7 +341,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -325,7 +361,7 @@ GameObject:
   - component: {fileID: 8994461585137326501}
   - component: {fileID: 5064599262994633193}
   - component: {fileID: 3009193098878186818}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack_Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,3 +454,34 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.00139, y: 1, z: 1}
   m_Center: {x: 0.0006928461, y: 0, z: 0}
+--- !u!1 &4811843951343761649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7951079115573201479}
+  m_Layer: 0
+  m_Name: EnemySpawner_R
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7951079115573201479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811843951343761649}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10, y: 1, z: 0}
+  m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3126412025996455471}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -13,9 +13,10 @@ public class Dialogue : MonoBehaviour
     public int index;
     public bool PlayDialogue;
 
-    public GameObject nextButton;
+    public GameObject nextButton;    
     void Start()
     {
+        
         
     }
 
@@ -81,11 +82,10 @@ public class Dialogue : MonoBehaviour
     {
         if (other.CompareTag("Player")) 
         {
-
             PlayDialogue = true;
 
             dialoguePannel.SetActive(true);
-            StartCoroutine(Typing());
+            StartCoroutine(Typing());            
         }
 
     }
