@@ -19,6 +19,7 @@ public class Main : MonoBehaviour
     public VolumeProfile VolumeProfile;
     public Vignette vignette;
     private bool Effect_is_On = false;
+    public Sequence Sequence;
     public enum Dificulty 
     {
         Normal,
@@ -31,6 +32,8 @@ public class Main : MonoBehaviour
         Vignette Vg;
         Setup_Camera();
         Enemy = Director.Enemy;
+        Sequence.Enemys = Director.Enemy;
+        Sequence.MainCharacter = Player;
         //EnemySpawner        
         if(Volume.GetComponent<Volume>().profile.TryGet<Vignette>(out Vg)) 
         {
@@ -164,8 +167,8 @@ public class Main : MonoBehaviour
         Slow_Duration = Duration;
         
         Effect_is_On = true;
-        
-       
+              
     }
+    
     
 }

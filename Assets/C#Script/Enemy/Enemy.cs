@@ -7,10 +7,10 @@ using UnityEngine.UIElements;
 
 public abstract class Enemy : Character
 {
-    [SerializeField] protected float Run_Speed = 1.7f;
+    [SerializeField] protected float Run_Speed;
     protected float Run_Speed_Onfight;
     protected float Run_Speed_Offfight;
-    [SerializeField] protected float HP = 40;
+    [SerializeField] protected float HP;
     [SerializeField] protected float Defend;
     [SerializeField] protected float Pressure;
     [SerializeField] public float Distance;
@@ -70,16 +70,27 @@ public abstract class Enemy : Character
     //Start
     public virtual void Start()
     {
-        Cur_state = State.Idle;
-        
+        Player = Target.GetComponent<Main_Char>();
         base.LoadComponent();
-        Counter_Enable = true;
         ATK_Range = 2.1f;
-        Change_state_enable = true;
-        Player = Target.GetComponent<Main_Char>();       
-        Defend = 40;
         Director.AddEnemy(gameObject);
+        Cur_state = State.Idle;
+        Spawn(gameObject.transform.position,50,20);          
+        gameObject.SetActive(false);
+    }
+    public void Spawn(Vector3 Postion, float HP, float Defend)
+    {
+        gameObject.transform.position = Postion;
+        this.HP = HP;
+        this.Defend = Defend;
+        Counter_Enable = true;
         Cur_Role = Role.AroundFight;
+        Cur_state = State.Idle;
+        Change_state_enable = true;
+        gameObject.SetActive(true);
+        gameObject.GetComponent<CapsuleCollider>().enabled = true;
+        Hitted_Box.gameObject.SetActive(true);
+        gameObject.GetComponent<Rigidbody>().detectCollisions = true;
         RandomDistance();
         Run_Speed_Onfight = UnityEngine.Random.Range(99, 117);
         Run_Speed_Offfight = UnityEngine.Random.Range(69, 96);
@@ -433,6 +444,7 @@ public abstract class Enemy : Character
             if (Cur_state == State.Block)
             {              
                 Change_state_enable = false;
+                //Counter_Attack
                 if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f&&Counter_Enable == true) 
                 {
                     Counter_Enable = false;
@@ -475,63 +487,70 @@ public abstract class Enemy : Character
     
     public void Got_Attacked() 
     {
-        OnFightDismiss(0.2f);
-        if ((Cur_Direction == Direction.Left && (base.transform.position.x > Player.transform.position.x))
-            || (Cur_Direction == Direction.Right && (base.transform.position.x < Player.transform.position.x)))
+        if (Cur_state != State.Dead)
         {
-            if (Defend > 0 && Cur_state != State.Parried)
+            OnFightDismiss(0.2f);
+            if ((Cur_Direction == Direction.Left && (base.transform.position.x > Player.transform.position.x))
+                || (Cur_Direction == Direction.Right && (base.transform.position.x < Player.transform.position.x)))
             {
-                Cur_state = State.Block;
-                Animation_Update();
-            }
-            else if (Cur_state == State.Attack_I)
-            {
-                if (UnityEngine.Random.Range(0.0f, 1.0f) >= 0.5f && Cur_Attack_State == Attack_State.Post_Attack)
+                if (Defend > 0 && Cur_state != State.Parried)
                 {
                     Cur_state = State.Block;
                     Animation_Update();
                 }
+                else if (Cur_state == State.Attack_I)
+                {
+                    if (UnityEngine.Random.Range(0.0f, 1.0f) >= 0.5f && Cur_Attack_State == Attack_State.Post_Attack)
+                    {
+                        Cur_state = State.Block;
+                        Animation_Update();
+                    }
+                }
             }
-        }
-        if(Cur_state == State.Block) 
-        {
-            Defend -= Player.DMG * 0.7f;
-            Pressure += 15;           
-            Push(3.0f);               
-        }
-        else 
-        {
-            if (Cur_state == State.Parried)
+
+            if (Cur_state == State.Block)
             {
-                Pressure += 40;
-                HP -= Player.DMG * 1.5f;
+                Defend -= Player.DMG * 0.7f;
+                Pressure += 15;
+                Push(3.0f);
             }
             else
             {
-                if (UnityEngine.Random.Range(1, 10) <= 2)
+                if (Cur_state == State.Parried)
                 {
-                    //Critical
+                    Pressure += 40;
                     HP -= Player.DMG * 1.5f;
-                    Debug.Log("Critical_Hit:" + Player.DMG * 1.5f);
                 }
                 else
                 {
-                    HP -= Player.DMG;
-                    Debug.Log("Hit:" + Player.DMG);
+                    if (UnityEngine.Random.Range(1, 10) <= 2)
+                    {
+                        //Critical
+                        HP -= Player.DMG * 1.5f;
+                        Debug.Log("Critical_Hit:" + Player.DMG * 1.5f);
+                    }
+                    else
+                    {
+                        HP -= Player.DMG;
+                        Debug.Log("Hit:" + Player.DMG);
+                    }
                 }
+                Cur_state = State.Flinch;
+                Animation_Update();
+                Pressure += 10;
+                Push(3.0f);
+
             }
-            Cur_state = State.Flinch;
-            Animation_Update();                                                              
-            Pressure += 10;
-            Push(3.0f);
-            
         }
     }
     public void Got_Parried() 
     {
-        Cur_state = State.Parried;
-        Animation_Update();
-        OnFightDismiss();
+        if (Cur_state != State.Dead)
+        {
+            Cur_state = State.Parried;
+            Animation_Update();
+            OnFightDismiss();
+        }
     }
     public void Push(float force) 
     {

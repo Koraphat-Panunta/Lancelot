@@ -11,7 +11,12 @@ public class Enemy_Director : MonoBehaviour
     public int AroundFight_num = 0;
     public float Lowest_Distance_Enemy = 1000;
     public int Enemy_front;
-    
+    public int List_Enemy;
+    private void Start()
+    {
+        List_Enemy = Enemy.Count;
+
+    }
     public void AddEnemy(GameObject gameObject) 
     {
         Enemy.Add(gameObject);
@@ -29,8 +34,8 @@ public class Enemy_Director : MonoBehaviour
         foreach (GameObject Enemy in Enemy) 
         {           
             if(Enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Dead) 
-            {                
-                this.Enemy.Remove(Enemy);                 
+            {
+                //this.Enemy.Remove(Enemy);
             }
             else 
             {
@@ -77,7 +82,8 @@ public class Enemy_Director : MonoBehaviour
                 foreach (GameObject Enemy in Enemy)
                 {
                     GameOBG_ID_Last_Onfight = Enemy.GetInstanceID();
-                    if (Enemy.GetComponent<Enemy_Common>().front_Of_Enemy == global::Enemy.front_of_enemy.Player && Random.Range(1, 10) > 5)
+                    if (Enemy.GetComponent<Enemy_Common>().front_Of_Enemy == global::Enemy.front_of_enemy.Player && Random.Range(1, 10) > 5
+                        && Enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dead)
                     {
                         Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.OnFight;
                         OnFight_num += 1;
@@ -99,15 +105,13 @@ public class Enemy_Director : MonoBehaviour
     {
         foreach (GameObject Enemy in Enemy) 
         {
-            Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.AroundFight;
+            if (Enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dead)
+            {
+                Enemy.GetComponent<Enemy_Common>().Cur_Role = global::Enemy.Role.AroundFight;
+            }
         }
     }
-    public void RemoveGameObg(GameObject Enemy) 
-    {
-        this.Enemy.Remove(Enemy);
-        Game_manager.RemoveEnemy(Enemy);        
-        
-    }
+    
 
 
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9179382864992108521}
   - component: {fileID: 6284551615589405636}
   m_Layer: 0
-  m_Name: Dialogue Trigger Box
+  m_Name: Sequence Trigger Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
