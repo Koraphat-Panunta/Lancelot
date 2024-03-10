@@ -12,8 +12,9 @@ public class Dialogue : MonoBehaviour
 
     public int index;
     public bool PlayDialogue;
+    public bool canPlayDialogue = true;
 
-    public GameObject nextButton;    
+    public GameObject nextButton;
     void Start()
     {
         
@@ -22,25 +23,15 @@ public class Dialogue : MonoBehaviour
 
     void Update()
     {
-       /* if(PlayDialogue) 
-        {
-            *//*if (dialoguePannel.activeInHierarchy)
-            {
-                zeroText();
-            }
-            else
-            {
-                dialoguePannel.SetActive(true);
-                StartCoroutine(Typing());
-            }*//*
-
-            dialoguePannel.SetActive(true);
-            StartCoroutine(Typing());
-        }*/
-
+       
+        //Do below after finished dialogue
         if (text.text == dialogue[index])
         {
             nextButton.SetActive(true);
+
+            PlayDialogue = false;
+            Invoke("zeroText", 3);
+            //zeroText();
         }
     }
 
@@ -80,22 +71,24 @@ public class Dialogue : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Player") && canPlayDialogue == true) 
         {
             PlayDialogue = true;
 
             dialoguePannel.SetActive(true);
-            StartCoroutine(Typing());            
+            StartCoroutine(Typing());           
+            
+            canPlayDialogue = false;
         }
 
     }
     public void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        /*if (other.CompareTag("Player"))
         {
             PlayDialogue = false;
             zeroText();
-        }
+        }*/
     }
 
 }
