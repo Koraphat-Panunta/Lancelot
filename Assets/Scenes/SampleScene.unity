@@ -7892,7 +7892,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300141764}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -13464,7 +13464,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1065120212}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -17881,8 +17881,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 148, y: -50}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 830.87, y: -142.764}
+  m_SizeDelta: {x: 1565.7, y: 235.529}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1598232228
 MonoBehaviour:
@@ -22656,6 +22656,10 @@ PrefabInstance:
       propertyPath: dialoguePannel
       value: 
       objectReference: {fileID: 1065120212}
+    - target: {fileID: 9179382864992108521, guid: d1e709246935c4f4ebc72a64c2bee53b, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: 111111111111111111111111111111111111111111111111111111111
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

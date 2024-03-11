@@ -108,6 +108,10 @@ MonoBehaviour:
   - 33333333
   index: 0
   PlayDialogue: 0
+  canPlayDialogue: 1
+  canPlayNextLine: 1
+  timer: 0
+  waitTime: 3
   nextButton: {fileID: 0}
 --- !u!65 &6284551615589405636
 BoxCollider:
@@ -142,11 +146,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 108aa584db0408344acc4da3551b63dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Current_Sequence: 0
   Enemys: []
   MainCharacter: {fileID: 0}
   Enemy_Spawner_L: {fileID: 0}
   Enemy_Spawner_R: {fileID: 0}
   Collider_enable: 1
   Enter_Chapter: 1
+  index: 0
   Cur_Sequence: {fileID: 0}
   Set_sequence: 0
