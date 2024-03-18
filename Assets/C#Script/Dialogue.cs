@@ -13,12 +13,17 @@ public class Dialogue : MonoBehaviour
     public int index;
     public bool PlayDialogue;
     public bool canPlayDialogue = true;
+    public bool canPlayNextLine = true;
+    public bool startCounter = false;
+
+    public float counter = 0;
+    public float waitTime = 0;
+    public float dialogueCloseTime = 2;
 
     public GameObject nextButton;
     void Start()
     {
-        
-        
+
     }
 
     void Update()
@@ -28,10 +33,29 @@ public class Dialogue : MonoBehaviour
         if (text.text == dialogue[index])
         {
             nextButton.SetActive(true);
+            if(startCounter)
+            {
+                counter += 1 * Time.deltaTime;
+            }
 
-            PlayDialogue = false;
-            Invoke("zeroText", 3);
+            if (index <= dialogue.Length/* && canPlayNextLine*/)
+            {
+                //Invoke("NextLine", 5);
+
+                NextLine();
+                canPlayNextLine = false;
+            }
+            
             //zeroText();
+
+            /*if (index == dialogue.Length)
+            {
+                Debug.Log("closing");
+                PlayDialogue = false;
+                Invoke("zeroText", 10);
+                timer = 0;
+            }*/
+
         }
     }
 
@@ -51,21 +75,32 @@ public class Dialogue : MonoBehaviour
         }
     }
 
+
     public void NextLine()
     {
-        Debug.Log("Next");
-
-        nextButton.SetActive(false);
-
-        if(index < dialogue.Length - 1)
+        //canPlayNextLine = true;
+        if(counter >= waitTime)
         {
-            index++;
-            text.text = "";
-            StartCoroutine(Typing());
-        }
-        else
-        {
-            zeroText();
+            Debug.Log("NextLine");
+
+            nextButton.SetActive(false);
+
+            if (index < dialogue.Length - 1)
+            {
+                index++;
+                text.text = "";
+                StartCoroutine(Typing());
+            }
+            else
+            {
+                //zeroText();
+                index = 0;
+                Debug.Log("closing");
+                PlayDialogue = false;
+                Invoke("zeroText", dialogueCloseTime);
+                counter = 0;
+            }
+            counter = 0;
         }
     }
 
@@ -74,10 +109,12 @@ public class Dialogue : MonoBehaviour
         if (other.CompareTag("Player") && canPlayDialogue == true) 
         {
             PlayDialogue = true;
-
+            startCounter = true;
             dialoguePannel.SetActive(true);
-            StartCoroutine(Typing());           
-            
+            StartCoroutine(Typing());
+            Debug.Log(gameObject.name);
+
+
             canPlayDialogue = false;
         }
 
