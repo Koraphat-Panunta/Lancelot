@@ -74,9 +74,9 @@ public abstract class Enemy : Character
         base.LoadComponent();
         ATK_Range = 2.1f;
         Director.AddEnemy(gameObject);
-        Cur_state = State.Idle;
+        Cur_state = State.Dead;
         Cur_Role = Role.OffFight;
-        Spawn(gameObject.transform.position,50,20);          
+         
         gameObject.SetActive(false);
     }
     public void Spawn(Vector3 Postion, float HP, float Defend)
@@ -97,6 +97,7 @@ public abstract class Enemy : Character
         Regen_HP_for_Player = true;
         Run_Speed_Onfight = UnityEngine.Random.Range(99, 117);
         Run_Speed_Offfight = UnityEngine.Random.Range(69, 96);
+        
 
     }
     //Update
@@ -512,7 +513,7 @@ public abstract class Enemy : Character
             }
 
             if (Cur_state == State.Block)
-            {
+            {                
                 Defend -= Player.DMG * 0.7f;
                 Pressure += 15;
                 Push(3.0f);
@@ -537,7 +538,7 @@ public abstract class Enemy : Character
                         HP -= Player.DMG;
                         Debug.Log("Hit:" + Player.DMG);
                     }
-                }
+                }               
                 Cur_state = State.Flinch;
                 Animation_Update();
                 Pressure += 10;

@@ -471,7 +471,7 @@ public class Main_Char : Character
                     Push(0.2f, enemy);
                 }
                 if(Cur_Defend_State == Defend_state.Guard) 
-                {
+                {                    
                     Cur_state = Char_state.BlockReact;
                     Change_Behavior_enable = false;
                     Update_animation();
@@ -485,8 +485,8 @@ public class Main_Char : Character
             }
             else 
             {
-                this.HP -= enemy.GetComponent<Enemy_Common>().DMG;
-                Cur_state = Char_state.Flinch;
+                this.HP -= enemy.GetComponent<Enemy_Common>().DMG;                
+                Cur_state = Char_state.Flinch;                
                 Change_Behavior_enable = false;
                 Push(2.5f, enemy);
                 Update_animation();
