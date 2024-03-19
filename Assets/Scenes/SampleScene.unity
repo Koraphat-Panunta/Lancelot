@@ -13351,7 +13351,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3126412025996455471, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1940029851}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 512690125368294036, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1121886805}
   m_SourcePrefab: {fileID: 100100000, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
 --- !u!1001 &1034142990
 PrefabInstance:
@@ -14475,6 +14478,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3126412025996455471, guid: 87aa8fb42213e224f8330754ebd5c442, type: 3}
   m_PrefabInstance: {fileID: 1029145807}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1121886805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121886791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 7ea20634840c54843afab19ddfe788ef, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 281d282f-07a4-47ee-8a35-edb4fd635b57
+    m_ActionName: Controller/Attack[/DualSenseGamepadHID/rightShoulder,/DualSenseGamepadHID/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f61dd336-8492-4233-b12e-50b2e4d41c5d
+    m_ActionName: Controller/Defend[/DualSenseGamepadHID/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 00ea30d5-0d25-4208-9061-b7984647249b
+    m_ActionName: Controller/Dash_n_Dodge[/DualSenseGamepadHID/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 03844ccb-dc27-4820-8f37-c1178a89e9d3
+    m_ActionName: Controller/Walk_Left[/DualSenseGamepadHID/dpad/left]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 43e37903-f8bf-46c8-8032-866845082d8c
+    m_ActionName: Controller/Walk_Right[/DualSenseGamepadHID/dpad/right]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Controller
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &1121905977
 PrefabInstance:
   m_ObjectHideFlags: 0
