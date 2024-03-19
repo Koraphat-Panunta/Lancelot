@@ -1,38 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.PlayerLoop;
+using UnityEngine.UI;
 
 public class Virsual_input : MonoBehaviour
 {
-    public enum Button_Left_State { Up, Down };
-    public enum Button_Right_State { Down, Up };
-    public Button_Left_State button_Left_State = Button_Left_State.Up;
-    public Button_Right_State button_Right_State = Button_Right_State.Up;
+   
 
     public Touch mytouch;
     public enum Button_Attack_State { Up,Down};
     public enum Button_Defend_State {  Up,Down};
     public Button_Attack_State Cur_Button_Attack = Button_Attack_State.Up;
     public Button_Defend_State Cur_Button_Defend = Button_Defend_State.Up;
+    public enum Swipe_Gesture 
+    {
+        None,
+        Left,
+        Right,
+    }
+    public Swipe_Gesture Swipe = Swipe_Gesture.None;
+    public float Horizontal;
 
-
-    public void Set_Button_Left_Up() 
-    {
-        button_Left_State = Button_Left_State.Up;
-    }
-    public void Set_Button_Right_Up()
-    {
-        button_Right_State = Button_Right_State.Up;
-    }
-    public void Set_Button_Left_Down()
-    {
-        button_Left_State = Button_Left_State.Down;
-    }
-    public void Set_Button_Right_Down()
-    {
-        button_Right_State = Button_Right_State.Down;
-    }
+    public FixedJoystick joystick;
+    public Vector2 Begin_point;
+    public Vector2 End_point;
+    public float Duration;
 
     // Start is called before the first frame update
     void Start()
@@ -53,15 +47,44 @@ public class Virsual_input : MonoBehaviour
             {
                 mytouch = Input.touches[1];
             }
-            if ((mytouch.phase == TouchPhase.Began || mytouch.phase == TouchPhase.Stationary) && mytouch.position.x >= (float)Screen.width / 2)
+            if(mytouch.phase == TouchPhase.Began && mytouch.position.x >= (float)Screen.width / 2) 
             {
-                Cur_Button_Attack = Button_Attack_State.Down;
+                Begin_point = mytouch.position;
+            }
+            if((mytouch.phase == TouchPhase.Stationary|| mytouch.phase == TouchPhase.Moved) && mytouch.position.x >= (float)Screen.width / 2) 
+            {
+                Duration += Time.deltaTime*(1/Time.timeScale);
+            }
+            
+            if ((mytouch.phase == TouchPhase.Ended) && mytouch.position.x >= (float)Screen.width / 2)
+            {                                
+                End_point = mytouch.position;
+                //Dash
+                if (Duration <= 0.5f&&(Vector2.Distance(Begin_point,End_point)>1.5f))
+                {
+                    if (End_point.x > Begin_point.x) 
+                    {
+                        Swipe = Swipe_Gesture.Right;
+                    }
+                    else if(End_point.x < Begin_point.x) 
+                    {
+                        Swipe = Swipe_Gesture.Left;
+                    }
+                }
+                //Attack
+                else if (mytouch.position.x >= (float)Screen.width / 2) 
+                {
+                    Cur_Button_Attack = Button_Attack_State.Down;
+                }
+                Duration = 0;
             }
             else
             {
                 Cur_Button_Attack = Button_Attack_State.Up;
+                Swipe = Swipe_Gesture.None;
             }
-            if ((mytouch.phase == TouchPhase.Began || mytouch.phase == TouchPhase.Stationary) && (button_Left_State == Button_Left_State.Up && button_Right_State == Button_Right_State.Up)
+            //Block
+            if ((mytouch.phase == TouchPhase.Began || mytouch.phase == TouchPhase.Stationary|| mytouch.phase == TouchPhase.Moved ) && (joystick.Horizontal== 0&&joystick.Vertical==0) 
                 && mytouch.position.x < (float)Screen.width / 2)
             {
                 Cur_Button_Defend = Button_Defend_State.Down;
@@ -70,7 +93,23 @@ public class Virsual_input : MonoBehaviour
             {
                 Cur_Button_Defend = Button_Defend_State.Up;
             }
+            
         }
+        else 
+        {
+            Cur_Button_Attack = Button_Attack_State.Up;
+            Cur_Button_Defend = Button_Defend_State.Up;
+            Swipe = Swipe_Gesture.None;
+        }
+        Joystick();
 
     }
+    
+    private void Joystick() 
+    {
+        Horizontal = joystick.Horizontal;
+        
+
+    }
+    
 }
