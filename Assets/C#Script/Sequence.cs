@@ -6,6 +6,7 @@ public class Sequence : MonoBehaviour
 {
     public enum Sequence_Line 
     {
+        Chatper0_Part_1,
         Chapter1_Part_1, Chapter1_Part_2,
         Chapter2_Part_1, Chapter2_Part_2,Chapter2_Part3,Chapter2_Part4,
         Chapter3_Part_1, Chapter3_Part_2,

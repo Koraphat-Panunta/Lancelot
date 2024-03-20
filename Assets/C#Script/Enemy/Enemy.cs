@@ -250,7 +250,7 @@ public abstract class Enemy : Character
                 Attack_Box.transform.localPosition.y,
                 Attack_Box.transform.localPosition.z);
             //Set_HittedBox
-            Hitted_Box.transform.localPosition = new Vector3(Math.Abs(Hitted_Box.transform.localPosition.x),
+            Hitted_Box.transform.localPosition = new Vector3(-Math.Abs(Hitted_Box.transform.localPosition.x),
                 Hitted_Box.transform.localPosition.y,
                 Hitted_Box.transform.localPosition.z);
         }
@@ -377,10 +377,16 @@ public abstract class Enemy : Character
         {
             RandomCooldown -= Time.deltaTime;
         }
+        //ATK_PUSH_ABLE
+        if(Cur_Attack_State != Attack_State.Attacking&&ATK_push_able == false) 
+        {
+            ATK_push_able = true;
+        }
 
     }
     private float Dashing = 0;
     private bool Regen_HP_for_Player = true;
+    private bool ATK_push_able = true;
     protected void StateManagement()
     {
         if (HP <= 0||Cur_state == State.Dead)
@@ -406,7 +412,7 @@ public abstract class Enemy : Character
             if (Cur_state == State.Attack_I)
             {
                 float Time_preATK = 0.22f;
-                float Time_ATKing = 0.33f;
+                float Time_ATKing = 0.40f;
                 float Time_PostATK = 0.67f;
                 Change_state_enable = false;
                 //PreAttack_I
@@ -418,6 +424,12 @@ public abstract class Enemy : Character
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime * (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) >= (float)(Time_preATK /*/ animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)*/)
                     && animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)) < (float)(Time_ATKing /*/ animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f)*/))
                 {                   
+                    if(ATK_push_able == true) 
+                    {
+                        //pushForward
+                        ATK_push_able = false;
+                        Push(-5.2f);
+                    }
                     Cur_Attack_State = Attack_State.Attacking;
                 }
                 //PostAttack_I
