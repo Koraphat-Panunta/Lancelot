@@ -107,12 +107,14 @@ public class Sequence : MonoBehaviour
         
         for(int i = 0; i < Num_R; i++) 
         {
-            Enemys[index].GetComponent<Enemy_Common>().Spawn(Enemy_Spawner_R.transform.position, 50, 20);
+            Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_R.transform.position.x+(i*2), Enemy_Spawner_R.transform.position.y,Enemy_Spawner_R.transform.position.z)
+                , 50, 20);
             index++;
         }
         for(int i = 0;i < Num_L; i ++) 
         {
-            Enemys[index].GetComponent<Enemy_Common>().Spawn(Enemy_Spawner_L.transform.position, 50, 20);
+            Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_L.transform.position.x - (i * 2), Enemy_Spawner_L.transform.position.y, Enemy_Spawner_L.transform.position.z)
+                , 50, 20);
             index++;
         }
     }

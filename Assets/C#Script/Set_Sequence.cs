@@ -6,6 +6,10 @@ public class Set_Sequence : Sequence
 {
     public Sequence Cur_Sequence;
     public Sequence_Line Set_sequence;
+    private void Start()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+    }
     protected void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

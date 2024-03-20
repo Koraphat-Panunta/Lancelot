@@ -95,7 +95,7 @@ public abstract class Enemy : Character
         RandomDistance();
         Timing_Set_Active = 2;
         Regen_HP_for_Player = true;
-        Run_Speed_Onfight = UnityEngine.Random.Range(99, 117);
+        Run_Speed_Onfight = UnityEngine.Random.Range(120, 150);
         Run_Speed_Offfight = UnityEngine.Random.Range(69, 96);
         
 
@@ -485,7 +485,26 @@ public abstract class Enemy : Character
     }  
     public void Animation_Update()
     {
-        animator.Play(Cur_state.ToString());
+        if (Cur_state == State.Run)
+        {
+            if (Cur_Role == Role.OnFight)
+            {
+                animator.Play("Walk_offfight");
+            }
+            else if (Cur_Role == Role.OffFight)
+            {
+                animator.Play("Walk_offfight");
+            }
+            else
+            {
+                animator.Play("Walk_offfight");
+            }
+        }
+        else 
+        {
+            animator.Play(Cur_state.ToString());
+        }
+        
     }
     public bool Hit_able = true;
     

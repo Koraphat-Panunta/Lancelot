@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3397722035315959887}
   - component: {fileID: 4981861534980947265}
   - component: {fileID: 6816251657033088840}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack_Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 394076919768277290}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.556, y: -0.974, z: 0}
+  m_LocalPosition: {x: 1.232, y: -0.12399995, z: 0}
   m_LocalScale: {x: 2.4781466, y: 1.8385733, z: 0.33341}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -103,8 +103,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.42226002, y: 1, z: 1}
+  m_Center: {x: -0.2888705, y: 0, z: 0}
 --- !u!1 &2065344683469992252
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +152,7 @@ Rigidbody:
   m_GameObject: {fileID: 2065344683469992252}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 6
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -168,7 +168,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 124
   m_CollisionDetection: 0
 --- !u!136 &945503230466602673
 CapsuleCollider:
@@ -189,10 +189,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6480069
-  m_Height: 2.2768767
+  m_Radius: 0.40914154
+  m_Height: 1.9634336
   m_Direction: 1
-  m_Center: {x: 0, y: -0.8993828, z: 0}
+  m_Center: {x: -0.37436423, y: -0.14578216, z: 0.20447946}
 --- !u!212 &2409834877578540504
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -234,8 +234,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: db296a9759a582d4590b8c1105f92a34, type: 3}
-  m_Color: {r: 1, g: 0.53396225, b: 0.53396225, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 339783b113b5f64458e7a0cb4e095b7b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -294,7 +294,7 @@ Transform:
   m_GameObject: {fileID: 7676544319962130630}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.25, y: -1, z: 0}
+  m_LocalPosition: {x: -0.25, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -365,14 +365,14 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.39
+  m_Radius: 0.3148082
   m_Height: 2.02
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.10025573, y: 0, z: 0}
 --- !u!1001 &5538686366730519544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -462,10 +462,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   rb: {fileID: 0}
   Run_Speed: 1.7
-  Dash_Speed: 7
-  Speed: 0
-  HP: 100
-  Defend: 200
+  HP: 35
+  Defend: 50
   Pressure: 0
   Distance: 0
   RayDistance: 0
@@ -475,12 +473,19 @@ MonoBehaviour:
   Dash_CoolingDown: 0
   Attack_Box: {fileID: 6816251657033088840}
   Hitted_Box: {fileID: 3970229288171305513}
+  Character_Collider: {fileID: 945503230466602673}
   Change_state_enable: 0
+  Counter_Enable: 0
   Cur_state_string: 
   Cur_Attackstate_string: 
   GetHitted_able: 0
   Director: {fileID: 0}
+  DMG: 8
+  animation_leght: 0
+  animation_curtime: 0
   Cur_Attack_State: 0
   Cur_Role: 2
   Cur_state: 0
+  Deltatime: 0
   Hit_able: 1
+  front_Of_Enemy: 0

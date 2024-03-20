@@ -62,6 +62,7 @@ public class Main_Char : Character
         Virsual_input virsual_Input = GetComponent<Virsual_input>();
         Original_Speed = Speed;
         mycontroller.currentActionMap.FindAction("Attack").IsPressed();
+       
     }
 
     protected override void Update()
@@ -69,7 +70,14 @@ public class Main_Char : Character
         Char_CurState = Cur_state.ToString();
         Animation_Length = animator.GetCurrentAnimatorStateInfo(0).length;
         Animation_TimeLine = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-        InputManager();
+        if(Gamepad.current == null) 
+        {
+            InputManager();
+        }
+        else 
+        {
+            InputManager_withcontroller();
+        }
         Cooldown();
         Update_animation();
     }
@@ -328,24 +336,27 @@ public class Main_Char : Character
     private bool Combo_Continue = false;
 
 
-    private void InputManager()
+    private void InputManager_withcontroller()
     {
-         if ((Input.GetKey(KeyCode.Space) || (virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down) || Gamepad.current.leftShoulder.value > 0) && Change_Behavior_enable == true && Block_Enable == true)
+         
+        if ((Input.GetKeyDown(KeyCode.J) || (virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down)||Gamepad.current.buttonWest.isPressed) && Change_Behavior_enable == true)
         {
-            Cur_state = Char_state.Block;
-            Update_animation();
             if ((Input.GetKey(KeyCode.D) || virsual_Input.Horizontal > 0.3f || Gamepad.current.dpad.right.value > 0) && Change_Behavior_enable == true)
             {
+                Cur_state = Char_state.Run;
                 Cur_Direction = Char_Direction.Right;
+                Update_animation();
+                Dash_by_swipe();
+               
             }
-            if ((Input.GetKey(KeyCode.A) || (virsual_Input.Horizontal > 0.3f) || Gamepad.current.dpad.left.value > 0) && Change_Behavior_enable == true)
+            else if ((Input.GetKey(KeyCode.A) || (virsual_Input.Horizontal < -0.3f) || Gamepad.current.dpad.left.value > 0) && Change_Behavior_enable == true)
             {
+                Cur_state = Char_state.Run;
                 Cur_Direction = Char_Direction.Left;
+                Update_animation();
+                Dash_by_swipe();
+                
             }
-            Change_Behavior_enable = false;
-        }
-        else if ((Input.GetKeyDown(KeyCode.J) || (virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down)||Gamepad.current.buttonWest.isPressed) && Change_Behavior_enable == true)
-        {
             Cur_state = Char_state.Attack_I;
             Update_animation();
             Change_Behavior_enable = false;
@@ -360,6 +371,12 @@ public class Main_Char : Character
             {
                 Cur_Direction = Char_Direction.Right;
                 Cur_state = Char_state.Dash;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
+            if ((Input.GetKey(KeyCode.Space) || (virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down) || Gamepad.current.leftShoulder.value > 0) && Change_Behavior_enable == true && Block_Enable == true)
+            {
+                Cur_state = Char_state.Block;
                 Update_animation();
                 Change_Behavior_enable = false;
             }
@@ -384,13 +401,25 @@ public class Main_Char : Character
                 Change_Behavior_enable = false;
                 
             }
+            if ((Input.GetKey(KeyCode.Space) || (virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down) || Gamepad.current.leftShoulder.value > 0) && Change_Behavior_enable == true && Block_Enable == true)
+            {
+                Cur_state = Char_state.Block;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
             if ((Input.GetKeyDown(KeyCode.J) || (virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down)|| Gamepad.current.buttonWest.isPressed) && Change_Behavior_enable == true)
             {
                 Cur_state = Char_state.Attack_I;
                 Update_animation();
                 Change_Behavior_enable = false;
             }
-        }                               
+        }
+        else if ((Input.GetKey(KeyCode.Space) || (virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down) || Gamepad.current.leftShoulder.value > 0) && Change_Behavior_enable == true && Block_Enable == true)
+        {
+            Cur_state = Char_state.Block;
+            Update_animation();
+            Change_Behavior_enable = false;
+        }
         else if((Input.GetKey(KeyCode.K)||virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None|| Gamepad.current.buttonEast.isPressed) && Change_Behavior_enable == true && Dash_able == true) 
         {
             if (virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None)
@@ -445,14 +474,14 @@ public class Main_Char : Character
                 }
                 else
                 {
-                    if (Input.GetKey(KeyCode.A))
+                    if (Input.GetKey(KeyCode.A)|| Gamepad.current.dpad.left.value > 0)
                     {
                         Cur_Direction = Char_Direction.Left;
                         Cur_state = Char_state.Dash;
                         Update_animation();
                         Change_Behavior_enable = false;
                     }
-                    else if (Input.GetKey(KeyCode.D))
+                    else if (Input.GetKey(KeyCode.D)||Gamepad.current.dpad.right.value > 0)
                     {
                         Cur_Direction = Char_Direction.Right;
                         Cur_state = Char_state.Dash;
@@ -492,6 +521,37 @@ public class Main_Char : Character
                 Cur_state = Char_state.Attack_I;
                 Update_animation() ;
             }
+            
+            if ((Input.GetKey(KeyCode.K) || virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None || Gamepad.current.buttonEast.isPressed) && Dash_able == true)
+            {
+                if (virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None)
+                {
+                    Dash_by_swipe();
+                }
+                else
+                {
+                    if (Input.GetKey(KeyCode.A) || Gamepad.current.dpad.left.value > 0)
+                    {
+                        Cur_Direction = Char_Direction.Left;
+                        Cur_state = Char_state.Dash;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                    else if (Input.GetKey(KeyCode.D) || Gamepad.current.dpad.right.value > 0)
+                    {
+                        Cur_Direction = Char_Direction.Right;
+                        Cur_state = Char_state.Dash;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                    else
+                    {
+                        Cur_state = Char_state.Dodge;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                }
+            }
         }
         ////
         if ( (Input.GetKey(KeyCode.Space) == false && virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Up&& Gamepad.current.leftShoulder.value == 0) && Cur_state == Char_state.Block)
@@ -500,7 +560,231 @@ public class Main_Char : Character
             Block_Enable = false;
         }
     }
-   
+    private void InputManager()
+    {
+
+        if ((Input.GetKeyDown(KeyCode.J) || (virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down) ) && Change_Behavior_enable == true)
+        {
+            if ((Input.GetKey(KeyCode.D) || virsual_Input.Horizontal > 0.3f ) && Change_Behavior_enable == true)
+            {
+                Cur_state = Char_state.Run;
+                Cur_Direction = Char_Direction.Right;
+                Update_animation();
+                Dash_by_swipe();
+
+            }
+            else if ((Input.GetKey(KeyCode.A) || (virsual_Input.Horizontal < -0.3f)) && Change_Behavior_enable == true)
+            {
+                Cur_state = Char_state.Run;
+                Cur_Direction = Char_Direction.Left;
+                Update_animation();
+                Dash_by_swipe();
+
+            }
+            Cur_state = Char_state.Attack_I;
+            Update_animation();
+            Change_Behavior_enable = false;
+        }
+        else if ((Input.GetKey(KeyCode.D) || virsual_Input.Horizontal > 0.3f) && Change_Behavior_enable == true)
+        {
+            Cur_state = Char_state.Run;
+            Cur_Direction = Char_Direction.Right;
+            Update_animation();
+            Dash_by_swipe();
+            if ((Input.GetKey(KeyCode.K)) && Dash_able == true)
+            {
+                Cur_Direction = Char_Direction.Right;
+                Cur_state = Char_state.Dash;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
+            if ((Input.GetKey(KeyCode.Space) || (virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)) && Change_Behavior_enable == true && Block_Enable == true)
+            {
+                Cur_state = Char_state.Block;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
+            if ((Input.GetKeyDown(KeyCode.J) || (virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down)) && Change_Behavior_enable == true)
+            {
+                Cur_state = Char_state.Attack_I;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
+        }
+        else if ((Input.GetKey(KeyCode.A) || (virsual_Input.Horizontal < -0.3f)) && Change_Behavior_enable == true)
+        {
+            Cur_state = Char_state.Run;
+            Cur_Direction = Char_Direction.Left;
+            Update_animation();
+            Dash_by_swipe();
+            if ((Input.GetKey(KeyCode.K)) && Dash_able == true)
+            {
+                Cur_Direction = Char_Direction.Left;
+                Cur_state = Char_state.Dash;
+                Update_animation();
+                Change_Behavior_enable = false;
+
+            }
+            if ((Input.GetKey(KeyCode.Space) || (virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)) && Change_Behavior_enable == true && Block_Enable == true)
+            {
+                Cur_state = Char_state.Block;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
+            if ((Input.GetKeyDown(KeyCode.J) || (virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down)) && Change_Behavior_enable == true)
+            {
+                Cur_state = Char_state.Attack_I;
+                Update_animation();
+                Change_Behavior_enable = false;
+            }
+        }
+        else if ((Input.GetKey(KeyCode.Space) || (virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)) && Change_Behavior_enable == true && Block_Enable == true)
+        {
+            Cur_state = Char_state.Block;
+            Update_animation();
+            Change_Behavior_enable = false;
+        }
+        else if ((Input.GetKey(KeyCode.K) || virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None) && Change_Behavior_enable == true && Dash_able == true)
+        {
+            if (virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None)
+            {
+                Dash_by_swipe();
+            }
+            else
+            {
+                if (Input.GetKey(KeyCode.A) )
+                {
+                    Cur_Direction = Char_Direction.Left;
+                    Cur_state = Char_state.Dash;
+                    Update_animation();
+                    Change_Behavior_enable = false;
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    Cur_Direction = Char_Direction.Right;
+                    Cur_state = Char_state.Dash;
+                    Update_animation();
+                    Change_Behavior_enable = false;
+                }
+                else
+                {
+                    Cur_state = Char_state.Dodge;
+                    Update_animation();
+                    Change_Behavior_enable = false;
+                }
+            }
+        }
+        //Idle(NoInput)
+        else if (Change_Behavior_enable == true)
+        {
+            Cur_state = Char_state.Idle;
+            Update_animation();
+        }
+        ////Bypass_State
+        if ((Cur_Attack_State == Attack_state.Pre_Attack || Cur_Attack_State == Attack_state.Post_Attack) && Block_Enable == true)
+        {
+            if (Input.GetKey(KeyCode.Space) || virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)
+            {
+                Cur_Attack_State = Attack_state.None;
+                Cur_state = Char_state.Block;
+                Update_animation();
+                Change_Behavior_enable = true;
+            }
+            if ((Input.GetKey(KeyCode.K) || virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None) && Dash_able == true)
+            {
+                if (virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None)
+                {
+                    Dash_by_swipe();
+                }
+                else
+                {
+                    if (Input.GetKey(KeyCode.A) )
+                    {
+                        Cur_Direction = Char_Direction.Left;
+                        Cur_state = Char_state.Dash;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                    else if (Input.GetKey(KeyCode.D) )
+                    {
+                        Cur_Direction = Char_Direction.Right;
+                        Cur_state = Char_state.Dash;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                    else
+                    {
+                        Cur_state = Char_state.Dodge;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                }
+            }
+        }
+
+        if ((Cur_Attack_State == Attack_state.Post_Attack || Cur_Attack_State == Attack_state.Attacking) && (Cur_state == Char_state.Attack_I))
+        {
+            if (Input.GetKeyDown(KeyCode.J) || virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down )
+            {
+                Combo_Continue = true;
+            }
+        }
+        if (Cur_Attack_State == Attack_state.Post_Attack && Cur_state == Char_state.Attack_I)
+        {
+            if (Combo_Continue == true)
+            {
+                Cur_state = Char_state.Attack_II;
+                Update_animation();
+                Combo_Continue = false;
+            }
+        }
+        if (Cur_state == Char_state.Parry)
+        {
+            if (Input.GetKey(KeyCode.J) || virsual_Input.Cur_Button_Attack == Virsual_input.Button_Attack_State.Down )
+            {
+                Cur_state = Char_state.Attack_I;
+                Update_animation();
+            }
+
+            if ((Input.GetKey(KeyCode.K) || virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None) && Dash_able == true)
+            {
+                if (virsual_Input.Swipe != Virsual_input.Swipe_Gesture.None)
+                {
+                    Dash_by_swipe();
+                }
+                else
+                {
+                    if (Input.GetKey(KeyCode.A) )
+                    {
+                        Cur_Direction = Char_Direction.Left;
+                        Cur_state = Char_state.Dash;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                    else if (Input.GetKey(KeyCode.D))
+                    {
+                        Cur_Direction = Char_Direction.Right;
+                        Cur_state = Char_state.Dash;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                    else
+                    {
+                        Cur_state = Char_state.Dodge;
+                        Update_animation();
+                        Change_Behavior_enable = false;
+                    }
+                }
+            }
+        }
+        ////
+        if ((Input.GetKey(KeyCode.Space) == false && virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Up) && Cur_state == Char_state.Block)
+        {
+            Change_Behavior_enable = true;
+            Block_Enable = false;
+        }
+    }
+
     public void GotAttack(GameObject enemy) 
     {
         if(enemy.transform.position.x > gameObject.transform.position.x) 
@@ -518,8 +802,8 @@ public class Main_Char : Character
                 {                    
                     Cur_state = Char_state.BlockReact;
                     Change_Behavior_enable = false;
-                    Update_animation();
-                    Push(2.5f, enemy);
+                    Update_animation();                    
+                    Push(2.5f, enemy);                    
                 }
                 
             }

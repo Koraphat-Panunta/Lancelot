@@ -6,6 +6,8 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering.Universal;
+using System.Runtime.CompilerServices;
+using UnityEngine.InputSystem;
 
 public class Main : MonoBehaviour
 {
@@ -46,7 +48,7 @@ public class Main : MonoBehaviour
     {
         CombatSystem();
         CameraTransformation();
-
+        Haptic_system();
     }
 
     /////BackEnd       
@@ -129,6 +131,28 @@ public class Main : MonoBehaviour
         Shake_Duration = Duration;
         Magnitude = intensity;
     }
+    static float Rumble_Duration = 0;
+    static float frequency_R = 0,frequency_L =0;
+    
+    static public void Haptic_feedback_Input(float Duration,float frequency_l,float frequency_r ) 
+    {
+        Rumble_Duration = Duration;
+        frequency_R = frequency_r;
+        frequency_L = frequency_l;
+    }
+    private void Haptic_system() 
+    {
+        if(Rumble_Duration > 0) 
+        {
+            Gamepad.current.SetMotorSpeeds(frequency_L, frequency_R);
+            Rumble_Duration -= Time.deltaTime;
+        }
+        else 
+        {
+            Rumble_Duration = 0;
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
+    } 
    
     public void CombatSystem() 
     {
@@ -149,10 +173,12 @@ public class Main : MonoBehaviour
                         if(enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Flinch) 
                         {
                             CameraShake(0.06f, 0.08f);
+                            Main.Haptic_feedback_Input(0.02f, 0.2f, 0.5f);
                         }
                         else if(enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Block) 
                         {
                             CameraShake(0.02f, 0.01f);
+                            Main.Haptic_feedback_Input(0.01f, 0.7f, 0.5f);
                         }
                     }
                 }
@@ -172,14 +198,17 @@ public class Main : MonoBehaviour
                         {
                             enemy.GetComponent<Enemy_Common>().Got_Parried();
                             Parry_Effect(1);
+                            Main.Haptic_feedback_Input(0.05f, 0.04f, 0.01f);
                         }
                         else if(Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.Flinch) 
                         {
                             CameraShake(0.25f, 0.07f);
+                            Main.Haptic_feedback_Input(0.3f, 1f, 1f);
                         }
                         else if (Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.BlockReact)
                         {
                             CameraShake(0.02f, 0.1f);
+                            Main.Haptic_feedback_Input(0.06f, 0.7f, 0f);
                         }
                     }
                 }
