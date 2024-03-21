@@ -11,8 +11,8 @@ public class Sequence : MonoBehaviour
         Chapter2_Part_1, Chapter2_Part_2,Chapter2_Part3,Chapter2_Part4,
         Chapter3_Part_1, Chapter3_Part_2,
     }
-    [SerializeField] private Sequence_Line Current_Sequence ;
-    
+    [SerializeField] public Sequence_Line Current_Sequence ;
+    [SerializeField] private Tutorial_Sequence Tutorial ;
     [SerializeField] private List<GameObject> Enemys;
     [SerializeField] private GameObject MainCharacter;
     [SerializeField] private GameObject Enemy_Spawner_L;
@@ -20,18 +20,79 @@ public class Sequence : MonoBehaviour
     [SerializeField] protected bool Collider_enable = true;
     void Start()
     {
+        Tutorial.Tutorial = Tutorial_Sequence.tutorial.Movement;
         
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if(Current_Sequence == Sequence_Line.Chapter1_Part_1) 
+        //Tutorial_Move
+        if(Current_Sequence == Sequence_Line.Chatper0_Part_1) 
+        {
+            if (Enter_Chapter == true)
+            {
+                Enter_Chapter = false;   
+                Tutorial.StopTime();
+            }
+        }
+        //Tutorial_Combat
+        else if(Current_Sequence == Sequence_Line.Chapter1_Part_1) 
         {
             if(Enter_Chapter == true) 
             {
                 Enter_Chapter = false;
                 Spawn_Enemy(0,1);
+            }            
+            if(Tutorial.Tutorial == Tutorial_Sequence.tutorial.Block ) 
+            {
+                foreach(GameObject enemy in Enemys) 
+                {
+                    if(enemy.GetComponent<Enemy_Common>().Distance < 2.1f&&enemy.GetComponent<Enemy_Common>().Cur_Role == Enemy.Role.OnFight && Tutorial.FristTime_Block == true && MainCharacter.GetComponent<Main_Char>().Change_Behavior_enable == true) 
+                    {
+                        Tutorial.StopTime();                       
+                    }
+                    if(enemy.GetComponent<Enemy_Common>().Cur_Attack_State == Enemy.Attack_State.Post_Attack) 
+                    {
+                        Tutorial.Tutorial = Tutorial_Sequence.tutorial.Parry;
+                    }
+                }
+            }
+            if (Tutorial.Tutorial == Tutorial_Sequence.tutorial.Parry && MainCharacter.GetComponent<Main_Char>().Change_Behavior_enable == true)
+            {
+                foreach (GameObject enemy in Enemys)
+                {
+                    if (enemy.GetComponent<Enemy_Common>().Cur_Attack_State == Enemy.Attack_State.Pre_Attack && enemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime>0.23f
+                        &&Tutorial.FristTime_Parry==true&&(MainCharacter.GetComponent<Main_Char>().Cur_state != Main_Char.Char_state.Block|| MainCharacter.GetComponent<Main_Char>().Cur_state != Main_Char.Char_state.BlockReact))
+                    {                        
+                        Tutorial.StopTime();
+                    }
+                }
+            }
+            if(Tutorial.Tutorial == Tutorial_Sequence.tutorial.Attack ) 
+            {
+                foreach (GameObject enemy in Enemys)
+                {
+                    if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Parried && enemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.2f 
+                        && Tutorial.FristTime_ATK == true && MainCharacter.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.Parry)
+                    {
+                        Tutorial.StopTime();
+                    }
+                }
+            }
+            if(Tutorial.Tutorial == Tutorial_Sequence.tutorial.Dash && MainCharacter.GetComponent<Main_Char>().Change_Behavior_enable == true) 
+            {
+                foreach (GameObject enemy in Enemys)
+                {
+                    if (enemy.GetComponent<Enemy_Common>().Cur_Attack_State == Enemy.Attack_State.Pre_Attack && Tutorial.FristTime_Dash == true)
+                    {
+                        Tutorial.StopTime();
+                    }
+                }
+            }
+            if(Tutorial.Tutorial == Tutorial_Sequence.tutorial.None)
+            {
+                Tutorial.text.stop_show_text();
             }
         }
         else if(Current_Sequence == Sequence_Line.Chapter1_Part_2) 

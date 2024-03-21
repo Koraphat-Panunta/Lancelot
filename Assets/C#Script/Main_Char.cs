@@ -12,7 +12,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class Main_Char : Character
 {
     public float HP = 100f;
-    [SerializeField] private bool Change_Behavior_enable = true;
+    [SerializeField] public bool Change_Behavior_enable = true;
     private float Block_CoolDown = 0.15f;
     bool Block_Enable = true;
     public string Char_CurState;

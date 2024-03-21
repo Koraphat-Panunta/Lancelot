@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 394076919768277290}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.232, y: -0.12399995, z: 0}
-  m_LocalScale: {x: 2.4781466, y: 1.8385733, z: 0.33341}
+  m_LocalPosition: {x: 0.754, y: -0.12399995, z: 0}
+  m_LocalScale: {x: 1.1710978, y: 1.8385733, z: 0.33341}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8048576354470394238}
@@ -103,8 +103,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.42226002, y: 1, z: 1}
-  m_Center: {x: -0.2888705, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2065344683469992252
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,10 +189,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.40914154
-  m_Height: 1.9634336
+  m_Radius: 0.21
+  m_Height: 1.98
   m_Direction: 1
-  m_Center: {x: -0.37436423, y: -0.14578216, z: 0.20447946}
+  m_Center: {x: -0.31, y: -0.14, z: 0}
 --- !u!212 &2409834877578540504
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -468,7 +468,7 @@ MonoBehaviour:
   Distance: 0
   RayDistance: 0
   Target: {fileID: 0}
-  ATK_Range: 2
+  ATK_Range: 1.6
   Attack_CoolingDown: 0
   Dash_CoolingDown: 0
   Attack_Box: {fileID: 6816251657033088840}
@@ -483,9 +483,11 @@ MonoBehaviour:
   DMG: 8
   animation_leght: 0
   animation_curtime: 0
+  Curent_sequence: {fileID: 0}
   Cur_Attack_State: 0
   Cur_Role: 2
   Cur_state: 0
   Deltatime: 0
   Hit_able: 1
+  Dash_Check_able: 0
   front_Of_Enemy: 0

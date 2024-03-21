@@ -32,6 +32,7 @@ public abstract class Enemy : Character
     public float DMG = 8;
     [SerializeField] float animation_leght;
     [SerializeField] float animation_curtime;
+    [SerializeField] Sequence Curent_sequence;
 
     public enum Direction
     {
@@ -72,7 +73,7 @@ public abstract class Enemy : Character
     {
         Player = Target.GetComponent<Main_Char>();
         base.LoadComponent();
-        ATK_Range = 2.1f;
+        ATK_Range = 1.2f;
         Director.AddEnemy(gameObject);
         Cur_state = State.Dead;
         Cur_Role = Role.OffFight;
@@ -317,7 +318,7 @@ public abstract class Enemy : Character
             Dash_CoolingDown = Dash_Cooldown_Duration;
             Change_state_enable = false;
         }
-        else if(Dash_is_Forward == true && Dash_able == true)
+        else if(Dash_is_Forward == true && Dash_able == true && Curent_sequence.Current_Sequence != Sequence.Sequence_Line.Chapter1_Part_1)
         {
             float Dash_Cooldown_Duration = 4;
             Cur_state = State.Dash_Forward;
@@ -692,7 +693,7 @@ public abstract class Enemy : Character
             }           
         }
     }
-    bool Dash_Check_able = true;
+    public bool Dash_Check_able ;
     public enum front_of_enemy {Enemy,Player,None };
     public front_of_enemy front_Of_Enemy;
     private void RoleAroundfight() 
