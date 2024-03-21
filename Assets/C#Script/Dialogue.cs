@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Dialogue : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class Dialogue : MonoBehaviour
     public GameObject nextButton;
     void Start()
     {
-
+        GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void Update()
@@ -57,6 +58,28 @@ public class Dialogue : MonoBehaviour
             }*/
 
         }
+        if (Gamepad.current != null)
+        {
+            if (Gamepad.current.buttonSouth.isPressed)
+            {
+                NextLine();
+            }
+        }
+        else if(Input.touchCount > 0)
+        {
+           for(int i = 0; i < Input.touchCount; i++) 
+            {
+                if (Input.touches[i].position.y > Screen.height / 2f && Input.touches[i].phase == UnityEngine.TouchPhase.Began) 
+                {
+                    NextLine();
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            NextLine();
+        }
+
     }
 
     public void zeroText()
@@ -64,6 +87,7 @@ public class Dialogue : MonoBehaviour
         text.text = "";
         index = 0;
         dialoguePannel.SetActive(false);
+        Destroy(gameObject);
     }
 
     IEnumerator Typing()
@@ -78,7 +102,7 @@ public class Dialogue : MonoBehaviour
 
     public void NextLine()
     {
-        //canPlayNextLine = true;
+        canPlayNextLine = true;
         if(counter >= waitTime)
         {
             Debug.Log("NextLine");
@@ -107,14 +131,12 @@ public class Dialogue : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && canPlayDialogue == true) 
-        {
+        {            
             PlayDialogue = true;
             startCounter = true;
             dialoguePannel.SetActive(true);
             StartCoroutine(Typing());
-            Debug.Log(gameObject.name);
-
-
+            Debug.Log(gameObject.name);            
             canPlayDialogue = false;
         }
 

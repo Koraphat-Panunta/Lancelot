@@ -14,7 +14,7 @@ public class Tutorial_Sequence : MonoBehaviour
     public bool FristTime_ATK = true;
     public bool FristTime_Dash = true;
     public enum tutorial
-    {
+    {        
         Movement,
         Block,
         Parry,
@@ -38,7 +38,7 @@ public class Tutorial_Sequence : MonoBehaviour
     public void Tutorial_Update() 
     {
         if(Time.timeScale == 0)
-        {           
+        {            
             if (Tutorial == tutorial.Movement && FristTime_Move == true)
             {
                 if (Gamepad.current != null)

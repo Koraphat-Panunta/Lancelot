@@ -6,7 +6,7 @@ public class Sequence : MonoBehaviour
 {
     public enum Sequence_Line 
     {
-        Chatper0_Part_1,
+        Chatper0_Part_1, 
         Chapter1_Part_1, Chapter1_Part_2,
         Chapter2_Part_1, Chapter2_Part_2,Chapter2_Part3,Chapter2_Part4,
         Chapter3_Part_1, Chapter3_Part_2,
@@ -18,24 +18,24 @@ public class Sequence : MonoBehaviour
     [SerializeField] private GameObject Enemy_Spawner_L;
     [SerializeField] private GameObject Enemy_Spawner_R;
     [SerializeField] protected bool Collider_enable = true;
+    [SerializeField] GameObject Ending_Line; 
     void Start()
     {
-        Tutorial.Tutorial = Tutorial_Sequence.tutorial.Movement;
-        
+        Tutorial.Tutorial = Tutorial_Sequence.tutorial.Movement;        
     }
 
     // Update is called once per frame
     private void Update()
     {
-        //Tutorial_Move
-        if(Current_Sequence == Sequence_Line.Chatper0_Part_1) 
+        //Tutorial
+        if (Current_Sequence == Sequence_Line.Chatper0_Part_1) 
         {
             if (Enter_Chapter == true)
             {
                 Enter_Chapter = false;   
                 Tutorial.StopTime();
             }
-        }
+        }       
         //Tutorial_Combat
         else if(Current_Sequence == Sequence_Line.Chapter1_Part_1) 
         {
@@ -150,12 +150,26 @@ public class Sequence : MonoBehaviour
                 Enter_Chapter = false;
                 Spawn_Enemy(5, 5);
             }
+            Count = 0;
+            foreach(GameObject enemy in Enemys) 
+            {               
+                if(enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead) 
+                {
+                    Count++;
+                }
+            }
+            if(Count == Enemys.Count) 
+            {
+                Ending_Line.transform.position = new Vector3(Enemy_Spawner_R.transform.position.x - 7.36f, Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z);
+            }
         }
+
         if (index >= Enemys.Count) 
         {
             index = 0;
         }
     }
+    public int Count;
    
     public bool Enter_Chapter = true;
     public void Chapter_End() 
@@ -169,15 +183,35 @@ public class Sequence : MonoBehaviour
         
         for(int i = 0; i < Num_R; i++) 
         {
-            Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_R.transform.position.x+(i*2), Enemy_Spawner_R.transform.position.y,Enemy_Spawner_R.transform.position.z)
-                , 50, 20);
-            index++;
+            if(Main.dificulty == Main.Dificulty.Normal)
+            {
+                Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_R.transform.position.x + (i * 2), Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z)
+                , 50, 20,15);
+                index++;
+            }
+            else 
+            {
+                Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_R.transform.position.x + (i * 2), Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z)
+               , 70, 50, 15);
+                index++;
+            }
+            
         }
         for(int i = 0;i < Num_L; i ++) 
         {
-            Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_L.transform.position.x - (i * 2), Enemy_Spawner_L.transform.position.y, Enemy_Spawner_L.transform.position.z)
-                , 50, 20);
-            index++;
+            
+            if (Main.dificulty == Main.Dificulty.Normal)
+            {
+                Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_L.transform.position.x - (i * 2), Enemy_Spawner_L.transform.position.y, Enemy_Spawner_L.transform.position.z)
+                , 50, 20,15);
+                index++;
+            }
+            else
+            {
+                Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_L.transform.position.x - (i * 2), Enemy_Spawner_L.transform.position.y, Enemy_Spawner_L.transform.position.z)
+                 , 70, 50,15);
+                index++;
+            }
         }
     }
     public void SetCur_Sequence(Sequence_Line Set_Sequence) 

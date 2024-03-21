@@ -15,10 +15,19 @@ public class ButtonScript : MonoBehaviour
     {
         
     }
-
     public void ChangeScene(string sceneName)
     {
+        SceneManager.LoadScene(sceneName);       
+    }
+    public void ChangeSceneNormal(string sceneName)
+    {
         SceneManager.LoadScene(sceneName);
+        Global_Data.Difficultselect = 1;
+    }
+    public void ChangeSceneHard(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+        Global_Data.Difficultselect = 2;
     }
 
     public void OnCursorEnter()

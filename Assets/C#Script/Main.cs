@@ -21,7 +21,7 @@ public class Main : MonoBehaviour
     public VolumeProfile VolumeProfile;
     public Vignette vignette;
     private bool Effect_is_On = false;
-
+    [SerializeField] private string Difficult;
     public enum Dificulty
     {
         Normal,
@@ -40,6 +40,18 @@ public class Main : MonoBehaviour
         }
         Application.targetFrameRate = 60;
         GetComponent<AudioSource>().Play();
+        if(Global_Data.Difficultselect == 1) 
+        {
+            dificulty = Dificulty.Normal;
+        }
+        else if(Global_Data.Difficultselect == 2) 
+        {
+            dificulty= Dificulty.Hard;
+        }
+        else
+        {
+            dificulty = Dificulty.Normal;
+        }
     }
 
     // Update is called once per frame
@@ -49,6 +61,7 @@ public class Main : MonoBehaviour
         CombatSystem();
         CameraTransformation();
         Haptic_system();
+        Difficult = dificulty.ToString();
     }
 
     /////BackEnd       

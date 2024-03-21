@@ -32,11 +32,16 @@ public class Virsual_input : MonoBehaviour
     void Start()
     {
         Cur_Button_Defend = Button_Defend_State.Up;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (UnityEngine.InputSystem.Gamepad.current != null)
+        {
+            joystick.gameObject.SetActive(false);
+        }
         if (Input.touches.Length > 0)
         {
             if (Input.touches.Length == 1)

@@ -29,11 +29,12 @@ public abstract class Enemy : Character
     public string Cur_Attackstate_string;
     public bool GetHitted_able;
     [SerializeField] private Enemy_Director Director;
-    public float DMG = 8;
-    [SerializeField] float animation_leght;
-    [SerializeField] float animation_curtime;
+    public float DMG = 8;    
     [SerializeField] Sequence Curent_sequence;
     public Enemy_Audio Muaudio;
+
+    public SpriteRenderer HP_Bar;
+    public SpriteRenderer Defend_Bar;
 
     public enum Direction
     {
@@ -69,6 +70,9 @@ public abstract class Enemy : Character
     public Role Cur_Role = Role.OnFight;
     public State Cur_state;
     protected Direction Cur_Direction;
+
+    private float MaxHP;
+    private float MaxDefend;
     //Start
     public virtual void Start()
     {
@@ -81,11 +85,12 @@ public abstract class Enemy : Character
          
         gameObject.SetActive(false);
     }
-    public void Spawn(Vector3 Postion, float HP, float Defend)
+    public void Spawn(Vector3 Postion, float HP, float Defend,float DMG)
     {
         gameObject.transform.position = Postion;
         this.HP = HP;
         this.Defend = Defend;
+        this.DMG = DMG;
         Counter_Enable = true;
         Cur_Role = Role.AroundFight;
         Cur_state = State.Idle;
@@ -97,18 +102,18 @@ public abstract class Enemy : Character
         RandomDistance();
         Timing_Set_Active = 2;
         Regen_HP_for_Player = true;
-        Run_Speed_Onfight = UnityEngine.Random.Range(120, 150);
+        Run_Speed_Onfight = UnityEngine.Random.Range(150, 210);
         Run_Speed_Offfight = UnityEngine.Random.Range(69, 96);
-        
-
+        HP_Bar.enabled = true;
+        Defend_Bar.enabled = true;
+        MaxHP = HP;
+        MaxDefend = Defend;
     }
     //Update
     public double Deltatime;
     protected override void Update()
     {
-        base.Update();
-        animation_leght = animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f);
-        animation_curtime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime* (animator.GetCurrentAnimatorStateInfo(0).length * (float)(60f / 100f));
+        base.Update();        
         This_Uptate();
         
     }
@@ -250,6 +255,11 @@ public abstract class Enemy : Character
             Hitted_Box.transform.localPosition = new Vector3(Math.Abs(Hitted_Box.transform.localPosition.x),
                 Hitted_Box.transform.localPosition.y,
                 Hitted_Box.transform.localPosition.z);
+            //UIBAR
+            HP_Bar.transform.localPosition = new Vector3(Math.Abs(HP_Bar.transform.localPosition.x), HP_Bar.transform.localPosition.y, 
+                HP_Bar.transform.localPosition.z);
+            Defend_Bar.transform.localPosition = new Vector3(Math.Abs(Defend_Bar.transform.localPosition.x), Defend_Bar.transform.localPosition.y,
+                Defend_Bar.transform.localPosition.z);
         }
         if (base.transform.position.x < Player.transform.position.x && Change_state_enable == true)
         {
@@ -263,6 +273,11 @@ public abstract class Enemy : Character
             Hitted_Box.transform.localPosition = new Vector3(-Math.Abs(Hitted_Box.transform.localPosition.x),
                 Hitted_Box.transform.localPosition.y,
                 Hitted_Box.transform.localPosition.z);
+            //UIBAR
+            HP_Bar.transform.localPosition = new Vector3(-Math.Abs(HP_Bar.transform.localPosition.x), HP_Bar.transform.localPosition.y,
+                HP_Bar.transform.localPosition.z);
+            Defend_Bar.transform.localPosition = new Vector3(-Math.Abs(Defend_Bar.transform.localPosition.x), Defend_Bar.transform.localPosition.y,
+                Defend_Bar.transform.localPosition.z);
         }
     }
     enum Move_behavior 
@@ -397,11 +412,25 @@ public abstract class Enemy : Character
     private float Dashing = 0;
     private bool Regen_HP_for_Player = true;
     private bool ATK_push_able = true;
+    protected void UIupdate() 
+    {
+        HP_Bar.transform.localScale = new Vector3 ((float)this.HP/MaxHP, 1f, 1f);
+        if ((float)this.Defend / MaxDefend < 0)
+        {
+            Defend_Bar.transform.localScale = new Vector3(0, 1f, 1f);
+        }
+        else
+        {
+            Defend_Bar.transform.localScale = new Vector3((float)this.Defend / MaxDefend, 1f, 1f);
+        }
+    }
     protected void StateManagement()
     {
         if (HP <= 0||Cur_state == State.Dead)
         {
             Cur_state = State.Dead;
+            HP_Bar.enabled = false;
+            Defend_Bar.enabled = false;
             Animation_Update();
             if (Regen_HP_for_Player == true)
             {
@@ -415,6 +444,7 @@ public abstract class Enemy : Character
         }
         else
         {
+            UIupdate();
             LookatPlayer();
             //Dashing_Duration&Moving
            
@@ -472,10 +502,10 @@ public abstract class Enemy : Character
             {              
                 Change_state_enable = false;
                 //Counter_Attack
-                if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f&&Counter_Enable == true) 
+                if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f&&Counter_Enable == true && Main.dificulty == Main.Dificulty.Hard) 
                 {
                     Counter_Enable = false;
-                    if (UnityEngine.Random.value <= 0.4f) 
+                    if (UnityEngine.Random.value >= 0.95f ) 
                     {
                         Attack();
                     }
@@ -555,8 +585,8 @@ public abstract class Enemy : Character
                     Animation_Update();
                 }
                 else if (Cur_state == State.Attack_I)
-                {
-                    if (UnityEngine.Random.Range(0.0f, 1.0f) >= 0.5f && Cur_Attack_State == Attack_State.Post_Attack)
+                {                    
+                    if ((Cur_Attack_State == Attack_State.Post_Attack|| Cur_Attack_State == Attack_State.Pre_Attack) && Main.dificulty == Main.Dificulty.Hard&&Defend>0)
                     {
                         Cur_state = State.Block;
                         Animation_Update();
@@ -583,7 +613,8 @@ public abstract class Enemy : Character
                         AudioSource.PlayClipAtPoint(Muaudio.Parried[i], gameObject.transform.position);
                     }
                     Pressure += 40;
-                    HP -= Player.DMG * 1.5f;
+                    HP -= Player.DMG * 1.8f;
+                    Defend -= Player.DMG * 1.5f;
                 }
                 else
                 {
