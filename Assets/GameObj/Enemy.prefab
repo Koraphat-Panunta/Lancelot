@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 2409834877578540504}
   - component: {fileID: 1891624482389811286}
   - component: {fileID: 5630205986203177239}
+  - component: {fileID: 7097476723072489281}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -189,10 +190,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.21
-  m_Height: 1.98
+  m_Radius: 0.39
+  m_Height: 2.33
   m_Direction: 1
-  m_Center: {x: -0.31, y: -0.14, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &2409834877578540504
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -446,6 +447,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5285165913329781924, guid: 3eb2f3ad4c6f02246befcff10bedd5cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5630205986203177239}
+    - targetCorrespondingSourceObject: {fileID: 5285165913329781924, guid: 3eb2f3ad4c6f02246befcff10bedd5cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7097476723072489281}
   m_SourcePrefab: {fileID: 100100000, guid: 3eb2f3ad4c6f02246befcff10bedd5cc, type: 3}
 --- !u!114 &5630205986203177239
 MonoBehaviour:
@@ -484,10 +488,43 @@ MonoBehaviour:
   animation_leght: 0
   animation_curtime: 0
   Curent_sequence: {fileID: 0}
+  Muaudio: {fileID: 7097476723072489281}
   Cur_Attack_State: 0
   Cur_Role: 2
   Cur_state: 0
   Deltatime: 0
   Hit_able: 1
   Dash_Check_able: 0
-  front_Of_Enemy: 0
+  front_Of_Enemy: 2
+--- !u!114 &7097476723072489281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065344683469992252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ebbc8681479434f9aee82e62356605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Attack_Woosh:
+  - {fileID: 8300000, guid: 90fb91c5d9f18df4183363d36d921429, type: 3}
+  - {fileID: 8300000, guid: c266e86e5ec11e344bf66dede26cbc46, type: 3}
+  Block_Layer:
+  - {fileID: 8300000, guid: a37109c51cd477548ad1c882be3971d5, type: 3}
+  - {fileID: 8300000, guid: 74198389e177d0948b63ca9a3fb22801, type: 3}
+  - {fileID: 8300000, guid: 4e7a9f408abdba8459fdccbeaea95215, type: 3}
+  walk:
+  - {fileID: 8300000, guid: 2ed66c1291317724893955ef534b7cb7, type: 3}
+  Dash_Layer:
+  - {fileID: 8300000, guid: 2ed66c1291317724893955ef534b7cb7, type: 3}
+  - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
+  - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
+  Parried:
+  - {fileID: 8300000, guid: bc742864e68de084ca074f2fffa86197, type: 3}
+  Get_Hitted:
+  - {fileID: 8300000, guid: 7cbd6cd765888ff418d01d98bd1ce9c2, type: 3}
+  - {fileID: 8300000, guid: 0e5edb6bccf05984dad128fb1a9fc914, type: 3}
+  - {fileID: 8300000, guid: 0147661c12ea814488259f82d4a4aed8, type: 3}
+  Dead: []

@@ -39,7 +39,7 @@ public class Main : MonoBehaviour
             vignette = Vg;
         }
         Application.targetFrameRate = 60;
-
+        GetComponent<AudioSource>().Play();
     }
 
     // Update is called once per frame

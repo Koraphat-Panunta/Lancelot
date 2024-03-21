@@ -33,6 +33,7 @@ public abstract class Enemy : Character
     [SerializeField] float animation_leght;
     [SerializeField] float animation_curtime;
     [SerializeField] Sequence Curent_sequence;
+    public Enemy_Audio Muaudio;
 
     public enum Direction
     {
@@ -137,6 +138,10 @@ public abstract class Enemy : Character
             }
             if (Dash_able == true)
             {
+                for (int i = 0; i < Muaudio.Dash_Layer.Length; i++)
+                {
+                    AudioSource.PlayClipAtPoint(Muaudio.Dash_Layer[i], gameObject.transform.position);
+                }
                 Dash_able = false;
                 //Moving
                 if (base.transform.position.x > Player.transform.position.x)
@@ -168,6 +173,10 @@ public abstract class Enemy : Character
             if (Dash_able == true)
             {
                 Dash_able = false;
+                for (int i = 0; i < Muaudio.Dash_Layer.Length; i++)
+                {
+                    AudioSource.PlayClipAtPoint(Muaudio.Dash_Layer[i], gameObject.transform.position);
+                }
                 //Moving
                 if (base.transform.position.x > Player.transform.position.x)
                 {
@@ -318,7 +327,7 @@ public abstract class Enemy : Character
             Dash_CoolingDown = Dash_Cooldown_Duration;
             Change_state_enable = false;
         }
-        else if(Dash_is_Forward == true && Dash_able == true && Curent_sequence.Current_Sequence != Sequence.Sequence_Line.Chapter1_Part_1)
+        else if(Dash_is_Forward == true && Dash_able == true )
         {
             float Dash_Cooldown_Duration = 4;
             Cur_state = State.Dash_Forward;
@@ -429,6 +438,7 @@ public abstract class Enemy : Character
                     {
                         //pushForward
                         ATK_push_able = false;
+                        AudioSource.PlayClipAtPoint(Muaudio.Attack_Woosh[UnityEngine.Random.Range(0, Muaudio.Attack_Woosh.Length)], gameObject.transform.position);
                         Push(-5.2f);
                     }
                     Cur_Attack_State = Attack_State.Attacking;
@@ -495,11 +505,21 @@ public abstract class Enemy : Character
             }
         }
        
-    }  
+    }
+    private float Walk_Frequency = 0;
     public void Animation_Update()
     {
         if (Cur_state == State.Run)
         {
+            Walk_Frequency += Time.deltaTime;
+            if(Walk_Frequency >= 0.4f) 
+            {
+                Walk_Frequency = 0;
+                for(int i = 0; i < Muaudio.walk.Length; i++) 
+                {
+                    AudioSource.PlayClipAtPoint(Muaudio.walk[i], gameObject.transform.position);
+                }
+            }
             if (Cur_Role == Role.OnFight)
             {
                 animator.Play("Walk_offfight");
@@ -548,12 +568,20 @@ public abstract class Enemy : Character
             {                
                 Defend -= Player.DMG * 0.7f;
                 Pressure += 15;
+                for(int i = 0;i < Muaudio.Block_Layer.Length; i++) 
+                {
+                    AudioSource.PlayClipAtPoint(Muaudio.Block_Layer[i], gameObject.transform.position);
+                }
                 Push(3.0f);
             }
             else
             {
                 if (Cur_state == State.Parried)
                 {
+                    for (int i = 0; i < Muaudio.Parried.Length; i++)
+                    {
+                        AudioSource.PlayClipAtPoint(Muaudio.Parried[i], gameObject.transform.position);
+                    }
                     Pressure += 40;
                     HP -= Player.DMG * 1.5f;
                 }
@@ -570,7 +598,11 @@ public abstract class Enemy : Character
                         HP -= Player.DMG;
                         Debug.Log("Hit:" + Player.DMG);
                     }
-                }               
+                }
+                for (int i = 0; i < Muaudio.Get_Hitted.Length; i++)
+                {
+                    AudioSource.PlayClipAtPoint(Muaudio.Get_Hitted[i], gameObject.transform.position);
+                }
                 Cur_state = State.Flinch;
                 Animation_Update();
                 Pressure += 10;
@@ -686,7 +718,7 @@ public abstract class Enemy : Character
             }                
             //Dash_Forward               
             else if(Convert.ToInt32(Distance)==Convert.ToInt32(ATK_Range)&& Pressure < Under_Pressure_Approuching && Change_state_enable == true
-                && Dash_Check_able == true)            
+                && Dash_Check_able == true && Curent_sequence.Current_Sequence > Sequence.Sequence_Line.Chapter1_Part_1)            
             {
                 Dash_Check_able = false;
                 if (UnityEngine.Random.value > 0.7)

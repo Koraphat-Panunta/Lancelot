@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
@@ -27,7 +28,7 @@ public class Main_Char : Character
     public float DMG = 15;
     [SerializeField] Virsual_input virsual_Input;
     public PlayerInput mycontroller;
-
+    public Main_CharAudio myAudio;
     public enum Char_state
     {
         Idle,
@@ -175,17 +176,26 @@ public class Main_Char : Character
             }
         }
     }
-
+    private float walk_sound_frequency = 0;
     private void Update_Pos()
     {
         if (Cur_state == Char_state.Run)
         {
+            walk_sound_frequency += Time.deltaTime;
             gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Speed * Time.deltaTime, 0, 0);
+            if (walk_sound_frequency >= 0.4f)
+            {
+                for (int i = 0; i < myAudio.walk.Length; i++)
+                {
+                    AudioSource.PlayClipAtPoint(myAudio.walk[i], gameObject.transform.position);
+                }
+                walk_sound_frequency = 0;
+            }
         }
 
     }
     public float Block_timimg = 0f;
-    bool Attack_step_Enable = true;
+    public bool Attack_step_Enable = true;
     private void Update_State_and_Dicrection()
     {
         if (HP <= 0)
@@ -211,6 +221,8 @@ public class Main_Char : Character
                 if (Attack_step_Enable == true && Cur_Attack_State == Attack_state.Attacking)
                 {
                     Attack_step_Enable = false;
+
+                    AudioSource.PlayClipAtPoint(myAudio.Attack_Woosh[UnityEngine.Random.Range(0, myAudio.Attack_Woosh.Length)], gameObject.transform.position);
                     Push(4.5f);
                 }
             }
@@ -286,6 +298,11 @@ public class Main_Char : Character
             CharacterCollider.isTrigger = true;
             if (Dash_able == true)
             {
+
+                for (int i = 0; i < myAudio.Dash_Layer.Length; i++)
+                {
+                    AudioSource.PlayClipAtPoint(myAudio.Dash_Layer[i], gameObject.transform.position);
+                }
                 Dash_able = false;
                 if (Cur_Direction == Char_Direction.Left)
                 {
@@ -310,6 +327,10 @@ public class Main_Char : Character
             CharacterCollider.isTrigger = true;
             if (Dash_able == true)
             {
+                for (int i = 0; i < myAudio.Dash_Layer.Length; i++)
+                {
+                    AudioSource.PlayClipAtPoint(myAudio.Dash_Layer[i], gameObject.transform.position);
+                }
                 Dash_able = false;
                 if (Cur_Direction == Char_Direction.Left)
                 {
@@ -798,13 +819,22 @@ public class Main_Char : Character
                     Cur_state = Char_state.Parry;
                     Change_Behavior_enable = false;
                     Update_animation();
+                    for (int i = 0; i < myAudio.Parry.Length; i++)
+                    {
+                        AudioSource.PlayClipAtPoint(myAudio.Parry[i], gameObject.transform.position);
+                    }
                     Push(0.2f, enemy);
                 }
                 if(Cur_Defend_State == Defend_state.Guard) 
                 {                    
                     Cur_state = Char_state.BlockReact;
                     Change_Behavior_enable = false;
-                    Update_animation();                    
+                    Update_animation();        
+                    for(int i = 0; i < myAudio.Block_Layer.Length; i++) 
+                    {
+                        AudioSource.PlayClipAtPoint(myAudio.Block_Layer[i], gameObject.transform.position);
+                    }
+                    
                     Push(2.5f, enemy);                    
                 }
                 
@@ -815,7 +845,11 @@ public class Main_Char : Character
             }
             else 
             {
-                this.HP -= enemy.GetComponent<Enemy_Common>().DMG;                
+                this.HP -= enemy.GetComponent<Enemy_Common>().DMG;
+                for (int i = 0; i < myAudio.Get_Hitted.Length; i++)
+                {
+                    AudioSource.PlayClipAtPoint(myAudio.Get_Hitted[i], gameObject.transform.position);
+                }
                 Cur_state = Char_state.Flinch;                
                 Change_Behavior_enable = false;
                 Push(2.5f, enemy);
@@ -831,6 +865,10 @@ public class Main_Char : Character
                     Cur_state = Char_state.Parry;
                     Change_Behavior_enable = false;
                     Update_animation();
+                    for (int i = 0; i < myAudio.Parry.Length; i++)
+                    {
+                        AudioSource.PlayClipAtPoint(myAudio.Parry[i], gameObject.transform.position);
+                    }
                     Push(0.2f, enemy);
                 }
                 if (Cur_Defend_State == Defend_state.Guard)
@@ -838,6 +876,10 @@ public class Main_Char : Character
                     Cur_state = Char_state.BlockReact;
                     Change_Behavior_enable = false;
                     Update_animation();
+                    for (int i = 0; i < myAudio.Block_Layer.Length; i++)
+                    {
+                        AudioSource.PlayClipAtPoint(myAudio.Block_Layer[i], gameObject.transform.position);
+                    }
                     Push(2.5f, enemy);
                 }
             }
@@ -845,6 +887,10 @@ public class Main_Char : Character
             {
                 this.HP -= enemy.GetComponent<Enemy_Common>().DMG;
                 Cur_state = Char_state.Flinch;
+                for (int i = 0; i < myAudio.Get_Hitted.Length; i++)
+                {
+                    AudioSource.PlayClipAtPoint(myAudio.Get_Hitted[i], gameObject.transform.position);
+                }
                 Change_Behavior_enable = false;
                 Push(2.5f, enemy);
                 Update_animation();
