@@ -7,6 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngine.XR;
+using static Enemy;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class Main_Char : Character
@@ -70,16 +71,17 @@ public class Main_Char : Character
         Char_CurState = Cur_state.ToString();
         Animation_Length = animator.GetCurrentAnimatorStateInfo(0).length;
         Animation_TimeLine = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-        if(Gamepad.current == null) 
+        if (Gamepad.current == null)
         {
             InputManager();
         }
-        else 
+        else
         {
             InputManager_withcontroller();
         }
         Cooldown();
         Update_animation();
+        
     }
     protected override void FixedUpdate()
     {

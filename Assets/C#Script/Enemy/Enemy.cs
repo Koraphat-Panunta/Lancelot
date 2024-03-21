@@ -631,30 +631,44 @@ public abstract class Enemy : Character
             Run_Speed = Run_Speed_Onfight;
             if (Cur_Direction == Direction.Left)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x - (gameObject.GetComponent<CapsuleCollider>().radius / 2f), transform.position.y - 0.5f, transform.position.z), new Vector3(-1, 0, 0), out RaycastHit HitLeft, 600, 3))
+                if (Physics.Raycast(gameObject.transform.position, new Vector3(-1, 0, 0), out RaycastHit HitLeft, 200, 3))
                 {
+                    Debug.DrawRay(gameObject.transform.position, new Vector3(-0.1f, 0, 0),Color.green);
                     if (HitLeft.rigidbody.tag == "Enemy")
                     {
                         front_Of_Enemy = front_of_enemy.Enemy;
+                       
                     }
-                    if (HitLeft.rigidbody.tag == "Player")
+                    else if (HitLeft.rigidbody.tag == "Player")
                     {
                         front_Of_Enemy = front_of_enemy.Player;
+                        Debug.Log("Player");
+                    }
+                    else
+                    {
+                        front_Of_Enemy = front_of_enemy.None;
                     }
                 }
             }
             if (Cur_Direction == Direction.Right)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x + (gameObject.GetComponent<CapsuleCollider>().radius / 2f), transform.position.y - 0.5f, transform.position.z), new Vector3(1, 0, 0), out RaycastHit HitRight, 600, 3))
+                if (Physics.Raycast(gameObject.transform.position, new Vector3(1, 0, 0), out RaycastHit HitRight, 200, 3))
                 {
+                    Debug.DrawRay(gameObject.transform.position, new Vector3(0.1f, 0, 0), Color.green);
                     if (HitRight.rigidbody.tag == "Enemy")
                     {
-                            front_Of_Enemy = front_of_enemy.Enemy;
+                        front_Of_Enemy = front_of_enemy.Enemy;
+                        
                     }
-                    if (HitRight.rigidbody.tag == "Player")
+                    else if (HitRight.rigidbody.tag == "Player")
                     {
                             front_Of_Enemy = front_of_enemy.Player;
-                    }    
+                        Debug.Log("Player");
+                    }
+                    else
+                    {
+                        front_Of_Enemy = front_of_enemy.None;
+                    }
                 }                
             }               
             if (front_Of_Enemy != front_of_enemy.Player)                
@@ -704,15 +718,22 @@ public abstract class Enemy : Character
             Run_Speed = Run_Speed_Offfight;
             if (Cur_Direction == Direction.Left)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x - (gameObject.GetComponent<CapsuleCollider>().radius/2f), transform.position.y - 0.5f, transform.position.z), new Vector3(-1,0, 0), out RaycastHit HitLeft, 600, 3))
+                if (Physics.Raycast(gameObject.transform.position, new Vector3(-1,0, 0), out RaycastHit HitLeft, 600, 3))
                 {
-                    if(HitLeft.rigidbody.tag == "Enemy") 
+                    Debug.DrawRay(gameObject.transform.position, new Vector3(-0.1f, 0, 0), Color.green);
+                    if (HitLeft.rigidbody.tag == "Enemy") 
                     {
                         front_Of_Enemy = front_of_enemy.Enemy;
+                        
                     }
-                    if(HitLeft.rigidbody.tag == "Player") 
+                    else if(HitLeft.rigidbody.tag == "Player") 
                     {
                         front_Of_Enemy = front_of_enemy.Player;
+                        Debug.Log("Player");
+                    }
+                    else
+                    {
+                        front_Of_Enemy = front_of_enemy.None;
                     }
                     if (math.abs(HitLeft.rigidbody.velocity.x) > 1.5f)
                     {
@@ -766,18 +787,23 @@ public abstract class Enemy : Character
             }
             if (Cur_Direction == Direction.Right)
             {
-                if (Physics.Raycast(new Vector3(transform.position.x + (gameObject.GetComponent<CapsuleCollider>().radius / 2f), transform.position.y - 0.5f, transform.position.z), new Vector3(1, 0, 0), out RaycastHit HitRight, 600, 3))
+                if (Physics.Raycast(gameObject.transform.position, new Vector3(1, 0, 0), out RaycastHit HitRight, 600, 3))
                 {
+                    Debug.DrawRay(gameObject.transform.position, new Vector3(0.1f, 0, 0), Color.green);
                     if (HitRight.rigidbody.tag == "Enemy")
                     {
                         front_Of_Enemy = front_of_enemy.Enemy;
+                       
                     }
-                    if (HitRight.rigidbody.tag == "Player")
+                    else if (HitRight.rigidbody.tag == "Player")
                     {
                         front_Of_Enemy = front_of_enemy.Player;
+                        Debug.Log("Player");
                     }
-
-                  
+                    else 
+                    {
+                        front_Of_Enemy = front_of_enemy.None;
+                    }
                     //Get RayDistance
                     if (math.abs(HitRight.rigidbody.velocity.x) > 1.5f) 
                     {
