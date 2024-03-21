@@ -15,7 +15,7 @@ E:/Lancelot/Lancelot
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-61918
+64094
 Successfully changed project path to: E:/Lancelot/Lancelot
 E:/Lancelot/Lancelot
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -49,12 +49,12 @@ E:/Lancelot/Lancelot
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [12180] Host "[IP] 192.168.1.65 [Port] 0 [Flags] 2 [Guid] 2178093293 [EditorId] 2178093293 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-1F9F1U4) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [23580] Host "[IP] 192.168.1.65 [Port] 0 [Flags] 2 [Guid] 2563349588 [EditorId] 2563349588 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-1F9F1U4) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [12180] Host "[IP] 192.168.1.65 [Port] 0 [Flags] 2 [Guid] 2178093293 [EditorId] 2178093293 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-1F9F1U4) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [23580] Host "[IP] 192.168.1.65 [Port] 0 [Flags] 2 [Guid] 2563349588 [EditorId] 2563349588 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-1F9F1U4) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
 [Physics::Module] Initialized MultithreadedJobDispatcher with 11 workers.
-Refreshing native plugins compatible for Editor in 7.47 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 7.33 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.13f1 (5f90a5ebde0f)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.13f1/Editor/Data/Resources/UnitySubsystems
@@ -70,52 +70,52 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.13f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.13f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.13f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56020
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56172
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.13f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.13f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.13f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.014622 seconds.
-- Loaded All Assemblies, in  0.325 seconds
+Registered in 0.015210 seconds.
+- Loaded All Assemblies, in  0.348 seconds
 Native extension for WindowsStandalone target not found
 [usbmuxd] Start listen thread
 [usbmuxd] Listen thread started
 [usbmuxd] Send listen message
 Native extension for iOS target not found
 Native extension for Android target not found
-Android Extension - Scanning For ADB Devices 259 ms
+Android Extension - Scanning For ADB Devices 248 ms
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.535 seconds
-Domain Reload Profiling: 858ms
-	BeginReloadAssembly (95ms)
+- Finished resetting the current domain, in  0.552 seconds
+Domain Reload Profiling: 897ms
+	BeginReloadAssembly (99ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (26ms)
-	RebuildNativeTypeToScriptingClass (8ms)
-	initialDomainReloadingComplete (61ms)
-	LoadAllAssembliesAndSetupDomain (131ms)
-		LoadAssemblies (92ms)
+	RebuildCommonClasses (35ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (69ms)
+	LoadAllAssembliesAndSetupDomain (132ms)
+		LoadAssemblies (98ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
 		AnalyzeDomain (129ms)
 			TypeCache.Refresh (127ms)
-				TypeCache.ScanAssembly (114ms)
+				TypeCache.ScanAssembly (113ms)
 			ScanForSourceGeneratedMonoScriptInfo (0ms)
-			ResolveRequiredComponents (0ms)
-	FinalizeReload (536ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (553ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (486ms)
+		SetupLoadedEditorAssemblies (502ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (361ms)
+			InitializePlatformSupportModulesInManaged (358ms)
 			SetLoadedEditorAssemblies (4ms)
 			RefreshPlugins (0ms)
 			BeforeProcessingInitializeOnLoad (2ms)
-			ProcessInitializeOnLoadAttributes (83ms)
-			ProcessInitializeOnLoadMethodAttributes (37ms)
+			ProcessInitializeOnLoadAttributes (94ms)
+			ProcessInitializeOnLoadMethodAttributes (43ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -123,8 +123,8 @@ Domain Reload Profiling: 858ms
 ========================================================================
 Worker process is ready to serve import requests
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.613 seconds
-Refreshing native plugins compatible for Editor in 2.80 ms, found 2 plugins.
+- Loaded All Assemblies, in  0.720 seconds
+Refreshing native plugins compatible for Editor in 3.73 ms, found 2 plugins.
 Native extension for WindowsStandalone target not found
 Native extension for iOS target not found
 Native extension for Android target not found
@@ -133,47 +133,47 @@ Package Manager log level set to [2]
 [Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
 [Package Manager] Cannot connect to Unity Package Manager local server
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.667 seconds
-Domain Reload Profiling: 1278ms
-	BeginReloadAssembly (136ms)
+- Finished resetting the current domain, in  0.752 seconds
+Domain Reload Profiling: 1470ms
+	BeginReloadAssembly (143ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (6ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (20ms)
-	RebuildCommonClasses (25ms)
-	RebuildNativeTypeToScriptingClass (8ms)
-	initialDomainReloadingComplete (38ms)
-	LoadAllAssembliesAndSetupDomain (403ms)
-		LoadAssemblies (309ms)
+		CreateAndSetChildDomain (23ms)
+	RebuildCommonClasses (31ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (40ms)
+	LoadAllAssembliesAndSetupDomain (494ms)
+		LoadAssemblies (352ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (178ms)
-			TypeCache.Refresh (154ms)
-				TypeCache.ScanAssembly (138ms)
-			ScanForSourceGeneratedMonoScriptInfo (15ms)
-			ResolveRequiredComponents (6ms)
-	FinalizeReload (667ms)
+		AnalyzeDomain (226ms)
+			TypeCache.Refresh (196ms)
+				TypeCache.ScanAssembly (179ms)
+			ScanForSourceGeneratedMonoScriptInfo (20ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (752ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (536ms)
+		SetupLoadedEditorAssemblies (588ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (34ms)
+			InitializePlatformSupportModulesInManaged (41ms)
 			SetLoadedEditorAssemblies (4ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (96ms)
-			ProcessInitializeOnLoadAttributes (326ms)
+			BeforeProcessingInitializeOnLoad (95ms)
+			ProcessInitializeOnLoadAttributes (370ms)
 			ProcessInitializeOnLoadMethodAttributes (66ms)
 			AfterProcessingInitializeOnLoad (11ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (4ms)
+		AwakeInstancesAfterBackupRestoration (5ms)
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 2.85 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.78 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4058 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 79 unused Assets / (1.6 MB). Loaded Objects now: 4515.
-Memory consumption went from 205.8 MB to 204.3 MB.
-Total: 3.531600 ms (FindLiveObjects: 0.494300 ms CreateObjectMapping: 0.123700 ms MarkObjects: 2.527500 ms  DeleteObjects: 0.384900 ms)
+Unloading 4060 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 79 unused Assets / (1.6 MB). Loaded Objects now: 4517.
+Memory consumption went from 205.8 MB to 204.2 MB.
+Total: 3.890800 ms (FindLiveObjects: 0.302500 ms CreateObjectMapping: 0.215000 ms MarkObjects: 2.793900 ms  DeleteObjects: 0.578200 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
@@ -191,206 +191,213 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 32871.244130 seconds.
-  path: Assets/Deadly Kombat Free version/blade_hit_08.wav
-  artifactKey: Guid(3df9bbbc130ccb344af5f3fc793a630f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/blade_hit_08.wav using Guid(3df9bbbc130ccb344af5f3fc793a630f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '432378a7b0ac7681e7c6c6e6d9b12f8b') in 0.076489 seconds
+  Time since last request: 59704.452172 seconds.
+  path: Assets/C#Script/Tutorial_Sequence.cs
+  artifactKey: Guid(e059111c66ed194479ebcda9e75079f2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/C#Script/Tutorial_Sequence.cs using Guid(e059111c66ed194479ebcda9e75079f2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e37e293ae0bb9190492b99e7738553f9') in 0.002532 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
+Number of asset objects unloaded after import = 0
 ========================================================================
-Received Import Request.
-  Time since last request: 0.000015 seconds.
-  path: Assets/Deadly Kombat Free version/block_medium_09.wav
-  artifactKey: Guid(72a9b2a2a3eaa584d9ba3a8e2166f0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/block_medium_09.wav using Guid(72a9b2a2a3eaa584d9ba3a8e2166f0fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '082caeebadfaeda25664077003448ca1') in 0.011777 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.488 seconds
+Refreshing native plugins compatible for Editor in 3.56 ms, found 2 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for iOS target not found
+Native extension for Android target not found
+[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.041 seconds
+Domain Reload Profiling: 1526ms
+	BeginReloadAssembly (161ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (4ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (41ms)
+	RebuildCommonClasses (28ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (29ms)
+	LoadAllAssembliesAndSetupDomain (258ms)
+		LoadAssemblies (302ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (39ms)
+			TypeCache.Refresh (8ms)
+				TypeCache.ScanAssembly (1ms)
+			ScanForSourceGeneratedMonoScriptInfo (20ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (1041ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (518ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (35ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (90ms)
+			ProcessInitializeOnLoadAttributes (331ms)
+			ProcessInitializeOnLoadMethodAttributes (48ms)
+			AfterProcessingInitializeOnLoad (10ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (9ms)
+Refreshing native plugins compatible for Editor in 2.48 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3872 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 51 unused Assets / (1.5 MB). Loaded Objects now: 4521.
+Memory consumption went from 171.2 MB to 169.7 MB.
+Total: 3.134100 ms (FindLiveObjects: 0.264200 ms CreateObjectMapping: 0.090700 ms MarkObjects: 2.416000 ms  DeleteObjects: 0.362000 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: e54d7ab0439102e2317fc1e4b246158d -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: d54d2f2da18e7612c182cf67624b6b12 -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Deadly Kombat Free version/punch_long_whoosh_30.wav
-  artifactKey: Guid(28406bf68add30e4e89d6cd063fb84e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/punch_long_whoosh_30.wav using Guid(28406bf68add30e4e89d6cd063fb84e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '903c4f6d429078aada005bdc8b23aee8') in 0.014008 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.440 seconds
+Refreshing native plugins compatible for Editor in 3.53 ms, found 2 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for iOS target not found
+Native extension for Android target not found
+[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.033 seconds
+Domain Reload Profiling: 1470ms
+	BeginReloadAssembly (158ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (6ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (40ms)
+	RebuildCommonClasses (27ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (28ms)
+	LoadAllAssembliesAndSetupDomain (216ms)
+		LoadAssemblies (282ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (13ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (7ms)
+	FinalizeReload (1033ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (519ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (34ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (90ms)
+			ProcessInitializeOnLoadAttributes (328ms)
+			ProcessInitializeOnLoadMethodAttributes (53ms)
+			AfterProcessingInitializeOnLoad (11ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (8ms)
+Refreshing native plugins compatible for Editor in 3.68 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3872 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 51 unused Assets / (1.5 MB). Loaded Objects now: 4525.
+Memory consumption went from 173.2 MB to 171.6 MB.
+Total: 3.765300 ms (FindLiveObjects: 0.309100 ms CreateObjectMapping: 0.195000 ms MarkObjects: 2.855800 ms  DeleteObjects: 0.404700 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: e54d7ab0439102e2317fc1e4b246158d -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: d54d2f2da18e7612c182cf67624b6b12 -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Deadly Kombat Free version/body_hit_large_76.wav
-  artifactKey: Guid(58a5d36d6b134014ea5623d9802082e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/body_hit_large_76.wav using Guid(58a5d36d6b134014ea5623d9802082e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a337a1c38265083e0cdb551d015244e') in 0.012534 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Deadly Kombat Free version/face_hit_Large_29.wav
-  artifactKey: Guid(e989cc91820b3eb429576404f338d14b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/face_hit_Large_29.wav using Guid(e989cc91820b3eb429576404f338d14b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'caf35637c25c7eabdad6d7d5db8d0425') in 0.012669 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000012 seconds.
-  path: Assets/Deadly Kombat Free version/somersalt_10.wav
-  artifactKey: Guid(51e0a672984795b4087c49f005adf8f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/somersalt_10.wav using Guid(51e0a672984795b4087c49f005adf8f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f4a282f6630f184848bac03b7a2d3b13') in 0.012218 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Deadly Kombat Free version/block_small_73.wav
-  artifactKey: Guid(cd13436b01a4b5b4082c89e180d10dc3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/block_small_73.wav using Guid(cd13436b01a4b5b4082c89e180d10dc3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '87c5e76a6497dffbbfd78b782d6d70a2') in 0.011734 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000014 seconds.
-  path: Assets/Deadly Kombat Free version/body_hit_finisher_23.wav
-  artifactKey: Guid(5174415e9879415498f7b0dd794d19c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/body_hit_finisher_23.wav using Guid(5174415e9879415498f7b0dd794d19c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8ee62f4dac25942995c478df8ddb3655') in 0.012004 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Deadly Kombat Free version/body_hit_finisher_52.wav
-  artifactKey: Guid(05d0536a3eefc80438f95f9662331f52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/body_hit_finisher_52.wav using Guid(05d0536a3eefc80438f95f9662331f52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '93d68729a7cb546cbecd1f357b33665e') in 0.013949 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/Deadly Kombat Free version/face_hit_small_23.wav
-  artifactKey: Guid(a715ddf00ff7f24469c72404e8df85e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/face_hit_small_23.wav using Guid(a715ddf00ff7f24469c72404e8df85e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '952e487bdca8f0be6e7c48666dcc6907') in 0.013513 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Deadly Kombat Free version/punch_short_whoosh_16.wav
-  artifactKey: Guid(c266e86e5ec11e344bf66dede26cbc46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/punch_short_whoosh_16.wav using Guid(c266e86e5ec11e344bf66dede26cbc46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b9caacaa3a694afa1819e97ffb561713') in 0.012760 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000014 seconds.
-  path: Assets/Deadly Kombat Free version/guts_and_gore_68.wav
-  artifactKey: Guid(2b202aff8c946d745a2ab81e2cd60819) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/guts_and_gore_68.wav using Guid(2b202aff8c946d745a2ab81e2cd60819) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '913381e223c8b9f2d5b8e175b4d27e78') in 0.016603 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Deadly Kombat Free version/body_hit_large_44.wav
-  artifactKey: Guid(d0f166575306db84091dc03fce0eff69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/body_hit_large_44.wav using Guid(d0f166575306db84091dc03fce0eff69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2224a966e49c54ce32b30665689b2f8b') in 0.013360 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000015 seconds.
-  path: Assets/Deadly Kombat Free version/guts_and_gore_19.wav
-  artifactKey: Guid(f38d03f62dd3b6a43b0424bed34016bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/guts_and_gore_19.wav using Guid(f38d03f62dd3b6a43b0424bed34016bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '40c1cbd3d83d1257fc405563e61ec173') in 0.021582 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000014 seconds.
-  path: Assets/Deadly Kombat Free version/block_large_59.wav
-  artifactKey: Guid(74198389e177d0948b63ca9a3fb22801) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/block_large_59.wav using Guid(74198389e177d0948b63ca9a3fb22801) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3dfcba9c826a86a2f40995ebc071c7da') in 0.011567 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000015 seconds.
-  path: Assets/Deadly Kombat Free version/body_hit_large_32.wav
-  artifactKey: Guid(1e3312d22540aa14597a1fb4739f2782) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/body_hit_large_32.wav using Guid(1e3312d22540aa14597a1fb4739f2782) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ed3feeba993bc026c4f7b04b80d27cba') in 0.010830 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000012 seconds.
-  path: Assets/Deadly Kombat Free version/wood_bat_finisher_05.wav
-  artifactKey: Guid(d7ea6b2cca581414e87717a0d085aa62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/wood_bat_finisher_05.wav using Guid(d7ea6b2cca581414e87717a0d085aa62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47bf829f73e0c78033cbd279fef6956b') in 0.012439 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000012 seconds.
-  path: Assets/Deadly Kombat Free version/metal_punch_06.wav
-  artifactKey: Guid(4e7a9f408abdba8459fdccbeaea95215) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/metal_punch_06.wav using Guid(4e7a9f408abdba8459fdccbeaea95215) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3ef4c0ddcb41be73c7240099836fc71a') in 0.012837 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000012 seconds.
-  path: Assets/Deadly Kombat Free version/guts_and_gore_59.wav
-  artifactKey: Guid(2ee71cfc2c8d7334abb8ad72203c0068) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/guts_and_gore_59.wav using Guid(2ee71cfc2c8d7334abb8ad72203c0068) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '43234ffa8b5c4479c9738bebc075508d') in 0.014181 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000012 seconds.
-  path: Assets/Deadly Kombat Free version/bone_breaking_53.wav
-  artifactKey: Guid(41b3db18e389a464da57cc13049e290f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/bone_breaking_53.wav using Guid(41b3db18e389a464da57cc13049e290f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '32286f03569abf05eef0f0a53c4f0b68') in 0.014722 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Deadly Kombat Free version/metal_punch_finisher_07.wav
-  artifactKey: Guid(e4b229d1cd4c5954c982c44b6f42eb27) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/metal_punch_finisher_07.wav using Guid(e4b229d1cd4c5954c982c44b6f42eb27) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '564a84980f65c9ceb256fe4ef24bafc8') in 0.012647 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Deadly Kombat Free version/face_hit_Large_78.wav
-  artifactKey: Guid(a91b6eb6aee93de4fa0b41a96fd36c96) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/face_hit_Large_78.wav using Guid(a91b6eb6aee93de4fa0b41a96fd36c96) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd65add49a6c14a55b85c6c9906f3be68') in 0.012180 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Deadly Kombat Free version/face_hit_small_13.wav
-  artifactKey: Guid(faf53b5b59d41a14e97c8858f4664122) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/face_hit_small_13.wav using Guid(faf53b5b59d41a14e97c8858f4664122) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '307d264b71b7dc247d68bf17d4e34904') in 0.012883 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Deadly Kombat Free version/fire_punch_finisher_06.wav
-  artifactKey: Guid(af2c78ece9c3f6a4b83fc3562a867d9c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/fire_punch_finisher_06.wav using Guid(af2c78ece9c3f6a4b83fc3562a867d9c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd61ede984d8bd20de443de103a7352a3') in 0.014354 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Deadly Kombat Free version/kick_short_whoosh_23.wav
-  artifactKey: Guid(4d4ef7516a431934681038a3dc391e55) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Deadly Kombat Free version/kick_short_whoosh_23.wav using Guid(4d4ef7516a431934681038a3dc391e55) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0aa75741308eb5ab60b19ab5756a24e2') in 0.011797 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-TcpMessagingSession - receive error: operation aborted. errorcode: 995, details: The I/O operation has been aborted because of either a thread exit or an application request.
-AssetImportWorker is now disconnected from the server
-Process exiting
-Exiting without the bug reporter. Application will terminate with return code 0
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.435 seconds
+Refreshing native plugins compatible for Editor in 3.03 ms, found 2 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for iOS target not found
+Native extension for Android target not found
+[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.018 seconds
+Domain Reload Profiling: 1450ms
+	BeginReloadAssembly (143ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (4ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (38ms)
+	RebuildCommonClasses (26ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (30ms)
+	LoadAllAssembliesAndSetupDomain (224ms)
+		LoadAssemblies (279ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (15ms)
+			TypeCache.Refresh (5ms)
+				TypeCache.ScanAssembly (0ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (1019ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (504ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (32ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (83ms)
+			ProcessInitializeOnLoadAttributes (325ms)
+			ProcessInitializeOnLoadMethodAttributes (49ms)
+			AfterProcessingInitializeOnLoad (10ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (11ms)
+Refreshing native plugins compatible for Editor in 3.57 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3872 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 51 unused Assets / (1.5 MB). Loaded Objects now: 4529.
+Memory consumption went from 175.1 MB to 173.5 MB.
+Total: 3.184900 ms (FindLiveObjects: 0.323200 ms CreateObjectMapping: 0.103900 ms MarkObjects: 2.435800 ms  DeleteObjects: 0.321300 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: e54d7ab0439102e2317fc1e4b246158d -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: d54d2f2da18e7612c182cf67624b6b12 -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 

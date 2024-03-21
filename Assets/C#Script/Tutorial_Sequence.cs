@@ -41,8 +41,16 @@ public class Tutorial_Sequence : MonoBehaviour
         {           
             if (Tutorial == tutorial.Movement && FristTime_Move == true)
             {
-                text.show_text("Press A,D(Keyboard) or Move Analog(Mobile) \n *Move your Chatacter*");
-                if (Main_Char.Cur_state == Main_Char.Char_state.Run)
+                if (Gamepad.current != null)
+                {
+                    text.show_text("Press Dpad Left,Right button \n To move your Character*");
+                }
+                else
+                {
+                    text.show_text("Press A,D(Keyboard) or Move Analog(Mobile) \n *Move your Chatacter*");
+                }
+                if (Main_Char.Cur_state == Main_Char.Char_state.Run|| Main_Char.Cur_state == Main_Char.Char_state.Block
+                    || Main_Char.Cur_state == Main_Char.Char_state.Dash|| Main_Char.Cur_state == Main_Char.Char_state.Dodge|| Main_Char.Cur_state == Main_Char.Char_state.Attack_I)
                 {
                     StartTime();
                     text.stop_show_text();
@@ -52,8 +60,15 @@ public class Tutorial_Sequence : MonoBehaviour
             }
             else if(Tutorial == tutorial.Block && FristTime_Block == true) 
             {
-                text.show_text("Press Space(Keyboard) or Touch Left side(Mobile) \n *To Defend the attack*");
-                if (Main_Char.Cur_state == Main_Char.Char_state.Block)
+                if (Gamepad.current != null)
+                {
+                    text.show_text("Press L1 or LB button \n *To Defend the attack*");
+                }
+                else
+                {
+                    text.show_text("Press Space(Keyboard) or Touch Left side(Mobile) \n *To Defend the attack*");
+                }                
+                if (Main_Char.Cur_state == Main_Char.Char_state.Block || Main_Char.Cur_state == Main_Char.Char_state.Dash || Main_Char.Cur_state == Main_Char.Char_state.Dodge || Main_Char.Cur_state == Main_Char.Char_state.Attack_I)
                 {
                     StartTime();                    
                     text.stop_show_text();
@@ -62,8 +77,15 @@ public class Tutorial_Sequence : MonoBehaviour
             }
             else if (Tutorial == tutorial.Parry && FristTime_Parry == true)
             {
-                text.show_text("Press Defend Before The attack hit you\n *To parry the attack*");
-                if (Main_Char.Cur_state == Main_Char.Char_state.Block|| Main_Char.Cur_state == Main_Char.Char_state.Parry )
+                if (Gamepad.current != null)
+                {
+                    text.show_text("Press Defend Before The attack hit you\n *To parry the attack*");
+                }
+                else
+                {
+                    text.show_text("Press Defend Before The attack hit you\n *To parry the attack*");
+                }               
+                if (Main_Char.Cur_state == Main_Char.Char_state.Block|| Main_Char.Cur_state == Main_Char.Char_state.Parry || Main_Char.Cur_state == Main_Char.Char_state.Dash || Main_Char.Cur_state == Main_Char.Char_state.Dodge || Main_Char.Cur_state == Main_Char.Char_state.Attack_I)
                 {
                     StartTime();
                     text.stop_show_text();
@@ -73,8 +95,15 @@ public class Tutorial_Sequence : MonoBehaviour
             }
             else if (Tutorial == tutorial.Attack && FristTime_ATK == true)
             {
-                text.show_text("Press J(Keyboard) or Tap Right side(Mobile)\n *To attack*");
-                if (Main_Char.Cur_state == Main_Char.Char_state.Attack_I)
+                if (Gamepad.current != null)
+                {
+                    text.show_text("Press Square button or X button \n *To attack*");
+                }
+                else
+                {
+                    text.show_text("Press J(Keyboard) or Tap Right side(Mobile)\n *To attack*");
+                }               
+                if (Main_Char.Cur_state == Main_Char.Char_state.Attack_I || Main_Char.Cur_state == Main_Char.Char_state.Dash || Main_Char.Cur_state == Main_Char.Char_state.Dodge || Main_Char.Cur_state == Main_Char.Char_state.Block)
                 {
                     StartTime();
                     text.stop_show_text();
@@ -84,8 +113,15 @@ public class Tutorial_Sequence : MonoBehaviour
             }
             else if(Tutorial == tutorial.Dash && FristTime_Dash == true) 
             {
-                text.show_text("Press K(Keyboard) or Swipe Right side(Mobile)\n *To Dash or Dogde*");
-                if (Main_Char.Cur_state == Main_Char.Char_state.Dash|| Main_Char.Cur_state == Main_Char.Char_state.Dodge)
+                if (Gamepad.current != null)
+                {
+                    text.show_text("Press Circle button or B button\n *To Dash or Dogde*");
+                }
+                else
+                {
+                    text.show_text("Press K(Keyboard) or Swipe Right side(Mobile)\n *To Dash or Dogde*");
+                }               
+                if (Main_Char.Cur_state == Main_Char.Char_state.Dash|| Main_Char.Cur_state == Main_Char.Char_state.Dodge || Main_Char.Cur_state == Main_Char.Char_state.Block|| Main_Char.Cur_state == Main_Char.Char_state.Attack_I)
                 {
                     StartTime();
                     text.stop_show_text();
@@ -93,7 +129,6 @@ public class Tutorial_Sequence : MonoBehaviour
                     FristTime_Dash = false;
                 }
             }
-
         }
     }
     public void StopTime() 
