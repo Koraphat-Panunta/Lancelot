@@ -106,7 +106,8 @@ public class Sequence : MonoBehaviour
             }
             if (Count == Enemys.Count)
             {
-                Spawn_Dialog(0);                
+                Spawn_Dialog(0);
+                
             }
         }
         else if(Current_Sequence == Sequence_Line.Chapter1_Part_2) 
@@ -218,7 +219,7 @@ public class Sequence : MonoBehaviour
                     Count++;
                 }
             }
-            if (Count == Enemys.Count)
+            if (Count == Enemys.Count-2)
             {
                 Spawn_Dialog(6);
             }
@@ -310,10 +311,7 @@ public class Sequence : MonoBehaviour
     {
         if(num > 1) 
         {
-            if (Dialog[num - 1] != null) 
-            {
-                GameObject.Destroy(Dialog[num - 1]);
-            }
+            Dialog[num - 1].GetComponent<Dialogue>().zeroText();
         }
         Dialog[num].transform.position = new Vector3(Enemy_Spawner_R.transform.position.x - 7.36f, Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z);       
     }

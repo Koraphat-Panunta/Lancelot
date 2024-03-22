@@ -118,7 +118,7 @@ public class Dialogue : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && canPlayDialogue == true) 
-        {            
+        {
             PlayDialogue = true;
             startCounter = true;
             dialoguePannel.SetActive(true);
