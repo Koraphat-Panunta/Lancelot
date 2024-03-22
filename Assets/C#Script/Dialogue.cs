@@ -119,6 +119,7 @@ public class Dialogue : MonoBehaviour
     {
         if (other.CompareTag("Player") && canPlayDialogue == true) 
         {
+            zeroText();
             PlayDialogue = true;
             startCounter = true;
             dialoguePannel.SetActive(true);
