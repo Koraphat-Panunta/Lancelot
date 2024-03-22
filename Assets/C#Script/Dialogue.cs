@@ -58,27 +58,7 @@ public class Dialogue : MonoBehaviour
             }*/
 
         }
-        if (Gamepad.current != null)
-        {
-            if (Gamepad.current.buttonSouth.isPressed)
-            {
-                NextLine();
-            }
-        }
-        else if(Input.touchCount > 0)
-        {
-           for(int i = 0; i < Input.touchCount; i++) 
-            {
-                if (Input.touches[i].position.y > Screen.height / 2f && Input.touches[i].phase == UnityEngine.TouchPhase.Began) 
-                {
-                    NextLine();
-                }
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            NextLine();
-        }
+        
 
     }
 
@@ -87,7 +67,6 @@ public class Dialogue : MonoBehaviour
         text.text = "";
         index = 0;
         dialoguePannel.SetActive(false);
-        Destroy(gameObject);
     }
 
     IEnumerator Typing()
@@ -123,11 +102,19 @@ public class Dialogue : MonoBehaviour
                 PlayDialogue = false;
                 Invoke("zeroText", dialogueCloseTime);
                 counter = 0;
+                GameObject.Destroy(gameObject);
             }
             counter = 0;
         }
     }
-
+    public void CloseText() 
+    {
+        index = 0;
+        Debug.Log("closing");
+        PlayDialogue = false;
+        Invoke("zeroText", dialogueCloseTime);
+        counter = 0;
+    }
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && canPlayDialogue == true) 

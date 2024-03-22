@@ -18,7 +18,9 @@ public class Sequence : MonoBehaviour
     [SerializeField] private GameObject Enemy_Spawner_L;
     [SerializeField] private GameObject Enemy_Spawner_R;
     [SerializeField] protected bool Collider_enable = true;
-    [SerializeField] GameObject Ending_Line; 
+    [SerializeField] GameObject[] Dialog;
+    [SerializeField] GameObject Player;
+    public bool GameisEnd = false;
     void Start()
     {
         Tutorial.Tutorial = Tutorial_Sequence.tutorial.Movement;        
@@ -27,6 +29,7 @@ public class Sequence : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        Count = 0;
         //Tutorial
         if (Current_Sequence == Sequence_Line.Chatper0_Part_1) 
         {
@@ -94,13 +97,35 @@ public class Sequence : MonoBehaviour
             {
                 Tutorial.text.stop_show_text();
             }
+            foreach (GameObject enemy in Enemys)
+            {
+                if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead)
+                {
+                    Count++;
+                }
+            }
+            if (Count == Enemys.Count)
+            {
+                Spawn_Dialog(0);                
+            }
         }
         else if(Current_Sequence == Sequence_Line.Chapter1_Part_2) 
         {
             if (Enter_Chapter == true)
             {
                 Enter_Chapter = false;
-                Spawn_Enemy(0, 2);
+                Spawn_Enemy(0, 2);              
+            }
+            foreach (GameObject enemy in Enemys)
+            {
+                if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead)
+                {
+                    Count++;
+                }
+            }
+            if (Count == Enemys.Count)
+            {
+                Spawn_Dialog(1);
             }
         }
         else if(Current_Sequence == Sequence_Line.Chapter2_Part_1) 
@@ -110,6 +135,17 @@ public class Sequence : MonoBehaviour
                 Enter_Chapter = false;
                 Spawn_Enemy(1, 2);
             }
+            foreach (GameObject enemy in Enemys)
+            {
+                if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead)
+                {
+                    Count++;
+                }
+            }
+            if (Count == Enemys.Count)
+            {
+                Spawn_Dialog(2);
+            }
         }
         else if (Current_Sequence == Sequence_Line.Chapter2_Part_2)
         {
@@ -117,6 +153,17 @@ public class Sequence : MonoBehaviour
             {
                 Enter_Chapter = false;
                 Spawn_Enemy(2, 3);
+            }
+            foreach (GameObject enemy in Enemys)
+            {
+                if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead)
+                {
+                    Count++;
+                }
+            }
+            if (Count == Enemys.Count)
+            {
+                Spawn_Dialog(3);
             }
         }
         else if (Current_Sequence == Sequence_Line.Chapter2_Part3)
@@ -126,6 +173,17 @@ public class Sequence : MonoBehaviour
                 Enter_Chapter = false;
                 Spawn_Enemy(3, 3);
             }
+            foreach (GameObject enemy in Enemys)
+            {
+                if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead)
+                {
+                    Count++;
+                }
+            }
+            if (Count == Enemys.Count)
+            {
+                Spawn_Dialog(4);
+            }
         }
         else if (Current_Sequence == Sequence_Line.Chapter2_Part4)
         {
@@ -134,33 +192,65 @@ public class Sequence : MonoBehaviour
                 Enter_Chapter = false;
                 Spawn_Enemy(2, 3);
             }
+            foreach (GameObject enemy in Enemys)
+            {
+                if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead)
+                {
+                    Count++;
+                }
+            }
+            if (Count == Enemys.Count)
+            {
+                Spawn_Dialog(5);
+            }
         }
         else if (Current_Sequence == Sequence_Line.Chapter3_Part_1)
         {
             if (Enter_Chapter == true)
             {
                 Enter_Chapter = false;
-               
+                Spawn_Enemy(5, 3);
+            }
+            foreach (GameObject enemy in Enemys)
+            {
+                if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead)
+                {
+                    Count++;
+                }
+            }
+            if (Count == Enemys.Count)
+            {
+                Spawn_Dialog(6);
             }
         }
         else if (Current_Sequence == Sequence_Line.Chapter3_Part_2)
         {
             if (Enter_Chapter == true)
             {
+                Spawn_Dialog(7);
                 Enter_Chapter = false;
-                Spawn_Enemy(5, 5);
-            }
-            Count = 0;
-            foreach(GameObject enemy in Enemys) 
-            {               
-                if(enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead) 
+                Spawn_Enemy(6, 7);
+            }            
+            foreach (GameObject enemy in Enemys)
+            {
+                if (enemy.GetComponent<Enemy_Common>().Cur_state == Enemy.State.Dead)
                 {
                     Count++;
                 }
             }
-            if(Count == Enemys.Count) 
+            if (Count == Enemys.Count)
             {
-                Ending_Line.transform.position = new Vector3(Enemy_Spawner_R.transform.position.x - 7.36f, Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z);
+                Spawn_Dialog(8);
+                GameisEnd = true;
+            }
+            
+            if(GameisEnd == true) 
+            {              
+                Ending_Time += Time.deltaTime;
+                if(Ending_Time > 7) 
+                {
+                    Tutorial.text.show_text("Lancelot will return");                     
+                }              
             }
         }
 
@@ -170,6 +260,7 @@ public class Sequence : MonoBehaviour
         }
     }
     public int Count;
+    public float Ending_Time = 0;
    
     public bool Enter_Chapter = true;
     public void Chapter_End() 
@@ -192,7 +283,7 @@ public class Sequence : MonoBehaviour
             else 
             {
                 Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_R.transform.position.x + (i * 2), Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z)
-               , 70, 50, 15);
+               , 70, 60, 20);
                 index++;
             }
             
@@ -209,10 +300,22 @@ public class Sequence : MonoBehaviour
             else
             {
                 Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_L.transform.position.x - (i * 2), Enemy_Spawner_L.transform.position.y, Enemy_Spawner_L.transform.position.z)
-                 , 70, 50,15);
+                 , 70, 60,20);
                 index++;
             }
         }
+    }
+    int Dialog_Num =0;
+    private void Spawn_Dialog(int num) 
+    {
+        if(num > 1) 
+        {
+            if (Dialog[num - 1] != null) 
+            {
+                GameObject.Destroy(Dialog[num - 1]);
+            }
+        }
+        Dialog[num].transform.position = new Vector3(Enemy_Spawner_R.transform.position.x - 7.36f, Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z);       
     }
     public void SetCur_Sequence(Sequence_Line Set_Sequence) 
     {

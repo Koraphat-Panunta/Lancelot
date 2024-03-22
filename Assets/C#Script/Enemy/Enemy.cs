@@ -102,7 +102,7 @@ public abstract class Enemy : Character
         RandomDistance();
         Timing_Set_Active = 2;
         Regen_HP_for_Player = true;
-        Run_Speed_Onfight = UnityEngine.Random.Range(150, 210);
+        Run_Speed_Onfight = UnityEngine.Random.Range(180, 210);
         Run_Speed_Offfight = UnityEngine.Random.Range(69, 96);
         HP_Bar.enabled = true;
         Defend_Bar.enabled = true;
@@ -341,6 +341,7 @@ public abstract class Enemy : Character
             Animation_Update();
             Dash_CoolingDown = Dash_Cooldown_Duration;
             Change_state_enable = false;
+            
         }
         else if(Dash_is_Forward == true && Dash_able == true )
         {
@@ -349,6 +350,7 @@ public abstract class Enemy : Character
             Animation_Update();
             Dash_CoolingDown = Dash_Cooldown_Duration;
             Change_state_enable = false;
+            Pressure = 5;
         }
     }
     protected void Attack()
@@ -363,7 +365,7 @@ public abstract class Enemy : Character
     protected void Cooldown_Event()
     {
         //Pressure_Cooldown
-        float Pressure_Regen_Speed = 32;
+        float Pressure_Regen_Speed = UnityEngine.Random.Range(12,35);
         if (Pressure > 0)
         {
             if (Pressure < Under_Pressure_Approuching)
@@ -469,7 +471,7 @@ public abstract class Enemy : Character
                         //pushForward
                         ATK_push_able = false;
                         AudioSource.PlayClipAtPoint(Muaudio.Attack_Woosh[UnityEngine.Random.Range(0, Muaudio.Attack_Woosh.Length)], gameObject.transform.position);
-                        Push(-5.2f);
+                        Push(-5.8f);
                     }
                     Cur_Attack_State = Attack_State.Attacking;
                 }
@@ -481,7 +483,8 @@ public abstract class Enemy : Character
                 }
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >=1)
                 {
-                    OnFightDismiss(0.15f);
+
+                    OnFightDismiss(0.6f);
                     Change_state_enable = true;
                     if (UnityEngine.Random.value > 0.6f) 
                     {
@@ -552,7 +555,7 @@ public abstract class Enemy : Character
             }
             if (Cur_Role == Role.OnFight)
             {
-                animator.Play("Walk_offfight");
+                animator.Play("Walk_onfight");
             }
             else if (Cur_Role == Role.OffFight)
             {
@@ -561,6 +564,21 @@ public abstract class Enemy : Character
             else
             {
                 animator.Play("Walk_offfight");
+            }
+        }
+        if(Cur_state == State.Idle) 
+        {
+            if (Cur_Role == Role.OnFight)
+            {
+                animator.Play("Idle_Onfight");
+            }
+            else if (Cur_Role == Role.OffFight)
+            {
+                animator.Play("Idle_Offfight");
+            }
+            else
+            {
+                animator.Play("Idle_Offfight");
             }
         }
         else 
@@ -749,12 +767,13 @@ public abstract class Enemy : Character
             }                
             //Dash_Forward               
             else if(Convert.ToInt32(Distance)==Convert.ToInt32(ATK_Range)&& Pressure < Under_Pressure_Approuching && Change_state_enable == true
-                && Dash_Check_able == true && Curent_sequence.Current_Sequence > Sequence.Sequence_Line.Chapter1_Part_1)            
+                && Dash_Check_able == true /*&& Curent_sequence.Current_Sequence > Sequence.Sequence_Line.Chapter1_Part_1*/)            
             {
                 Dash_Check_able = false;
                 if (UnityEngine.Random.value > 0.7)
                 {
                     Dash(true);
+                    Debug.Log("DashForward");
                 }
             }                
             //Attack_Condition                

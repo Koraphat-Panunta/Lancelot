@@ -76,7 +76,7 @@ public class Enemy_Director : MonoBehaviour
         if(OnFight_num == 0) 
         {
             Onfight_Count += Time.deltaTime;
-            if (Onfight_Count >= Random.Range(0.2f,0.68f))
+            if (Onfight_Count >= Random.Range(0.1f,0.68f))
             {
                 Onfight_Count = 0;
                 foreach (GameObject Enemy in Enemy)

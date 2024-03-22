@@ -201,11 +201,12 @@ public class Main_Char : Character
         if (HP <= 0)
         {
             //Death 
+            
         }
         //Attack_state       
         float Pre_ATK = 0.12f;
         float ATKing = 0.28f;
-        float Post_ATK = 0.45f;
+        float Post_ATK = 0.56f;
         if (Cur_state == Char_state.Attack_I || Cur_state == Char_state.Attack_II)
         {
             //PreAttack_I
@@ -482,7 +483,7 @@ public class Main_Char : Character
         ////Bypass_State
         if ((Cur_Attack_State == Attack_state.Pre_Attack || Cur_Attack_State == Attack_state.Post_Attack) && Block_Enable == true)
         {
-            if (Input.GetKey(KeyCode.Space) || virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down)
+            if (Input.GetKey(KeyCode.Space) || virsual_Input.Cur_Button_Defend == Virsual_input.Button_Defend_State.Down || Gamepad.current.leftShoulder.value > 0)
             {
                 Cur_Attack_State = Attack_state.None;
                 Cur_state = Char_state.Block;

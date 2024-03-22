@@ -62,8 +62,22 @@ public class Main : MonoBehaviour
         CameraTransformation();
         Haptic_system();
         Difficult = dificulty.ToString();
+        if(Player.GetComponent<Main_Char>().HP <= 0) 
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+            SceneManager.LoadScene("Menu");           
+        }
+        if(GetComponent<Sequence>().GameisEnd == true) 
+        {
+            EndTime += Time.deltaTime;
+            GetComponent<AudioSource>().volume -= 0.1f*Time.deltaTime;  
+            if(EndTime > 12) 
+            {
+                SceneManager.LoadScene("Menu");
+            }
+        }
     }
-
+    float EndTime = 0;
     /////BackEnd       
     Vector3 Original_Cam_Pos;
     private void CameraTransformation()
@@ -186,12 +200,12 @@ public class Main : MonoBehaviour
                         if(enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Flinch) 
                         {
                             CameraShake(0.06f, 0.08f);
-                            Main.Haptic_feedback_Input(0.02f, 0.2f, 0.5f);
+                            Main.Haptic_feedback_Input(0.02f, 0.2f*10, 0.5f*10);
                         }
                         else if(enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Block) 
                         {
                             CameraShake(0.02f, 0.01f);
-                            Main.Haptic_feedback_Input(0.01f, 0.7f, 0.5f);
+                            Main.Haptic_feedback_Input(0.01f, 0.7f * 10, 0.5f * 10);
                         }
                     }
                 }
@@ -211,17 +225,17 @@ public class Main : MonoBehaviour
                         {
                             enemy.GetComponent<Enemy_Common>().Got_Parried();
                             Parry_Effect(1);
-                            Main.Haptic_feedback_Input(0.05f, 0.04f, 0.01f);
+                            Main.Haptic_feedback_Input(0.05f, 0.04f * 10, 0.01f * 10);
                         }
                         else if(Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.Flinch) 
                         {
                             CameraShake(0.25f, 0.07f);
-                            Main.Haptic_feedback_Input(0.3f, 1f, 1f);
+                            Main.Haptic_feedback_Input(0.3f, 1f * 10, 1f * 10);
                         }
                         else if (Player.GetComponent<Main_Char>().Cur_state == Main_Char.Char_state.BlockReact)
                         {
                             CameraShake(0.02f, 0.1f);
-                            Main.Haptic_feedback_Input(0.06f, 0.7f, 0f);
+                            Main.Haptic_feedback_Input(0.06f, 0.7f * 10, 0f * 10);
                         }
                     }
                 }

@@ -149,6 +149,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Point Light
       objectReference: {fileID: 0}
+    - target: {fileID: 5156194573221740821, guid: 2f89c593b33cbb7488565dded6d99ccb, type: 3}
+      propertyPath: m_Range
+      value: 10.07
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
