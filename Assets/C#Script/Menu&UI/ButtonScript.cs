@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class ButtonScript : MonoBehaviour
 {
     [SerializeField] GameObject Button;
     void Start()
     {
-        
+        Gamepad.current.SetMotorSpeeds( 0, 0);
     }
 
     void Update()

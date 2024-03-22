@@ -188,14 +188,12 @@ public class Main : MonoBehaviour
             if (enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dead && enemy.GetComponent<Enemy_Common>().Cur_Role != global::Enemy.Role.OffFight)
             {
                 //Player_Attack_Enemy
-                if (Player.GetComponent<Main_Char>().Cur_Attack_State == Main_Char.Attack_state.Attacking && enemy.GetComponent<Enemy_Common>().GetHitted_able == true
-                    )
+                if (Player.GetComponent<Main_Char>().Cur_Attack_State == Main_Char.Attack_state.Attacking && enemy.GetComponent<Enemy_Common>().GetHitted_able == true)
                 {
                     if (Player.GetComponent<Main_Char>().Attack_Box.bounds.Intersects(enemy.GetComponent<Enemy_Common>().Hitted_Box.bounds)
-                        && enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dash_Forward && enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dash_Back
-                        )
+                        && enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dash_Forward && enemy.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dash_Back)
                     {
-                        enemy.GetComponent<Enemy_Common>().Got_Attacked();                       
+                        enemy.GetComponent<Enemy_Common>().Got_Attacked(Player);                       
                         enemy.GetComponent<Enemy_Common>().GetHitted_able = false;
                         if(enemy.GetComponent<Enemy_Common>().Cur_state == global::Enemy.State.Flinch) 
                         {
@@ -206,6 +204,7 @@ public class Main : MonoBehaviour
                         {
                             CameraShake(0.02f, 0.01f);
                             Main.Haptic_feedback_Input(0.01f, 0.7f * 10, 0.5f * 10);
+                            
                         }
                     }
                 }
@@ -238,6 +237,24 @@ public class Main : MonoBehaviour
                             Main.Haptic_feedback_Input(0.06f, 0.7f * 10, 0f * 10);
                         }
                     }
+                    //Enemy_Attack_Enemy
+                    foreach (GameObject Target in Enemy) 
+                    {
+                        if (Target.GetComponent<Enemy_Common>().Cur_state != global::Enemy.State.Dead)
+                        {
+                            Debug.Log("FrenlyHit");
+                            if (enemy.GetComponent<Enemy_Common>().Attack_Box.bounds.Intersects(Target.GetComponent<Enemy_Common>().Hitted_Box.bounds))
+                            {
+                                Target.GetComponent<Enemy_Common>().Got_Attacked(enemy);                
+                            }
+                        }
+                    }
+                }
+                
+                if (enemy.GetComponent<Enemy_Common>().Cur_Attack_State == Enemy_Common.Attack_State.Attacking && enemy.GetComponent<Enemy_Common>().Hit_able == true)
+                {
+                    enemy.GetComponent<Enemy_Common>().Hit_able = false;
+                                        
                 }
                 if (enemy.GetComponent<Enemy_Common>().Cur_Attack_State != Enemy_Common.Attack_State.Attacking)
                 {
@@ -253,7 +270,7 @@ public class Main : MonoBehaviour
     }
     public float Slow_Duration = 0;
    
-    
+   
     public void Parry_Effect(float Duration) 
     {
         Time.timeScale = 0.35f;

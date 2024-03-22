@@ -129,6 +129,7 @@ public class Dialogue : MonoBehaviour
         }
 
     }
+    
     public void OnTriggerExit(Collider other)
     {
         /*if (other.CompareTag("Player"))

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UIElements;
 
 public abstract class Enemy : Character
@@ -81,9 +82,9 @@ public abstract class Enemy : Character
         ATK_Range = 1.2f;
         Director.AddEnemy(gameObject);
         Cur_state = State.Dead;
-        Cur_Role = Role.OffFight;
-         
+        Cur_Role = Role.OffFight;         
         gameObject.SetActive(false);
+        
     }
     public void Spawn(Vector3 Postion, float HP, float Defend,float DMG)
     {
@@ -454,7 +455,7 @@ public abstract class Enemy : Character
             if (Cur_state == State.Attack_I)
             {
                 float Time_preATK = 0.22f;
-                float Time_ATKing = 0.40f;
+                float Time_ATKing = 0.50f;
                 float Time_PostATK = 0.67f;
                 Change_state_enable = false;
                 //PreAttack_I
@@ -471,7 +472,7 @@ public abstract class Enemy : Character
                         //pushForward
                         ATK_push_able = false;
                         AudioSource.PlayClipAtPoint(Muaudio.Attack_Woosh[UnityEngine.Random.Range(0, Muaudio.Attack_Woosh.Length)], gameObject.transform.position);
-                        Push(-5.8f);
+                        Push_step(8f);
                     }
                     Cur_Attack_State = Attack_State.Attacking;
                 }
@@ -589,13 +590,13 @@ public abstract class Enemy : Character
     }
     public bool Hit_able = true;
     
-    public void Got_Attacked() 
+    public void Got_Attacked(GameObject WhoAttack) 
     {
         if (Cur_state != State.Dead)
         {
             OnFightDismiss(0.2f);
-            if ((Cur_Direction == Direction.Left && (base.transform.position.x > Player.transform.position.x))
-                || (Cur_Direction == Direction.Right && (base.transform.position.x < Player.transform.position.x)))
+            if ((Cur_Direction == Direction.Left && (base.transform.position.x > WhoAttack.transform.position.x))
+                || (Cur_Direction == Direction.Right && (base.transform.position.x < WhoAttack.transform.position.x))&&(WhoAttack.TryGetComponent<Main_Char>(out Main_Char main_Char)))
             {
                 if (Defend > 0 && Cur_state != State.Parried)
                 {
@@ -611,11 +612,10 @@ public abstract class Enemy : Character
                     }
                 }
             }
-
-            if (Cur_state == State.Block)
+            if (Cur_state == State.Block && WhoAttack.TryGetComponent<Main_Char>(out Main_Char Char))
             {                
-                Defend -= Player.DMG * 0.7f;
-                Pressure += 15;
+                Defend -= Player.DMG * 0.4f;
+                Pressure += 10;
                 for(int i = 0;i < Muaudio.Block_Layer.Length; i++) 
                 {
                     AudioSource.PlayClipAtPoint(Muaudio.Block_Layer[i], gameObject.transform.position);
@@ -636,16 +636,27 @@ public abstract class Enemy : Character
                 }
                 else
                 {
-                    if (UnityEngine.Random.Range(1, 10) <= 2)
+                    
+                    if(WhoAttack.TryGetComponent<Enemy_Common>(out Enemy_Common enemy_)) 
                     {
                         //Critical
-                        HP -= Player.DMG * 1.5f;
+                        HP -= Player.DMG * 1.6f;
+                        Defend -= Player.DMG*1.8f;
                         Debug.Log("Critical_Hit:" + Player.DMG * 1.5f);
                     }
-                    else
+                    else 
                     {
-                        HP -= Player.DMG;
-                        Debug.Log("Hit:" + Player.DMG);
+                        if (UnityEngine.Random.Range(1, 10) <= 2)
+                        {
+                            //Critical
+                            HP -= Player.DMG * 1.5f;
+                            Debug.Log("Critical_Hit:" + Player.DMG * 1.5f);
+                        }
+                        else
+                        {
+                            HP -= Player.DMG;
+                            Debug.Log("Hit:" + Player.DMG);
+                        }
                     }
                 }
                 for (int i = 0; i < Muaudio.Get_Hitted.Length; i++)
@@ -680,7 +691,17 @@ public abstract class Enemy : Character
             rb.GetComponent<Rigidbody>().velocity = new Vector3(-force, 0, 0);
         }
     }
-    
+    private void Push_step(float force) 
+    {
+        if (Cur_Direction == Direction.Right)
+        {
+            rb.GetComponent<Rigidbody>().velocity = new Vector3(force, 0, 0);
+        }
+        else if (Cur_Direction == Direction.Left)
+        {
+            rb.GetComponent<Rigidbody>().velocity = new Vector3(-force, 0, 0);
+        }
+    }
     private float[] DistanceMove = new float[4];
     private float Timing_Set_Active = 2;
     private void RoleManagement() 

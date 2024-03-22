@@ -200,8 +200,7 @@ public class Main_Char : Character
     {
         if (HP <= 0)
         {
-            //Death 
-            
+            //Death        
         }
         //Attack_state       
         float Pre_ATK = 0.12f;

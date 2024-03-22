@@ -219,7 +219,7 @@ public class Sequence : MonoBehaviour
                     Count++;
                 }
             }
-            if (Count == Enemys.Count-2)
+            if (Count > Enemys.Count-3)
             {
                 Spawn_Dialog(6);
             }
@@ -309,10 +309,7 @@ public class Sequence : MonoBehaviour
     int Dialog_Num =0;
     private void Spawn_Dialog(int num) 
     {
-        if(num > 1) 
-        {
-            Dialog[num - 1].GetComponent<Dialogue>().zeroText();
-        }
+       
         Dialog[num].transform.position = new Vector3(Enemy_Spawner_R.transform.position.x - 7.36f, Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z);       
     }
     public void SetCur_Sequence(Sequence_Line Set_Sequence) 
