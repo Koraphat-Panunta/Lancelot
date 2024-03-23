@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Tutorial_Sequence;
 
 public class Sequence : MonoBehaviour
 {
@@ -81,6 +82,10 @@ public class Sequence : MonoBehaviour
                     {
                         Tutorial.StopTime();
                     }
+                }
+                if(Tutorial.FristTime_ATK == false&& MainCharacter.GetComponent<Main_Char>().Cur_state != Main_Char.Char_state.Attack_I) 
+                {
+                    Tutorial.Tutorial = tutorial.Dash;
                 }
             }
             if(Tutorial.Tutorial == Tutorial_Sequence.tutorial.Dash && MainCharacter.GetComponent<Main_Char>().Change_Behavior_enable == true) 

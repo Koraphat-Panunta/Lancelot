@@ -546,7 +546,7 @@ public abstract class Enemy : Character
         if (Cur_state == State.Run)
         {
             Walk_Frequency += Time.deltaTime;
-            if(Walk_Frequency >= 0.4f) 
+            if(Walk_Frequency >= 0.45f && Distance<=4) 
             {
                 Walk_Frequency = 0;
                 for(int i = 0; i < Muaudio.walk.Length; i++) 
@@ -620,6 +620,7 @@ public abstract class Enemy : Character
                 {
                     AudioSource.PlayClipAtPoint(Muaudio.Block_Layer[i], gameObject.transform.position);
                 }
+                OnFightDismiss(0.3f);
                 Push(3.0f);
             }
             else

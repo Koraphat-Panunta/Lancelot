@@ -130,7 +130,10 @@ public class Main_Char : Character
         }
         Update_Pos();
         base.FixedUpdate();
-
+        if(HP < 100) 
+        {
+            HP += 1 * Time.deltaTime;
+        }
     }
     private void Update_animation()
     {

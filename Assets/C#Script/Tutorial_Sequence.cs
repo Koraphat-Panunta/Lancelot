@@ -107,9 +107,9 @@ public class Tutorial_Sequence : MonoBehaviour
                 {
                     StartTime();
                     text.stop_show_text();
-                    FristTime_ATK = false;
-                    Tutorial = tutorial.Dash;
+                    FristTime_ATK = false;                   
                 }
+                
             }
             else if(Tutorial == tutorial.Dash && FristTime_Dash == true) 
             {
