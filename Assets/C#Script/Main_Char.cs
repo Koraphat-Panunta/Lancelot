@@ -91,7 +91,15 @@ public class Main_Char : Character
     protected override void FixedUpdate()
     {
         Update_State_and_Dicrection();
-        int parry_frame = 8;
+        int parry_frame = 12;
+        if (Main.dificulty == Main.Dificulty.Normal) 
+        {
+            parry_frame = 12;
+        }
+        else if (Main.dificulty == Main.Dificulty.Hard)
+        {
+            parry_frame = 9;
+        }
         //Defend_state
         if (Cur_state == Char_state.Block)
         {
@@ -134,9 +142,9 @@ public class Main_Char : Character
         }
         Update_Pos();
         base.FixedUpdate();
-        if(HP < 100) 
+        if(HP < 100 && Main.dificulty == Main.Dificulty.Normal) 
         {
-            HP += 1 * Time.deltaTime;
+            HP += 2 * Time.deltaTime;
         }
     }
     private void Update_animation()

@@ -283,7 +283,7 @@ public class Sequence : MonoBehaviour
             if(Main.dificulty == Main.Dificulty.Normal)
             {
                 Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_R.transform.position.x + (i * 2), Enemy_Spawner_R.transform.position.y, Enemy_Spawner_R.transform.position.z)
-                , 50, 20,15);
+                , 40,10,10);
                 index++;
             }
             else 
@@ -300,7 +300,7 @@ public class Sequence : MonoBehaviour
             if (Main.dificulty == Main.Dificulty.Normal)
             {
                 Enemys[index].GetComponent<Enemy_Common>().Spawn(new Vector3(Enemy_Spawner_L.transform.position.x - (i * 2), Enemy_Spawner_L.transform.position.y, Enemy_Spawner_L.transform.position.z)
-                , 50, 20,15);
+                , 40, 10,10);
                 index++;
             }
             else

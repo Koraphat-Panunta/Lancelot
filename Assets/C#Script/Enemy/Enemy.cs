@@ -615,7 +615,7 @@ public abstract class Enemy : Character
             if (Cur_state == State.Block && WhoAttack.TryGetComponent<Main_Char>(out Main_Char Char))
             {                
                 Defend -= Player.DMG * 0.4f;
-                Pressure += 10;
+                Pressure += 6;
                 for(int i = 0;i < Muaudio.Block_Layer.Length; i++) 
                 {
                     AudioSource.PlayClipAtPoint(Muaudio.Block_Layer[i], gameObject.transform.position);
