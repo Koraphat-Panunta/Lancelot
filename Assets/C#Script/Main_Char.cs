@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 using UnityEngine.XR;
 using static Enemy;
 using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.SceneManagement;
 
 public class Main_Char : Character
 {
@@ -82,7 +83,10 @@ public class Main_Char : Character
         }
         Cooldown();
         Update_animation();
-        
+        if(HP <= 0) 
+        {
+            SceneManager.LoadScene("Menu");
+        }
     }
     protected override void FixedUpdate()
     {

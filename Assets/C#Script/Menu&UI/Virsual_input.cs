@@ -65,7 +65,7 @@ public class Virsual_input : MonoBehaviour
             {                                
                 End_point = mytouch.position;
                 //Dash
-                if (Duration <= 0.5f&&(Vector2.Distance(Begin_point,End_point)>1.5f))
+                if (Duration <= 0.5f&&(Vector2.Distance(Begin_point,End_point)>12f))
                 {
                     if (End_point.x > Begin_point.x) 
                     {

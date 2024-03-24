@@ -64,10 +64,9 @@ public class Main : MonoBehaviour
         Difficult = dificulty.ToString();
         if(Player.GetComponent<Main_Char>().HP <= 0) 
         {
-            Gamepad.current.SetMotorSpeeds(0, 0);
-            SceneManager.LoadScene("Menu");           
-        }
-        if(GetComponent<Sequence>().GameisEnd == true) 
+            SceneManager.LoadScene("Menu");
+        }              
+        if (GetComponent<Sequence>().GameisEnd == true) 
         {
             EndTime += Time.deltaTime;
             GetComponent<AudioSource>().volume -= 0.1f*Time.deltaTime;  
