@@ -130,7 +130,7 @@ public class Main : MonoBehaviour
         //Shake
         if (Shake_Duration > 0 && Effect_is_On == false) 
         {
-            Camera.transform.position = Original_Cam_Pos;            
+            //Camera.transform.position = Original_Cam_Pos;            
             Camera.transform.position = new Vector3(Camera.transform.position.x + (Random.Range(-1, 1) * Magnitude), Camera.transform.position.y + (Random.Range(-1, 1) * Magnitude), Camera.transform.position.z);
             if(Shake_Duration > 0) 
             {
@@ -143,11 +143,11 @@ public class Main : MonoBehaviour
                
             }
         }
-        else 
+        /*else 
         {
             Camera.transform.position = Vector3.Lerp(Camera.transform.position, Camera_Pos.transform.position, 2f * Time.deltaTime);
             Original_Cam_Pos = Camera.transform.position;
-        }
+        }*/
     }
     static float Shake_Duration = 0;
     static float Magnitude = 0;
