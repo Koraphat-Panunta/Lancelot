@@ -15,9 +15,9 @@ using UnityEngine.SceneManagement;
 public class Main_Char : Character
 {
     public float HP = 100f;
-    [SerializeField] public bool Change_Behavior_enable = true;
-    private float Block_CoolDown = 0.15f;
-    bool Block_Enable = true;
+    [SerializeField] public bool Change_Behavior_enable = true;//State
+    private float Block_CoolDown = 0.15f;//Block
+    bool Block_Enable = true;//Block
     public string Char_CurState;
     [SerializeField] private float Speed;
     private float Original_Speed;
@@ -50,7 +50,7 @@ public class Main_Char : Character
     }
     public Char_state Cur_state;
     public Char_Direction Cur_Direction;
-    private bool Dash_able = true;
+    private bool Dash_able = true;//Dash
 
     
     public void Start()
@@ -619,7 +619,7 @@ public class Main_Char : Character
                 Dash_by_swipe();
 
             }
-            Cur_state = Char_state.Attack_I;
+            Cur_state = Char_state.Attack_I;//Attack
             Update_animation();
             Change_Behavior_enable = false;
         }
